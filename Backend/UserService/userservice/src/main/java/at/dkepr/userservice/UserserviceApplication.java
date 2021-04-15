@@ -17,10 +17,9 @@ public class UserserviceApplication implements CommandLineRunner {
 	}
 
 	public void run(String...args) throws Exception {
-		System.out.println("Reading movie records...");
-        System.out.printf("%-30.30s  %-30.30s%n", "Title", "Description");
-        jdbcTemplate.query("SELECT * FROM movies", (rs)-> {
-            System.out.printf("%-30.30s  %-30.30s%n", rs.getString("title"), rs.getString("description"));          
+		System.out.println("Reading Users...");
+        jdbcTemplate.query("SELECT * FROM users", (rs)-> {
+            System.out.println(rs.getString("email")+" "+rs.getString("firstname")+" "+rs.getString("lastname")+" "+rs.getString("phonenumber")+" "+rs.getString("password"));          
         });
 		
 	}
