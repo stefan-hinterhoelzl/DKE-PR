@@ -25,7 +25,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity (name = "Users")
 @Table (name = "USERS")
-public class User implements UserDetails {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
@@ -48,58 +48,5 @@ public class User implements UserDetails {
     String password;
     
     
-    @Builder.Default
-	private UserRole userRole = UserRole.USER;
-
-	@Builder.Default
-	private Boolean locked = false;
-
-	@Builder.Default
-	private Boolean enabled = false;
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-
-		final SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(userRole.name());
-		return Collections.singletonList(simpleGrantedAuthority);
-	}
-
-	@Override
-	public String getPassword() {
-		return password;
-	}
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-	@Override
-	public String getUsername() {
-		return email; //Email is used a Username
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return !locked;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-    public void setEnabled(boolean b) {
-		this.enabled = b;
-    }
     
 }
