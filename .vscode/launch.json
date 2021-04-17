@@ -9,6 +9,16 @@
             "mainClass": "at.dkepr.userservice.UserserviceApplication",
             "projectName": "userservice",
             "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-UserserviceApplication<userservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "at.dkepr.UserserviceApplication",
+            "projectName": "userservice",
+            "args": ""
         }
     ]
 }

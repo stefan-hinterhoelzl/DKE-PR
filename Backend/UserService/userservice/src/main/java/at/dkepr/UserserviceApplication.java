@@ -1,4 +1,4 @@
-package at.dkepr.userservice;
+package at.dkepr;
 
 import java.util.Collections;
 import org.springframework.boot.SpringApplication;
