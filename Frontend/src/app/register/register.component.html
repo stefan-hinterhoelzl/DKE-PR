@@ -8,37 +8,41 @@
   
         <mat-card-content>
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Email*">
+            <input matInput placeholder="Email" type = "text" [formControl] = "email" required>
+            <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
           </mat-form-field>
   
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Vorname*">
+            <input matInput placeholder="Vorname" type = "text" [formControl] = "firstname" required>
+            <mat-error *ngIf="firstname.invalid">{{getErrorMessage()}}</mat-error>
           </mat-form-field>
   
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Nachname*">
+            <input matInput placeholder="Nachname" type = "text" [formControl] = "lastname" required>
+            <mat-error *ngIf="lastname.invalid">{{getErrorMessage()}}</mat-error>
           </mat-form-field>
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Telefonnummer">
+            <input matInput placeholder="Telefonnummer" type = "text" [formControl] = "phonenumber">
           </mat-form-field>
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Passwort*">
+            <input matInput placeholder="Passwort" type = "password" [formControl] = "password" required>
+            <mat-error *ngIf="password.invalid">{{getErrorMessage()}}</mat-error>
           </mat-form-field>
 
 
   
-          <mat-form-field class="example-full-width">
+          <!-- <mat-form-field class="example-full-width">
             <mat-label>Farbauswahl</mat-label>
-            <mat-select>
+            <mat-select [formControl] = "color">
               <mat-option [value]="colors" *ngFor="let color of Colors">{{color}}
               </mat-option>
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
   
         </mat-card-content>
 
         <p>* sind Pflichtfelder</p>
-        <button mat-stroked-button color="primary" class="btn-block">Registrieren</button>
+        <button mat-stroked-button color="primary" (click) = "signUpUser()" class="btn-block">Registrieren</button>
   
       </form>
     </mat-card>

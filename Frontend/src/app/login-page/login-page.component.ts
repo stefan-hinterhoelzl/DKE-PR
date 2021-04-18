@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../model/User';
+import { APIService } from '../services/apiservice';
 
 @Component({
   selector: 'app-login-page',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPageComponent implements OnInit {
 
-  constructor() { }
+
+  user: User;
+
+  constructor(private apiservice: APIService) { }
 
   ngOnInit(): void {
   }
+  	
+
+  showUser() {
+    this.apiservice.getUser().subscribe((data: User) =>  {
+      this.user = {...data}
+      console.log(this.user)
+    });
+    
+  }
+  
 
 }
