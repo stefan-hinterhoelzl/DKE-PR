@@ -8,15 +8,16 @@
       <form class="example-form">
         <mat-card-content>
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Email">
+            <input matInput placeholder="Email" type = "text" [formControl] = "email">
+            <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
           </mat-form-field>
   
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Passwort">
+            <input matInput placeholder="Passwort" type = "password" [formControl] = "password">
+            <mat-error *ngIf="password.invalid">{{getErrorMessage()}}</mat-error>
           </mat-form-field>
         </mat-card-content>
-        <button mat-stroked-button color=primary class="btn-block">Anmelden</button>
-        <button mat-stroked-button color=primary class="btn-block" (click) = "showUser()">User zeigen</button>
+        <button mat-stroked-button color=primary (click) = "signIn()" class="btn-block">Anmelden</button>
       </form>
     </mat-card>
   

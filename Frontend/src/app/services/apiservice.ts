@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
 import { catchError, retry } from 'rxjs/operators';
 import {User} from "src/app/model/User";
+import {Credential} from "src/app/model/Credential";
 
 const httpOptions =  {
    headers: new HttpHeaders({
@@ -22,6 +23,8 @@ export class APIService
     userServiceAPIURL: String = "http://localhost:8080/"
 
 
+
+    //UserService API
     getUser() {
       return this.http.get<User>(this.userServiceAPIURL+"user/email1@gmail.com")
       .pipe(
@@ -34,6 +37,11 @@ export class APIService
       .pipe(
         catchError(this.handleError)
       );
+    }
+
+    authenticateUser(payload: Credential): Observable<String> {
+      return this.http.post<String>(this.userServiceAPIURL+"authenticate", payload, httpOptions)
+      .pipe()
     }
 
     

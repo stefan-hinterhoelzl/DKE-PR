@@ -4,8 +4,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
-import javax.xml.bind.DatatypeConverter;
 
+import javax.xml.bind.DatatypeConverter;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataAccessException;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import at.dkepr.entity.Credential;
 import at.dkepr.entity.User;
 
 
@@ -52,24 +53,23 @@ public class UserController {
     }
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/authenticate")
-    public ResponseEntity<?> authenticate(@RequestBody String[] payload) {
-        Optional<User> optional = repository.findByEmail(payload[0]);
+    public ResponseEntity<?> authenticate(@RequestBody Credential payload) {
+        Optional<User> optional = repository.findByEmail(payload.getEmail());
 
         if (optional.isPresent()) {
             User user = optional.get();
-            String hashedPW = this.hash(payload[1]);
+            String hashedPW = this.hash(payload.getPassword());
 
             if (user.getPassword().equals(hashedPW)){
-                return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("User eingeloggt!");
+               String Message = "{\"response\": \"Eingeloggt!\"}";
+               return ResponseEntity.
+               status(HttpStatus.OK).body(Message);
+               
             }else {
-                return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body("Das Passwort war nicht richtig!");
+                throw new WrongPasswordException();
             }   
         } else {
-            throw new UserNotFoundException(payload[0]);
+            throw new UserNotFoundException(payload.getEmail());
         }
     }
 

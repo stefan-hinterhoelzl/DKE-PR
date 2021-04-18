@@ -7,14 +7,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 
-
 @ControllerAdvice
-public class UserNotFoundAdvice {
+public class WrongPasswordAdvice {
     
     @ResponseBody
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String userNotFoundHandler(UserNotFoundException e) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String wrongPasswordHandler(WrongPasswordException e) {
+      
         return e.getMessage();
+        
     }
 }
