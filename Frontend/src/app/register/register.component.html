@@ -1,0 +1,45 @@
+<div class="main-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+      <mat-card-header>
+        <mat-card-title>Registrieren</mat-card-title>
+      </mat-card-header>
+  
+      <form class="example-form">
+  
+        <mat-card-content>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Email*">
+          </mat-form-field>
+  
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Vorname*">
+          </mat-form-field>
+  
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Nachname*">
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Telefonnummer">
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Passwort*">
+          </mat-form-field>
+
+
+  
+          <mat-form-field class="example-full-width">
+            <mat-label>Farbauswahl</mat-label>
+            <mat-select>
+              <mat-option [value]="colors" *ngFor="let color of Colors">{{color}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+        </mat-card-content>
+
+        <p>* sind Pflichtfelder</p>
+        <button mat-stroked-button color="primary" class="btn-block">Registrieren</button>
+  
+      </form>
+    </mat-card>
+  </div>
