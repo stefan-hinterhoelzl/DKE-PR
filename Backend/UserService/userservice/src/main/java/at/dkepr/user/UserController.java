@@ -2,6 +2,7 @@ package at.dkepr.user;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -9,21 +10,23 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import at.dkepr.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 @RestController
 public class UserController {
 
-    private UserRepository repository;
+    private final UserRepository repository;
+
+    UserController(UserRepository repository) {
+        this.repository = repository;
+    }
 
     @PostMapping("/users")
     public ResponseEntity<?> newUser(@RequestBody User newUser) {
@@ -37,15 +40,36 @@ public class UserController {
             .body(this.repository.save(newUser));
         }catch (DataAccessException e) {
             return ResponseEntity
-            .status(HttpStatus.FORBIDDEN)
+            .status(HttpStatus.BAD_REQUEST)
             .body("Es ist ein Fehler aufgetreten. User wurde nicht angelegt.");
         }
     }
 
-    @GetMapping("/authenticate")
-    public ResponseEntity<?> newUser(@RequestBody String[] payload) {
-        return null;
-        
+    @PostMapping("/authenticate")
+    public ResponseEntity<?> authenticate(@RequestBody String[] payload) {
+        Optional<User> optional = repository.findByEmail(payload[0]);
+
+        if (optional.isPresent()) {
+            User user = optional.get();
+            String hashedPW = this.hash(payload[1]);
+
+            if (user.getPassword().equals(hashedPW)){
+                return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("User eingeloggt!");
+            }else {
+                return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Das Passwort war nicht richtig!");
+            }   
+        } else {
+            throw new UserNotFoundException(payload[0]);
+        }
+    }
+
+    @GetMapping("user/{email}")
+    public User getUser(@PathVariable String email) {
+        return repository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
     }
 
 

@@ -16,10 +16,9 @@ public class UserService {
 
         final SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(userMail);
-        mailMessage.setSubject("Bestätigungslink!");
+        mailMessage.setSubject("Willkommen!");
         mailMessage.setFrom("<MAIL>");
-        mailMessage.setText("Danke für Ihre Registrierung! Bestätigen Sie diese mit diesem Link!."
-                + "http://localhost:8080/sign-up/confirm?token=" + token);
+        mailMessage.setText("Willkommen auf unserer Social Media Plattform! Ihr Account ist bereits einsatzbereit!");
 
         emailsender.sendEmail(mailMessage);
     }
