@@ -24,20 +24,22 @@ public class User {
 	@SequenceGenerator(sequenceName = "user_seq", allocationSize = 1, name = "USER_SEQ")
 	Long id;
 
-	@Column(name = "email")
+	@Column(name = "email", unique = true, nullable = false)
 	String email;
 
-	@Column(name = "firstname")
+	@Column(name = "firstname", nullable = false)
 	String firstname;
 
-	@Column(name = "lastname")
+	@Column(name = "lastname", nullable = false)
 	String lastname;
 
 	@Column(name = "phonenumber")
 	String phonenumber;
 
-	@Column(name = "password")
+	@Column(name = "password", nullable = false)
 	String password;
+
+	@Column(name = "color")
 
 	public Long getId() {
 		return id;
