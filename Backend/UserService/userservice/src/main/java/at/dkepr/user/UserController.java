@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import javax.xml.bind.DatatypeConverter;
 
+
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,17 +34,20 @@ public class UserController {
     public ResponseEntity<?> newUser(@RequestBody User newUser) {
         //Hash the password
         newUser.setPassword(this.hash(newUser.getPassword()));
-
-        //Store the User, Create the Http Response
-        try {
-            return ResponseEntity
-            .status(HttpStatus.CREATED)
+        try{
+            return ResponseEntity.
+            status(HttpStatus.CREATED)
             .body(this.repository.save(newUser));
-        }catch (DataAccessException e) {
+        }catch(DataAccessException e) {
+            String Message = "Error";
+            if (e.getCause() instanceof ConstraintViolationException) {
+                Message = "Email-Duplicate";
+            }
             return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
-            .body("Es ist ein Fehler aufgetreten. User wurde nicht angelegt.");
+            .body(Message);
         }
+
     }
 
     @PostMapping("/authenticate")
