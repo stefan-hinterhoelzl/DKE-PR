@@ -43,6 +43,7 @@
 
         <p>* sind Pflichtfelder</p>
         <button mat-stroked-button color="primary" (click) = "signUpUser()" class="btn-block">Registrieren</button>
+        <p *ngIf = "error"> {{errorMessage}}</p>
   
       </form>
     </mat-card>

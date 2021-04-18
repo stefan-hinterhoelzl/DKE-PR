@@ -4,6 +4,7 @@ import { User } from '../model/User';
 import { ObjectUnsubscribedError } from 'rxjs';
 import { UseExistingWebDriver } from 'protractor/built/driverProviders';
 import { FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -15,6 +16,9 @@ export class RegisterComponent implements OnInit {
 
   Colors: any = ['Blau', 'Rot', 'Gelb', 'Lila', 'Grün', 'Pink'];
 
+  errorMessage: String;
+  error: boolean;
+
   email = new FormControl('', [Validators.required, Validators.email]);
   firstname = new FormControl('', [Validators.required]);
   lastname = new FormControl('', [Validators.required]);
@@ -22,7 +26,7 @@ export class RegisterComponent implements OnInit {
   password = new FormControl('', [Validators.required]);
   // color = new FormControl('');
 
-  constructor(private apiservice: APIService) { }
+  constructor(private apiservice: APIService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -38,12 +42,16 @@ export class RegisterComponent implements OnInit {
       phonenumber: this.phonenumber.value
     }
     
-    
-
     var addedUser: User;
     this.apiservice.postUser(user).subscribe((data: User) => {
       addedUser = {...data}
-      console.log(addedUser)
+      localStorage.setItem("loggedIn", "True");
+      this.router.navigate(['app']);
+    },
+    (error) => {
+      this.errorMessage = error.error;
+      this.error = true;
+      setTimeout(() => this.error = false, 3500);
     });
   }
 

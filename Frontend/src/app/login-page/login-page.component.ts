@@ -15,7 +15,7 @@ export class LoginPageComponent implements OnInit {
 
   user: User;
   errorMessage: String;
-
+  error: boolean;
   email = new FormControl('', [Validators.required, Validators.email]);
   password = new FormControl('', [Validators.required]);
 
@@ -24,9 +24,6 @@ export class LoginPageComponent implements OnInit {
   ngOnInit(): void {
   }
   	
-
-
-
 
   signIn() {
     let payload = <Credential> {
@@ -37,24 +34,14 @@ export class LoginPageComponent implements OnInit {
     this.apiservice.authenticateUser(payload).subscribe((data) => {
       console.log(data)
       localStorage.setItem("loggedIn", "True");
-      this.router.navigate(['#']);
-      
+      this.router.navigate(['app']);
     },
     (error) => {
-      
-      this.errorMessage = error;
-      console.log(error)
+      this.errorMessage = error.error;
+      this.error = true;
+      setTimeout(() => this.error = false, 3500);
     });
   }
-
-  // showUser() {
-  //   this.apiservice.getUser().subscribe((data: User) =>  {
-  //     this.user = {...data}
-  //     console.log(this.user)
-  //   });
-    
-  //}
-  
 
   getErrorMessage() {
     if (this.email.hasError('required') || this.password.hasError('required')) {

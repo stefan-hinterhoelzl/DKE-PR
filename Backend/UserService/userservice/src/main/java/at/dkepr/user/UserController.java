@@ -43,7 +43,7 @@ public class UserController {
         }catch(DataAccessException e) {
             String Message = "Error";
             if (e.getCause() instanceof ConstraintViolationException) {
-                Message = "Email-Duplicate";
+                Message = "Diese Mail Adresse existiert bereits.";
             }
             return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
