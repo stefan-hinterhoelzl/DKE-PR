@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService } from '../services/apiservice';
+import { AuthService } from '../services/AuthService';
 import { User } from '../model/User';
 import { ObjectUnsubscribedError } from 'rxjs';
 import { UseExistingWebDriver } from 'protractor/built/driverProviders';
-import { FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,6 +18,9 @@ export class RegisterComponent implements OnInit {
 
   errorMessage: String;
   error: boolean;
+  form: FormGroup;
+  success: boolean;
+  
 
   email = new FormControl('', [Validators.required, Validators.email]);
   firstname = new FormControl('', [Validators.required]);
@@ -26,33 +29,43 @@ export class RegisterComponent implements OnInit {
   password = new FormControl('', [Validators.required]);
   // color = new FormControl('');
 
-  constructor(private apiservice: APIService, private router: Router) { }
+  constructor(private apiservice: AuthService, private router: Router, private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.form = this.fb.group({
+      email: this.email,
+      firstname: this.firstname,
+      lastname: this.lastname,
+      phonenumber: this.phonenumber,
+      password: this.password
+    })
   }
 
 
   signUpUser() {
-    const user = <User> {
-      //color: this.color.value;
-      email: this.email.value,
-      firstname: this.firstname.value,
-      lastname: this.lastname.value,
-      password: this.password.value,
-      phonenumber: this.phonenumber.value
+
+    if(this.form.valid) {
+
+      const user = <User> {
+        //color: this.color.value;
+        email: this.email.value,
+        firstname: this.firstname.value,
+        lastname: this.lastname.value,
+        password: this.password.value,
+        phonenumber: this.phonenumber.value
+      }
+      
+      var addedUser: User;
+      this.apiservice.postUser(user).subscribe((data: User) => {
+        addedUser = {...data}
+        this.router.navigate(['app']);
+      },
+      (error) => {
+        this.errorMessage = error.error;
+        this.error = true;
+        setTimeout(() => this.error = false, 3500);
+      });
     }
-    
-    var addedUser: User;
-    this.apiservice.postUser(user).subscribe((data: User) => {
-      addedUser = {...data}
-      localStorage.setItem("loggedIn", "True");
-      this.router.navigate(['app']);
-    },
-    (error) => {
-      this.errorMessage = error.error;
-      this.error = true;
-      setTimeout(() => this.error = false, 3500);
-    });
   }
 
   getErrorMessage() {

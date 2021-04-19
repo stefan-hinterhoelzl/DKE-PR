@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../model/User';
 import {Credential} from '../model/Credential';
-import { APIService } from '../services/apiservice';
+import { AuthService } from '../services/AuthService';
 import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login-page',
@@ -18,29 +19,44 @@ export class LoginPageComponent implements OnInit {
   error: boolean;
   email = new FormControl('', [Validators.required, Validators.email]);
   password = new FormControl('', [Validators.required]);
+  form: FormGroup
 
-  constructor(private apiservice: APIService, private router: Router) { }
+  constructor(private auth: AuthService, private router: Router, private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.form = this.fb.group({
+      email: this.email,
+      password: this.password
+    })
   }
   	
 
   signIn() {
-    let payload = <Credential> {
-      email: this.email.value,
-      password: this.password.value
-    }
 
-    this.apiservice.authenticateUser(payload).subscribe((data) => {
-      console.log(data)
-      localStorage.setItem("loggedIn", "True");
-      this.router.navigate(['app']);
-    },
-    (error) => {
-      this.errorMessage = error.error;
-      this.error = true;
-      setTimeout(() => this.error = false, 3500);
-    });
+    if(this.form.valid) {
+
+      let payload = <Credential> {
+        email: this.email.value,
+        password: this.password.value
+      }
+
+      this.auth.authenticateUser(payload).subscribe((data) => {
+        let user: User;
+        this.auth.getUser(payload.email).subscribe((data: User) => {
+          user = {...data};
+          this.auth.user.next(user);
+          localStorage.setItem('user', JSON.stringify(user));
+          this.router.navigate(['app']);
+
+        });
+        
+      },
+      (error) => {
+        this.errorMessage = error.error;
+        this.error = true;
+        setTimeout(() => this.error = false, 3500);
+      });
+    }
   }
 
   getErrorMessage() {

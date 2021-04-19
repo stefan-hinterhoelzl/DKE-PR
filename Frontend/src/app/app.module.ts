@@ -12,6 +12,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MainComponent } from './main/main.component';
+import {AuthService } from './services/AuthService';
+import { AuthGuard } from './services/authguard';
 
 
 @NgModule({
@@ -32,7 +34,7 @@ import { MainComponent } from './main/main.component';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

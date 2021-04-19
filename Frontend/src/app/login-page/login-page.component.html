@@ -5,7 +5,7 @@
         <mat-card-title>Anmelden</mat-card-title>
       </mat-card-header>
   
-      <form class="example-form">
+      <form class="example-form" [formGroup] = "form">
         <mat-card-content>
           <mat-form-field class="example-full-width">
             <input matInput placeholder="Email" type = "text" [formControl] = "email">
@@ -19,8 +19,8 @@
             <mat-error *ngIf="password.invalid">{{getErrorMessage()}}</mat-error>
           </mat-form-field>
         </mat-card-content>
+        <div class="card-error-style" *ngIf = "error">{{errorMessage}}</div>
         <button mat-stroked-button color=primary (click) = "signIn()" class="btn-block">Anmelden</button>
-        <p *ngIf = "error"> {{errorMessage}}</p>
       </form>
     </mat-card>
   

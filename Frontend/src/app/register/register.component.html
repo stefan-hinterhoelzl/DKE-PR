@@ -4,7 +4,7 @@
         <mat-card-title>Registrieren</mat-card-title>
       </mat-card-header>
   
-      <form class="example-form">
+      <form class="example-form" [formGroup] = "form">
   
         <mat-card-content>
           <mat-form-field class="example-full-width">
@@ -42,8 +42,9 @@
         </mat-card-content>
 
         <p>* sind Pflichtfelder</p>
+        <div class = "card-error-style" *ngIf = "error">{{errorMessage}}</div>
         <button mat-stroked-button color="primary" (click) = "signUpUser()" class="btn-block">Registrieren</button>
-        <p *ngIf = "error"> {{errorMessage}}</p>
+        
   
       </form>
     </mat-card>

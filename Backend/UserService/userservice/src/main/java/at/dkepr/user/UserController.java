@@ -12,9 +12,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -74,6 +76,34 @@ public class UserController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
+    @PutMapping("/user/{email}")
+    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable String email) {
+       User userToChange = this.getUser(email);
+       user.setPassword(this.hash(user.getPassword()));
+
+       userToChange.setFirstname(user.getFirstname());
+       userToChange.setLastname(user.getLastname());
+       userToChange.setPhonenumber(user.getPhonenumber());
+       userToChange.setPassword(user.getPassword());
+
+       return ResponseEntity
+       .status(HttpStatus.OK)
+       .body(repository.save(userToChange));
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @DeleteMapping("user/{email}")
+    public ResponseEntity<?> deleteUser(@PathVariable String email) {
+        User userToDelete = this.getUser(email);
+
+        repository.deleteById(userToDelete.getId());
+
+        return ResponseEntity.
+                status(HttpStatus.OK)
+                .body("\"response\":\"Deleted\"");
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("user/{email}")
     public User getUser(@PathVariable String email) {
         return repository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
@@ -94,5 +124,6 @@ public class UserController {
         return myHash;
 
     }
+    
 
 }
