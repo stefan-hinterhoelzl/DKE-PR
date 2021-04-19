@@ -43,6 +43,7 @@
 
         <p>* sind Pflichtfelder</p>
         <div class = "card-error-style" *ngIf = "error">{{errorMessage}}</div>
+        <div class = "card-success-style" *ngIf = "success">{{successMessage}}</div>
         <button mat-stroked-button color="primary" (click) = "signUpUser()" class="btn-block">Registrieren</button>
         
   
