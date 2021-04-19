@@ -1,16 +1,18 @@
 package at.dkepr.user;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 import java.util.Optional;
 
-
-import javax.xml.bind.DatatypeConverter;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +32,9 @@ public class UserController {
 
     private final UserRepository repository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     UserController(UserRepository repository) {
         this.repository = repository;
     }
@@ -37,7 +42,9 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<?> newUser(@RequestBody User newUser) {
         //Hash the password
-        newUser.setPassword(this.hash(newUser.getPassword()));
+
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+
         try{
             return ResponseEntity.
             status(HttpStatus.CREATED)
@@ -60,10 +67,20 @@ public class UserController {
 
         if (optional.isPresent()) {
             User user = optional.get();
-            String hashedPW = this.hash(payload.getPassword());
+            //Match the password
+            if (passwordEncoder.matches(payload.getPassword(), user.getPassword())){
 
-            if (user.getPassword().equals(hashedPW)){
-               String Message = "{\"response\": \"Eingeloggt!\"}";
+                //Create the JWT TOKEN
+                String token = "";
+                try{
+                    //Add some Claims
+                    Algorithm algo = Algorithm.HMAC256("NichtGanzSoGeheimesSecret");
+                    token = JWT.create().withIssuer("DefinitelyNotTwitter").withClaim("Email", user.getEmail()).withClaim("Firstname", user.getFirstname()).withClaim("Lastname", user.getLastname())
+                    .withClaim("creationTime", System.currentTimeMillis()).withClaim("expirationTime", System.currentTimeMillis()+3600000).sign(algo);
+                } catch (JWTCreationException e) {
+                    e.printStackTrace();
+                }
+               String Message = "{\"response\": \"success\", \"token\":\""+token+"\"}";
                return ResponseEntity.
                status(HttpStatus.OK).body(Message);
                
@@ -79,7 +96,7 @@ public class UserController {
     @PutMapping("/user/{email}")
     public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable String email) {
        User userToChange = this.getUser(email);
-       user.setPassword(this.hash(user.getPassword()));
+       user.setPassword(passwordEncoder.encode(user.getPassword()));
 
        userToChange.setFirstname(user.getFirstname());
        userToChange.setLastname(user.getLastname());
@@ -110,20 +127,6 @@ public class UserController {
     }
 
 
-    private String hash(String s) {
-        String myHash = "";
-        try{
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(s.getBytes());
-            byte[] digest = md.digest();
-            myHash = DatatypeConverter.printHexBinary(digest).toUpperCase();
-            
-        }catch(NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return myHash;
-
-    }
     
 
 }

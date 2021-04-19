@@ -30,9 +30,7 @@ export class LoginPageComponent implements OnInit {
     })
   }
   	
-
   signIn() {
-
     if(this.form.valid) {
 
       let payload = <Credential> {
@@ -40,14 +38,16 @@ export class LoginPageComponent implements OnInit {
         password: this.password.value
       }
 
-      this.auth.authenticateUser(payload).subscribe((data) => {
+      this.auth.authenticateUser(payload).subscribe((response: any) => {
         let user: User;
+        console.log(response);
+        localStorage.setItem("token", response.token);
+
         this.auth.getUser(payload.email).subscribe((data: User) => {
           user = {...data};
           this.auth.user.next(user);
           localStorage.setItem('user', JSON.stringify(user));
           this.router.navigate(['app']);
-
         });
         
       },
