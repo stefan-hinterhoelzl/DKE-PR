@@ -27,18 +27,15 @@ export class AuthService
 
     //UserService API
     getUser(email: String) {
-      return this.http.get<User>(this.userServiceAPIURL+"user/"+email)
-      .pipe();
+      return this.http.get<User>(this.userServiceAPIURL+"user/"+email);
     }
 
     postUser(user: User): Observable<User> {
-      return this.http.post<User>(this.userServiceAPIURL+"users", user, httpOptions)
-      .pipe();
+      return this.http.post<User>(this.userServiceAPIURL+"users", user, httpOptions);
     }
 
     authenticateUser(payload: Credential): Observable<String> {
-      return this.http.post<String>(this.userServiceAPIURL+"authenticate", payload, httpOptions)
-      .pipe()
+      return this.http.post<String>(this.userServiceAPIURL+"authenticate", payload, httpOptions);
     }
 
     autoLogin() {
