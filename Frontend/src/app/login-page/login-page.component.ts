@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { User } from '../model/User';
 import {Credential} from '../model/Credential';
 import { AuthService } from '../services/AuthService';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -21,7 +21,7 @@ export class LoginPageComponent implements OnInit {
   password = new FormControl('', [Validators.required]);
   form: FormGroup
 
-  constructor(private auth: AuthService, private router: Router, private fb: FormBuilder) { }
+  constructor(private auth: AuthService, private router: Router, private fb: FormBuilder, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -38,6 +38,8 @@ export class LoginPageComponent implements OnInit {
         password: this.password.value
       }
 
+      
+
       this.auth.authenticateUser(payload).subscribe((response: any) => {
         let user: User;
         console.log(response);
@@ -47,7 +49,16 @@ export class LoginPageComponent implements OnInit {
           user = {...data};
           this.auth.user.next(user);
           localStorage.setItem('user', JSON.stringify(user));
-          this.router.navigate(['app']);
+
+          let redirectURL = "";
+          let params = this.route.snapshot.queryParams;
+          if (params['redirectURL']) {
+            redirectURL = params['redirectURL'];
+          }
+
+          if (redirectURL != "") this.router.navigateByUrl(redirectURL).catch(() => this.router.navigate(['app']));
+          else this.router.navigate(['app'])
+          
         });
         
       },
