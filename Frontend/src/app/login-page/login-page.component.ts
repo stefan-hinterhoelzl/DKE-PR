@@ -48,6 +48,7 @@ export class LoginPageComponent implements OnInit {
         this.auth.getUser(payload.email).subscribe((data: User) => {
           user = {...data};
           this.auth.user.next(user);
+          console.log(user);
           localStorage.setItem('user', JSON.stringify(user));
 
           let redirectURL = "";

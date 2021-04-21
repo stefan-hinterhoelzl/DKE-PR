@@ -44,6 +44,7 @@ public class UserController {
         //Hash the password
 
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        
 
         try{
             return ResponseEntity.
@@ -93,9 +94,9 @@ public class UserController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @PutMapping("/user/{email}")
-    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable String email) {
-       User userToChange = this.getUser(email);
+    @PutMapping("/user/{id}")
+    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Long ID) {
+       User userToChange = this.getUser(ID);
        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
        userToChange.setFirstname(user.getFirstname());
@@ -109,9 +110,9 @@ public class UserController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @DeleteMapping("user/{email}")
-    public ResponseEntity<?> deleteUser(@PathVariable String email) {
-        User userToDelete = this.getUser(email);
+    @DeleteMapping("user/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long ID) {
+        User userToDelete = this.getUser(ID);
 
         repository.deleteById(userToDelete.getId());
 
@@ -124,6 +125,12 @@ public class UserController {
     @GetMapping("user/{email}")
     public User getUser(@PathVariable String email) {
         return repository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("userPerID/{id}")
+    public User getUser(@PathVariable Long id) {
+        return repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
 
