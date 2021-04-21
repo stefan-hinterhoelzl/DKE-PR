@@ -17,7 +17,13 @@ component: RegisterComponent
 },
 {path: 'app',
 component: MainComponent,
-canActivate: [AuthGuard]}
+canActivate: [AuthGuard]
+},
+{path: 'user/:id',
+component: MainComponent,
+canActivate: [AuthGuard]
+},
+
 ];
 
 @NgModule({

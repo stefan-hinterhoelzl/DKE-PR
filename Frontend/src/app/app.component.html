@@ -6,6 +6,7 @@
       <a mat-button mat-raised-button routerLink="register" routerLinkActive="active">Registrieren</a>
     </span>
     <span *ngIf="user !== null" class="nav-tool-items">
+      <a mat-button routerLink = "user/{{user.id}}">{{user.firstname}} {{user.lastname}}</a>
       <a mat-button (click) = "logout()" >Abmelden</a>
     </span>
   </mat-toolbar>
