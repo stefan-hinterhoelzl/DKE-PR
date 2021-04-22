@@ -6,13 +6,19 @@
             <h2>{{user.firstname}} {{user.lastname}}</h2>
         </mat-card>
 
-        <div style="margin-top: 7%">
-             Dein Profilpokemon ist {{pokemondata.name}}
+        <div *ngIf = "selfprofile" style="margin-top: 7%">
+             Dein Profilpokemon ist {{pokemondata?.name}}
         </div>
+
+        <div *ngIf = "!selfprofile" style="margin-top: 7%">
+            {{user.firstname}}'s Profilpokemon ist {{pokemondata?.name}}
+       </div>
+
+
 
         <img style="margin-top: 3%;" src="https://pokeres.bastionbot.org/images/pokemon/{{user.pokemonid}}.png" width="400px" height="400px" alt="">
 
-        <div style = "margin-top: 5%;">
+        <div *ngIf = "selfprofile" style = "margin-top: 5%;">
             <button mat-button (click) = "changePokemon()">Ich will ein anderes Pokemon</button>
         </div>
 
