@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../model/User';
 import { AuthService } from '../services/AuthService';
 import { PokemonService } from '../services/pokemonservice';
@@ -16,7 +16,7 @@ export class UserPageComponent implements OnInit {
   pokemondata: any;
   selfprofile: boolean;
 
-  constructor(private http: HttpClient, private auth: AuthService, private route: ActivatedRoute, private poke: PokemonService) { }
+  constructor(private http: HttpClient, private auth: AuthService, private route: ActivatedRoute, private poke: PokemonService, public router: Router) { }
 
   ngOnInit(): void {
     let user = localStorage.getItem('user');

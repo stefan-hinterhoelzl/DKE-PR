@@ -2,16 +2,19 @@
     
     <div fxFlex="30"   fxLayout="column" fxLayoutAlign="center center">
 
-        <mat-card style = "margin-top: 10%; justify-content:space-evenly; display: flex;">
+        <mat-card-title style = "margin-top: 10%; justify-content:space-evenly; display: flex;">
         <div fxLayout="column" fxLayoutAlign="space-between center">
                 <div>
-                    <h2>{{user.firstname}} {{user.lastname}}</h2>
+                    <h1>{{user.firstname}} {{user.lastname}}</h1>
                 </div>
-                <div><button *ngIf = "selfprofile" mat-button>Userdaten bearbeiten</button>
-                    <button *ngIf = "!selfprofile" mat-button data-toggle="modal" data-target = "#exampleModal">{{user.firstname}} Folgen</button>
+                <div><a *ngIf = "selfprofile" mat-button color = "primary" (click) = "router.navigate(['edituser'])">Userdaten bearbeiten</a>
+                    <button *ngIf = "!selfprofile" mat-button color = "primary">{{user.firstname}} Folgen</button>
                 </div> 
+                <div>
+                    <a *ngIf = "selfprofile" mat-button color = "primary" (click) = "router.navigate(['followinglist'])">Abonnierte Benutzer</a>
+                </div>
         </div> 
-        </mat-card>
+        </mat-card-title>
 
         <div *ngIf = "selfprofile" style="margin-top: 7%">
              Dein Profilpokemon ist {{pokemondata?.name}}

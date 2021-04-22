@@ -16,6 +16,8 @@ import {AuthService } from './services/AuthService';
 import { AuthGuard } from './services/authguard';
 import { BootstrapModule } from './bootstrap.module';
 import { UserPageComponent } from './user-page/user-page.component';
+import { ProfileEditComponent } from './profile-edit/profile-edit.component';
+import { FollowingPageComponent } from './following-page/following-page.component';
 
 
 @NgModule({
@@ -24,7 +26,9 @@ import { UserPageComponent } from './user-page/user-page.component';
     LoginPageComponent,
     RegisterComponent,
     MainComponent,
-    UserPageComponent
+    UserPageComponent,
+    ProfileEditComponent,
+    FollowingPageComponent
   ],
   imports: [
     BrowserModule,
