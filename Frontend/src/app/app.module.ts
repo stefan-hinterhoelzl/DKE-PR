@@ -14,6 +14,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { MainComponent } from './main/main.component';
 import {AuthService } from './services/AuthService';
 import { AuthGuard } from './services/authguard';
+import { BootstrapModule } from './bootstrap.module';
+import { UserPageComponent } from './user-page/user-page.component';
 
 
 @NgModule({
@@ -21,7 +23,8 @@ import { AuthGuard } from './services/authguard';
     AppComponent,
     LoginPageComponent,
     RegisterComponent,
-    MainComponent
+    MainComponent,
+    UserPageComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,8 @@ import { AuthGuard } from './services/authguard';
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BootstrapModule
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],

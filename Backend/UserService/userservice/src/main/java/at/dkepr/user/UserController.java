@@ -42,7 +42,6 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<?> newUser(@RequestBody User newUser) {
         //Hash the password
-
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         
 
@@ -55,6 +54,8 @@ public class UserController {
             if (e.getCause() instanceof ConstraintViolationException) {
                 Message = "Diese Mail Adresse existiert bereits.";
             }
+
+            e.printStackTrace();
             return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(Message);
@@ -95,14 +96,14 @@ public class UserController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/user/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Long ID) {
-       User userToChange = this.getUser(ID);
-       user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Long id) {
+       User userToChange = this.getUser(id);
 
+       //only change the changable fields
        userToChange.setFirstname(user.getFirstname());
        userToChange.setLastname(user.getLastname());
        userToChange.setPhonenumber(user.getPhonenumber());
-       userToChange.setPassword(user.getPassword());
+       userToChange.setPokemonid(user.getPokemonid());
 
        return ResponseEntity
        .status(HttpStatus.OK)
@@ -111,8 +112,8 @@ public class UserController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("user/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long ID) {
-        User userToDelete = this.getUser(ID);
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        User userToDelete = this.getUser(id);
 
         repository.deleteById(userToDelete.getId());
 

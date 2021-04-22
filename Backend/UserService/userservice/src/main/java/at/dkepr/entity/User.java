@@ -23,7 +23,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
 	@SequenceGenerator(sequenceName = "user_seq", allocationSize = 1, name = "USER_SEQ")
 	@Column(name = "id")
-	Long id;
+	long id;
 
 	@Column(name = "email", unique = true, nullable = false)
 	String email;
@@ -40,7 +40,11 @@ public class User {
 	@Column(name = "password", nullable = false)
 	String password;
 
-	@Column(name = "color")
+	@Column(name = "pokemonid", nullable = false)
+	String pokemonid;
+
+
+
 
 	public Long getId() {
 		return id;
@@ -89,5 +93,15 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public String getPokemonid() {
+		return pokemonid;
+	}
+
+	public void setPokemonid(String pokemonid) {
+		this.pokemonid = pokemonid;
+	}
+
+	
 
 }

@@ -5,6 +5,7 @@ import { ObjectUnsubscribedError } from 'rxjs';
 import { UseExistingWebDriver } from 'protractor/built/driverProviders';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { positionElements } from 'ngx-bootstrap/positioning';
 
 @Component({
   selector: 'app-register',
@@ -47,15 +48,19 @@ export class RegisterComponent implements OnInit {
 
     if(this.form.valid) {
 
+      let pokemonid: String = (Math.floor(Math.random() * 494)+1).toString();
+
       const user = <User> {
         //color: this.color.value;
         email: this.email.value,
         firstname: this.firstname.value,
         lastname: this.lastname.value,
         password: this.password.value,
-        phonenumber: this.phonenumber.value
+        phonenumber: this.phonenumber.value,
+        pokemonid: pokemonid
       }
       
+      console.log(user)
       var addedUser: User;
       this.apiservice.postUser(user).subscribe((data: User) => {
         addedUser = {...data}

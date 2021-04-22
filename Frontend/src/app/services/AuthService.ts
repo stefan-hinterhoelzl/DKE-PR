@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, throwError } from "rxjs";
+import { BehaviorSubject, Observable, ObservedValueOf, throwError } from "rxjs";
 import { catchError, retry } from 'rxjs/operators';
 import {User} from "src/app/model/User";
 import {Credential} from "src/app/model/Credential";
@@ -12,10 +12,13 @@ const httpOptions =  {
    })
 };
 
+const userServiceAPIURL: String = "http://localhost:8080/" 
+
 @Injectable({ providedIn: 'root' })
 export class AuthService
  {
     
+  
 
   user = new BehaviorSubject<User>(null);
 
@@ -23,19 +26,26 @@ export class AuthService
 
     constructor(private http: HttpClient, private router: Router) {}
 
-    userServiceAPIURL: String = "http://localhost:8080/"
-
+    
     //UserService API
     getUser(email: String) {
-      return this.http.get<User>(this.userServiceAPIURL+"user/"+email);
+      return this.http.get<User>(userServiceAPIURL+"user/"+email);
+    }
+
+    getUserPerID(id: number) {
+      return this.http.get<User>(userServiceAPIURL+"userPerID/"+id);
     }
 
     postUser(user: User): Observable<User> {
-      return this.http.post<User>(this.userServiceAPIURL+"users", user, httpOptions);
+      return this.http.post<User>(userServiceAPIURL+"users", user, httpOptions);
     }
 
     authenticateUser(payload: Credential): Observable<String> {
-      return this.http.post<String>(this.userServiceAPIURL+"authenticate", payload, httpOptions);
+      return this.http.post<String>(userServiceAPIURL+"authenticate", payload, httpOptions);
+    }
+
+    updateUser(user: User, id: number): Observable<User> {
+      return this.http.put<User>(userServiceAPIURL+"user/"+id, user, httpOptions);
     }
 
     autoLogin() {

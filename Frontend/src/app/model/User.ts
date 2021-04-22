@@ -5,5 +5,5 @@ export interface User {
     lastname: String;
     phonenumber: String;
     password: String;
-    color: String;
+    pokemonid: String;
 }
