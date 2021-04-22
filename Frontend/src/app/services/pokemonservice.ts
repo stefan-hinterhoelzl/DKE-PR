@@ -1,5 +1,6 @@
 import { HttpClient} from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { take } from "rxjs/operators";
 
 
 const pokeAPI = "https://pokeapi.co/api/v2/pokemon-species/";
@@ -12,7 +13,7 @@ export class PokemonService
 
 
     public getRequest(id: String) {
-        return this.http.get(pokeAPI+id);
+        return this.http.get(pokeAPI+id).pipe(take(1));
     }
 
 

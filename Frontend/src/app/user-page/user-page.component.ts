@@ -42,10 +42,8 @@ export class UserPageComponent implements OnInit {
     } else {
       this.selfprofile = true;
       this.getPokemonData();
-    }
-    
+    }    
   }
-
 
   changePokemon() {
     let newpokemon = this.user.pokemonid;

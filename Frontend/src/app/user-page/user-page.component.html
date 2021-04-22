@@ -2,8 +2,15 @@
     
     <div fxFlex="30"   fxLayout="column" fxLayoutAlign="center center">
 
-        <mat-card style = "margin-top: 10%">
-            <h2>{{user.firstname}} {{user.lastname}}</h2>
+        <mat-card style = "margin-top: 10%; justify-content:space-evenly; display: flex;">
+        <div fxLayout="column" fxLayoutAlign="space-between center">
+                <div>
+                    <h2>{{user.firstname}} {{user.lastname}}</h2>
+                </div>
+                <div><button *ngIf = "selfprofile" mat-button>Userdaten bearbeiten</button>
+                    <button *ngIf = "!selfprofile" mat-button data-toggle="modal" data-target = "#exampleModal">{{user.firstname}} Folgen</button>
+                </div> 
+        </div> 
         </mat-card>
 
         <div *ngIf = "selfprofile" style="margin-top: 7%">
@@ -22,20 +29,10 @@
             <button mat-button (click) = "changePokemon()">Ich will ein anderes Pokemon</button>
         </div>
 
-       
-            
-        
-    
-
     </div>
 
     <div fxFlex fxLayout="column" fxLayoutAlign="center center">
         <div> Postings...</div>
     </div>
-
-
-   
-
     
-
 </div>
