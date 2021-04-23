@@ -29,9 +29,9 @@
                     <input matInput placeholder="Telefonnummer" type = "text" [formControl] = "phonenumber">
                     </mat-form-field>
                 
-                    <div class = "card-error-style" *ngIf = "error">{{errorMessage}}</div>
-                    <div class = "card-success-style" *ngIf = "success">{{successMessage}}</div>
-                    <button mat-stroked-button color="primary" (click) = "updateUser()" class="btn-block">Speichern</button>
+                    <div class = "card-error-style" *ngIf = "errorD">{{errorMessageD}}</div>
+                    <div class = "card-success-style" *ngIf = "successD">{{successMessageD}}</div>
+                    <button style="margin-top: 2%;" mat-stroked-button color="primary" [disabled] = "!dataform.valid" (click) = "updateUserData()" class="btn-block">Speichern</button>
                 </form>
             </div>
             <div style = "margin-left: 3%;">
@@ -47,12 +47,13 @@
                     <mat-error *ngIf="newpw.invalid">{{getErrorMessage()}}</mat-error>
                     </mat-form-field>
                     <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Neues Passwort bestätigen" type = "password" [formControl] = "newpwconfirm" required>
+                    <input matInput placeholder="Neues Passwort bestätigen" type = "password" [formControl] = "newpwconfirm" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="pwform.hasError('notSame')">Passwörter stimmen nicht überein</mat-error>
                     </mat-form-field>
                 
-                    <div class = "card-error-style" *ngIf = "error">{{errorMessage}}</div>
-                    <div class = "card-success-style" *ngIf = "success">{{successMessage}}</div>
-                    <button mat-stroked-button color="primary" (click) = "updateUser()" class="btn-block">Speichern</button>
+                    <div class = "card-error-style" *ngIf = "errorP">{{errorMessageP}}</div>
+                    <div class = "card-success-style" *ngIf = "successP">{{successMessageP}}</div>
+                    <button style="margin-top: 2%;" mat-stroked-button color="primary" [disabled] = "!pwform.valid" (click) = "updateUserPassword()" class="btn-block">Speichern</button>
                 </form>
             </div>
         </div>

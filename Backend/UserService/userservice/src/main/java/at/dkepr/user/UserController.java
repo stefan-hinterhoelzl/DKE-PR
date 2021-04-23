@@ -1,6 +1,7 @@
 package at.dkepr.user;
 
 
+import java.util.Date;
 import java.util.Optional;
 
 import com.auth0.jwt.JWT;
@@ -79,19 +80,11 @@ public class UserController {
             if (passwordEncoder.matches(payload.getPassword(), user.getPassword())){
 
                 //Create the JWT TOKEN
-                String token = "";
+                String token = this.getToken(user);
                 
-                try{
-                    //Add some Claims
-                    Algorithm algo = Algorithm.HMAC256("NichtGanzSoGeheimesSecret");
-                    token = JWT.create().withIssuer("DefinitelyNotTwitter").withClaim("Email", user.getEmail()).withClaim("Firstname", user.getFirstname()).withClaim("Lastname", user.getLastname())
-                    .withClaim("creationTime", System.currentTimeMillis()).withClaim("expirationTime", System.currentTimeMillis()+3600000).sign(algo);
-                } catch (JWTCreationException e) {
-                    e.printStackTrace();
-                }
-               String Message = "{\"response\": \"success\", \"token\":\""+token+"\"}";
-               return ResponseEntity.
-               status(HttpStatus.OK).body(Message);
+                String Message = "{\"response\": \"success\", \"token\":\""+token+"\"}";
+                return ResponseEntity.
+                status(HttpStatus.OK).body(Message);
                
             }else {
                 throw new WrongPasswordException();
@@ -140,7 +133,20 @@ public class UserController {
     public User getUser(@PathVariable Long id) {
         return repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
+    
 
+    private String getToken(User user) {
+        try{
+            //Add some Claims
+            Algorithm algo = Algorithm.HMAC256(this.secret);
+            return JWT.create().withIssuer("DefinitelyNotTwitter").withClaim("Email", user.getEmail()).withClaim("Firstname", user.getFirstname()).withClaim("Lastname", user.getLastname())
+            .withIssuedAt(new Date(System.currentTimeMillis())).withExpiresAt(new Date(System.currentTimeMillis()+3600000)).sign(algo);
+        } catch (JWTCreationException e) {
+            e.printStackTrace();
+            return "error";
+        }
+
+    }
 
     
 
