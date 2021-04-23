@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ActionSequence } from 'selenium-webdriver';
 import { User } from '../model/User';
 
 @Component({
@@ -13,6 +12,7 @@ export class UserPageEditComponent implements OnInit {
 
   routeUserID: string; 
   dataform: FormGroup;
+  pwform: FormGroup;
   errorMessage: String;
   successMessage: String;
   error: boolean;
@@ -24,9 +24,9 @@ export class UserPageEditComponent implements OnInit {
   lastname = new FormControl('', [Validators.required]);
   phonenumber = new FormControl('');
 
-  password = new FormControl('', [Validators.required]);
-  newpassword = new FormControl('', [Validators.required]);
-  newpasswordrepeat = new FormControl('', [Validators.required]);
+  oldpw = new FormControl('', [Validators.required]);
+  newpw = new FormControl('', [Validators.required]);
+  newpwconfirm = new FormControl('', [Validators.required]);
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router) { }
 
@@ -47,6 +47,12 @@ export class UserPageEditComponent implements OnInit {
       phonenumber: this.phonenumber,
     });
 
+    this.pwform = this.fb.group({
+      oldpw: this.oldpw,
+      newpw: this.newpw,
+      newpwconfirm: this.newpwconfirm    
+    });
+
     
   }
 
@@ -56,7 +62,7 @@ export class UserPageEditComponent implements OnInit {
   }
 
   getErrorMessage() {
-    if (this.firstname.hasError('required') || this.lastname.hasError('required') || this.password.hasError('required')) {
+    if (this.firstname.hasError('required') || this.lastname.hasError('required')) {
       return "Nicht alle Pflichtfelder wurden ausgefüllt!"
     }
   }
