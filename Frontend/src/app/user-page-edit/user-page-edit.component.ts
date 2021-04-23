@@ -36,7 +36,7 @@ export class UserPageEditComponent implements OnInit {
       this.routeUserID = params['id'];
       this.user = JSON.parse(localStorage.getItem('user'))
       if (this.user.id.toString() != this.routeUserID) {
-        this.router.navigate(['user/'+this.user.id+"posts"])
+        this.router.navigate(['/user/'+this.routeUserID+"/posts"])
       }
       
     });

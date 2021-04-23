@@ -10,27 +10,32 @@ import { PokemonService } from '../services/pokemonservice';
   templateUrl: './user-page.component.html',
   styleUrls: ['./user-page.component.css']
 })
-export class UserPageComponent implements OnInit {
+export class UserPageComponent implements OnInit, OnDestroy {
 
   user: User;
   pokemondata: any;
   selfprofile: boolean;
+  subscription;
 
   constructor(private http: HttpClient, private auth: AuthService, private route: ActivatedRoute, private poke: PokemonService, public router: Router) { }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
   ngOnInit(): void {
     let user = localStorage.getItem('user');
     this.user = {...JSON.parse(user)};
 
     //subscription to the active route
-    this.route.params.subscribe(params => {
+    this.subscription = this.route.params.subscribe(params => {
       let id: string = params['id'];
       this.initialize(id);
     });
 
   }
 
-  async initialize(id) {
+  initialize(id) {
     //reset the user to the active User
     this.user = {...JSON.parse(localStorage.getItem("user"))};
     if (id != this.user.id) {
@@ -42,7 +47,9 @@ export class UserPageComponent implements OnInit {
     } else {
       this.selfprofile = true;
       this.getPokemonData();
-    }    
+    } 
+    
+    
   }
 
   changePokemon() {
