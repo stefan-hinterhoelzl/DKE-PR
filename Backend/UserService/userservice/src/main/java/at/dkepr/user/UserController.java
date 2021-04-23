@@ -67,6 +67,8 @@ public class UserController {
     public ResponseEntity<?> authenticate(@RequestBody Credential payload) {
         Optional<User> optional = repository.findByEmail(payload.getEmail());
 
+        //just a quick test
+
         if (optional.isPresent()) {
             User user = optional.get();
             //Match the password
