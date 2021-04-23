@@ -51,7 +51,6 @@ export class RegisterComponent implements OnInit {
       let pokemonid: String = (Math.floor(Math.random() * 494)+1).toString();
 
       const user = <User> {
-        //color: this.color.value;
         email: this.email.value,
         firstname: this.firstname.value,
         lastname: this.lastname.value,
@@ -60,7 +59,6 @@ export class RegisterComponent implements OnInit {
         pokemonid: pokemonid
       }
       
-      console.log(user)
       var addedUser: User;
       this.apiservice.postUser(user).subscribe((data: User) => {
         addedUser = {...data}
