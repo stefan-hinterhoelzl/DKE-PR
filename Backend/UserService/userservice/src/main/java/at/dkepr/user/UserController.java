@@ -9,6 +9,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,9 @@ import at.dkepr.entity.User;
 public class UserController {
 
     private final UserRepository repository;
+
+    @Value( "${jwt.secret}" )
+    private String secret;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -76,6 +80,7 @@ public class UserController {
 
                 //Create the JWT TOKEN
                 String token = "";
+                
                 try{
                     //Add some Claims
                     Algorithm algo = Algorithm.HMAC256("NichtGanzSoGeheimesSecret");
