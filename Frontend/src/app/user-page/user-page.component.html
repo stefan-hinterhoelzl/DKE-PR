@@ -7,12 +7,8 @@
                 <div>
                     <h1>{{user.firstname}} {{user.lastname}}</h1>
                 </div>
-                <div><a *ngIf = "selfprofile" mat-button color = "primary" (click) = "router.navigate(['edituser'])">Userdaten bearbeiten</a>
-                    <button *ngIf = "!selfprofile" mat-button color = "primary">{{user.firstname}} Folgen</button>
-                </div> 
-                <div>
-                    <a *ngIf = "selfprofile" mat-button color = "primary" (click) = "router.navigate(['followinglist'])">Abonnierte Benutzer</a>
-                </div>
+                <button *ngIf = "!selfprofile" mat-button color = "primary">{{user.firstname}} Folgen</button>
+                
         </div> 
         </mat-card-title>
 
@@ -33,9 +29,25 @@
         </div>
 
     </div>
+    <div fxFlex fxLayout="column" fxLayoutAlign="start center">
 
-    <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-        <div> Postings...</div>
+            <div fxFlex fxLayout="row" fxLayoutAlign="center start">
+                <div>
+                    <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./posts']">Meine Postings</a>
+                </div>
+                <div>
+                    <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./edit']">Userdaten bearbeiten</a>
+                </div> 
+                <div>
+                    <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./following']">Abonnierte Benutzer</a>
+                </div>
+            </div>
+
+        <div style= "margin-top: 4%">
+            <router-outlet>
+
+            </router-outlet>
+        </div>  
     </div>
     
 </div>

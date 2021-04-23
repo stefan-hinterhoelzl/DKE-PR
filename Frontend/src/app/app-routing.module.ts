@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { FollowingPageComponent } from './following-page/following-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { MainComponent } from './main/main.component';
-import { ProfileEditComponent } from './profile-edit/profile-edit.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './services/authguard';
+import { UserPageEditComponent } from './user-page-edit/user-page-edit.component';
+import { UserPageFollowingListComponent } from './user-page-following-list/user-page-following-list.component';
+import { UserPagePostingsComponent } from './user-page-postings/user-page-postings.component';
 import { UserPageComponent } from './user-page/user-page.component';
 
 const routes: Routes = [
@@ -24,16 +25,20 @@ canActivate: [AuthGuard]
 },
 {path: 'user/:id',
 component: UserPageComponent,
-canActivate: [AuthGuard]
+canActivate: [AuthGuard],
+children: [
+    {path: '', redirectTo: 'posts', pathMatch: "full"},
+    {path: 'posts', component: UserPagePostingsComponent},
+    {path: 'edit', component: UserPageEditComponent},
+    {path: 'following', component: UserPageFollowingListComponent},
+  ]
 },
-{path: 'edituser',
-component: ProfileEditComponent,
+
+{path: '**', 
+component: MainComponent,
 canActivate: [AuthGuard]
-},
-{path: 'followinglist',
-component: FollowingPageComponent,
-canActivate: [AuthGuard]
-},
+}
+
 ];
 
 @NgModule({
