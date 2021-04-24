@@ -24,8 +24,9 @@ export class UserPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    let user = localStorage.getItem('user');
-    this.user = {...JSON.parse(user)};
+    this.auth.user.subscribe((data: User) => {
+      this.user = data;
+    });
 
     //subscription to the active route
     this.subscription = this.route.params.subscribe(params => {

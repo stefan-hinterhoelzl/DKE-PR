@@ -73,7 +73,6 @@ export class UserPageEditComponent implements OnInit {
     }   
 
     //save to database
-    this.auth.token.next("");
     this.auth.updateUser(changes, this.user.id).subscribe((data: User) => {
       //on success, cache the data and change the observable
       this.user = data;
