@@ -21,6 +21,7 @@ export class AuthService
   
 
   user = new BehaviorSubject<User>(null);
+  token = new BehaviorSubject<String>("");
 
 
 
@@ -52,9 +53,10 @@ export class AuthService
       const user: User = JSON.parse(localStorage.getItem('user'));
       if(!user) {
         this.user.next(null);
+        this.token.next("");
         return;
       }
-
+      this.token.next(localStorage.getItem("token"))
       this.user.next(user);
 
     }
@@ -64,6 +66,14 @@ export class AuthService
       localStorage.removeItem('token');
       this.user.next(null);
       this.router.navigate(['login']);
+    }
+
+    public get currentUserValue(): User {
+      return this.user.value;
+    }
+
+    public get currentTokenValue(): String {
+      return this.token.value;
     }
 
 

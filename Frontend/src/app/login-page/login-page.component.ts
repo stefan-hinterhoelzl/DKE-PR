@@ -44,6 +44,7 @@ export class LoginPageComponent implements OnInit {
         let user: User;
         console.log(response);
         localStorage.setItem("token", response.token);
+        this.auth.token.next(response.token)
 
         this.auth.getUser(payload.email).subscribe((data: User) => {
           user = {...data};

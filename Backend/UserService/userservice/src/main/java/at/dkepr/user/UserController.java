@@ -1,16 +1,8 @@
 package at.dkepr.user;
 
 
-import java.util.Date;
-import java.util.Optional;
-
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
-
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,16 +25,18 @@ import at.dkepr.entity.User;
 public class UserController {
 
     private final UserRepository repository;
+    private UserService userService;
 
-    @Value( "${jwt.secret}" )
-    private String secret;
-
+   
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    UserController(UserRepository repository) {
+    UserController(UserRepository repository, UserService userservice) {
         this.repository = repository;
+        this.userService = userservice;
     }
+
+
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/users")
     public ResponseEntity<?> newUser(@RequestBody User newUser) {
@@ -69,29 +63,8 @@ public class UserController {
     }
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/authenticate")
-    public ResponseEntity<?> authenticate(@RequestBody Credential payload) {
-        Optional<User> optional = repository.findByEmail(payload.getEmail());
-
-        //just a quick test
-
-        if (optional.isPresent()) {
-            User user = optional.get();
-            //Match the password
-            if (passwordEncoder.matches(payload.getPassword(), user.getPassword())){
-
-                //Create the JWT TOKEN
-                String token = this.getToken(user);
-                
-                String Message = "{\"response\": \"success\", \"token\":\""+token+"\"}";
-                return ResponseEntity.
-                status(HttpStatus.OK).body(Message);
-               
-            }else {
-                throw new WrongPasswordException();
-            }   
-        } else {
-            throw new UserNotFoundException(payload.getEmail());
-        }
+    public ResponseEntity<JwtTokenResponse> authenticate(@RequestBody Credential payload) {
+        return new ResponseEntity<>(this.userService.generateJWTToken(payload.getEmail(), payload.getPassword()), HttpStatus.OK);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
@@ -133,21 +106,5 @@ public class UserController {
     public User getUser(@PathVariable Long id) {
         return repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
-    
-
-    private String getToken(User user) {
-        try{
-            //Add some Claims
-            Algorithm algo = Algorithm.HMAC256(this.secret);
-            return JWT.create().withIssuer("DefinitelyNotTwitter").withClaim("Email", user.getEmail()).withClaim("Firstname", user.getFirstname()).withClaim("Lastname", user.getLastname())
-            .withIssuedAt(new Date(System.currentTimeMillis())).withExpiresAt(new Date(System.currentTimeMillis()+3600000)).sign(algo);
-        } catch (JWTCreationException e) {
-            e.printStackTrace();
-            return "error";
-        }
-
-    }
-
-    
-
+        
 }
