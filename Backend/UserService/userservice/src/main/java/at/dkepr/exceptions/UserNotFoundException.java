@@ -1,12 +1,12 @@
-package at.dkepr.user;
+package at.dkepr.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
 
-    UserNotFoundException(String email) {
+    public UserNotFoundException(String email) {
         super("User mit der Email "+email+" wurde nicht gefunden");
     }
 
-    UserNotFoundException(Long ID) {
+    public UserNotFoundException(Long ID) {
         super("User mit der ID "+ID+" wurde nicht gefunden");
     }
     

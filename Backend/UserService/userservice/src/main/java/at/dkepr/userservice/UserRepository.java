@@ -1,4 +1,4 @@
-package at.dkepr.user;
+package at.dkepr.userservice;
 
 import java.util.Optional;
 

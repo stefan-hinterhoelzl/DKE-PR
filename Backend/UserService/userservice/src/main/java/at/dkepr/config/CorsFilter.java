@@ -1,4 +1,4 @@
-package at.dkepr;
+package at.dkepr.config;
 
 import java.io.IOException;
 

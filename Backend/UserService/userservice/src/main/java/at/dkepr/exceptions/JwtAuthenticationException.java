@@ -1,4 +1,4 @@
-package at.dkepr.user;
+package at.dkepr.exceptions;
 
 import org.springframework.security.core.AuthenticationException;
 

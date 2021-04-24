@@ -1,4 +1,4 @@
-package at.dkepr.user;
+package at.dkepr.security;
 
 public class JwtTokenResponse {
     private String token;

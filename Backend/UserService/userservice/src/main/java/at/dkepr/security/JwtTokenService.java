@@ -1,4 +1,4 @@
-package at.dkepr.user;
+package at.dkepr.security;
 
 import java.nio.charset.Charset;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package at.dkepr.user;
+package at.dkepr.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +7,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
-
+import at.dkepr.exceptions.JwtAuthenticationException;
 import io.jsonwebtoken.JwtException;
 
 @Component

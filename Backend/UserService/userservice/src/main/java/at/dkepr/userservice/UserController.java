@@ -1,4 +1,4 @@
-package at.dkepr.user;
+package at.dkepr.userservice;
 
 
 import java.util.Optional;
@@ -20,6 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import at.dkepr.entity.Credential;
 import at.dkepr.entity.User;
+import at.dkepr.exceptions.UserNotFoundException;
+import at.dkepr.exceptions.WrongPasswordException;
+import at.dkepr.security.JwtTokenResponse;
+import at.dkepr.security.JwtTokenService;
 
 
 

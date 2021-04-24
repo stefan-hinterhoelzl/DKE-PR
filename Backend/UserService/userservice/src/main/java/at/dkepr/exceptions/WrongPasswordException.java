@@ -1,8 +1,8 @@
-package at.dkepr.user;
+package at.dkepr.exceptions;
 
 public class WrongPasswordException extends RuntimeException {
 
-    WrongPasswordException() {
+    public WrongPasswordException() {
         super("Passwort inkorrekt");
     }
     

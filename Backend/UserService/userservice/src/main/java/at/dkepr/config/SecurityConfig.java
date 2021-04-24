@@ -1,6 +1,4 @@
-package at.dkepr;
-
-import java.util.Arrays;
+package at.dkepr.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,11 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
-import at.dkepr.user.JwtAuthenticationEntryPoint;
-import at.dkepr.user.JwtAuthenticationProvider;
-import at.dkepr.user.JwtAuthenticationTokenFilter;
-import at.dkepr.CorsFilter;
+import at.dkepr.security.JwtAuthenticationEntryPoint;
+import at.dkepr.security.JwtAuthenticationProvider;
+import at.dkepr.security.JwtAuthenticationTokenFilter;
 
 @SuppressWarnings("SpringJavaAutowiringInspection")
 @Configuration
