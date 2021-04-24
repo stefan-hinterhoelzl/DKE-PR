@@ -24,8 +24,28 @@
 
         <img style="margin-top: 3%;" src="https://pokeres.bastionbot.org/images/pokemon/{{user.pokemonid}}.png" width="400px" height="400px" alt="">
 
-        <div *ngIf = "selfprofile" style = "margin-top: 5%;">
-            <button mat-button (click) = "changePokemon()">Ich will ein anderes Pokemon</button>
+        <div *ngIf = "selfprofile" style = "margin-top: 5%; margin-bottom: 15%;">
+            <button mat-button mat-raised-button (click) = "changePokemon()">Ich will ein anderes Pokemon</button>
+        </div>
+
+        <div *ngIf = "selfprofile" style = "margin-bottom: 10%;">
+            <button mat-button mat-raised-button (click) = "reallydelete = true">Dieses Profil löschen</button>
+        </div>
+
+        <div *ngIf = "reallydelete">
+            Das Profil kann nicht wieder hergestellt werden! <br>
+            Wirklich löschen?
+            <div style = "margin-top: 5%;" fxLayout="row" fxLayoutAlign="space-evenly center">
+                <div>
+                    <button mat-button mat-raised-button (click) = "deleteUser()">Ja</button>
+                </div>
+                <div>
+                    <button mat-button mat-raised-button (click) = "reallydelete = false">Nein</button>
+                </div>
+
+            </div>
+
+
         </div>
 
     </div>

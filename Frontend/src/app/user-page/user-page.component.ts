@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../model/User';
+import { AlertService } from '../services/alertService';
 import { AuthService } from '../services/AuthService';
 import { PokemonService } from '../services/pokemonservice';
 
@@ -16,8 +17,9 @@ export class UserPageComponent implements OnInit, OnDestroy {
   pokemondata: any;
   selfprofile: boolean;
   subscription;
+  reallydelete = false;
 
-  constructor(private http: HttpClient, private auth: AuthService, private route: ActivatedRoute, private poke: PokemonService, public router: Router) { }
+  constructor(private http: HttpClient, private auth: AuthService, private route: ActivatedRoute, private poke: PokemonService, public router: Router, private alertservice: AlertService) { }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -99,6 +101,20 @@ export class UserPageComponent implements OnInit, OnDestroy {
     this.auth.updateUser(user, id).subscribe((data: User) => {
       console.log(data)
     });
+
+  }
+
+  deleteUser() {
+    this.auth.deleteUser(this.user.id).subscribe(() => {
+
+      this.alertservice.success("Der User wurde erfolgreich gelöscht. Auf Wiedersehen!");
+      setTimeout(() => this.auth.logout(),3000);
+
+    },
+    (error) => {
+      this.alertservice.error("Fehler beim Löschen des Users");
+    }
+    );
 
   }
 }

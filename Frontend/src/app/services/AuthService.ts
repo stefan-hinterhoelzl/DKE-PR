@@ -53,6 +53,10 @@ export class AuthService
       return this.http.put<User>(userServiceAPIURL+"password/"+id, payload, httpOptions).pipe(take(1));
     }
 
+    deleteUser(id: number): Observable<any> {
+      return this.http.delete<any>(userServiceAPIURL+"user/"+id).pipe(take(1));
+    }
+
     autoLogin() {
       const user: User = JSON.parse(localStorage.getItem('user'));
       if(!user) {
