@@ -5,8 +5,8 @@ import { ObjectUnsubscribedError } from 'rxjs';
 import { UseExistingWebDriver } from 'protractor/built/driverProviders';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { positionElements } from 'ngx-bootstrap/positioning';
 import { MyErrorStateMatcher } from '../helpers/MyErrorStateMatcher';
+import { AlertService } from '../services/alertService';
 
 @Component({
   selector: 'app-register',
@@ -18,11 +18,8 @@ export class RegisterComponent implements OnInit {
 
   Colors: any = ['Blau', 'Rot', 'Gelb', 'Lila', 'Grün', 'Pink'];
 
-  errorMessage: String;
-  successMessage: String;
-  error: boolean;
+  
   form: FormGroup;
-  success: boolean;
   matcher: MyErrorStateMatcher = new MyErrorStateMatcher();
   email: FormControl;
   firstname: FormControl;
@@ -34,7 +31,7 @@ export class RegisterComponent implements OnInit {
   
   // color = new FormControl('');
 
-  constructor(private apiservice: AuthService, private router: Router, private fb: FormBuilder) {
+  constructor(private apiservice: AuthService, private router: Router, private fb: FormBuilder, private alertservice: AlertService) {
     this.email = new FormControl('', [Validators.required, Validators.email]);
     this.firstname = new FormControl('', [Validators.required]);
     this.lastname = new FormControl('', [Validators.required]);
@@ -55,11 +52,7 @@ export class RegisterComponent implements OnInit {
 
    }
 
-  ngOnInit() {
-
-  
-    
-  }
+  ngOnInit() {}
 
 
   signUpUser() {
@@ -77,15 +70,10 @@ export class RegisterComponent implements OnInit {
     var addedUser: User;
     this.apiservice.postUser(user).subscribe((data: User) => {
       addedUser = {...data}
-      this.successMessage = "User "+addedUser.email+" wurde angelegt.";
-      this.success = true;
-      setTimeout(() => this.success = false, 3500);
-      
+      this.alertservice.success("Benutzer "+addedUser.email+" wurde angelegt.");
     },
     (error) => {
-      this.errorMessage = error.error;
-      this.error = true;
-      setTimeout(() => this.error = false, 3500);
+      this.alertservice.error(error.error);
     });
     
     this.form.reset();

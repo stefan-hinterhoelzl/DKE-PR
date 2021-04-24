@@ -29,8 +29,6 @@
                     <input matInput placeholder="Telefonnummer" type = "text" [formControl] = "phonenumber">
                     </mat-form-field>
                 
-                    <div class = "card-error-style" *ngIf = "errorD">{{errorMessageD}}</div>
-                    <div class = "card-success-style" *ngIf = "successD">{{successMessageD}}</div>
                     <button style="margin-top: 2%;" mat-stroked-button color="primary" [disabled] = "!dataform.valid" (click) = "updateUserData()" class="btn-block">Speichern</button>
                 </form>
             </div>
@@ -51,8 +49,6 @@
                     <mat-error *ngIf="pwform.hasError('notSame')">Passwörter stimmen nicht überein</mat-error>
                     </mat-form-field>
                 
-                    <div class = "card-error-style" *ngIf = "errorP">{{errorMessageP}}</div>
-                    <div class = "card-success-style" *ngIf = "successP">{{successMessageP}}</div>
                     <button style="margin-top: 2%;" mat-stroked-button color="primary" [disabled] = "!pwform.valid" (click) = "updateUserPassword()" class="btn-block">Speichern</button>
                 </form>
             </div>

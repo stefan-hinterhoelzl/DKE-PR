@@ -49,6 +49,10 @@ export class AuthService
       return this.http.put<User>(userServiceAPIURL+"user/"+id, user, httpOptions).pipe(take(1));
     }
 
+    updateUserPassword(payload: any, id: number): Observable<User> {
+      return this.http.put<User>(userServiceAPIURL+"password/"+id, payload, httpOptions).pipe(take(1));
+    }
+
     autoLogin() {
       const user: User = JSON.parse(localStorage.getItem('user'));
       if(!user) {

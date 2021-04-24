@@ -4,6 +4,7 @@ import { User } from '../model/User';
 import {Credential} from '../model/Credential';
 import { AuthService } from '../services/AuthService';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertService } from '../services/alertService';
 
 
 @Component({
@@ -15,13 +16,11 @@ export class LoginPageComponent implements OnInit {
 
 
   user: User;
-  errorMessage: String;
-  error: boolean;
   email = new FormControl('', [Validators.required, Validators.email]);
   password = new FormControl('', [Validators.required]);
   form: FormGroup
 
-  constructor(private auth: AuthService, private router: Router, private fb: FormBuilder, private route: ActivatedRoute) { }
+  constructor(private auth: AuthService, private router: Router, private fb: FormBuilder, private route: ActivatedRoute, private alertservice: AlertService) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -67,9 +66,7 @@ export class LoginPageComponent implements OnInit {
         
       },
       (error) => {
-        this.errorMessage = error.error;
-        this.error = true;
-        setTimeout(() => this.error = false, 3500);
+        this.alertservice.error(error.error);
       });
     }
   }

@@ -111,18 +111,20 @@ body {
 	padding: 0.8375em 0;
 }
 
-.card-error-style {
+.alert-danger  {
 	background-color: #f44336;
 	padding: 10px;
     color: white;
     margin-bottom: 15px;
     text-align: center;
+	width: 20%;
 }
 
-.card-success-style {
+.alert-success {
 	background-color: #198754;
 	padding: 10px;
     color: white;
     margin-bottom: 15px;
     text-align: center;
+	width: 20%;
 }

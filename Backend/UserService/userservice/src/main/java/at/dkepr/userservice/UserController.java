@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import at.dkepr.entity.Credential;
+import at.dkepr.entity.PasswordChangeCredential;
 import at.dkepr.entity.User;
 import at.dkepr.exceptions.UserNotFoundException;
 import at.dkepr.exceptions.WrongPasswordException;
@@ -105,6 +107,28 @@ public class UserController {
        return ResponseEntity
        .status(HttpStatus.OK)
        .body(repository.save(userToChange));
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PutMapping("/password/{id}")
+    public ResponseEntity<?> updateUserPassword(@RequestBody PasswordChangeCredential payload, @RequestHeader("authorization") String token, @PathVariable Long id) {
+        String callerTokenMail = jwtservice.getEmailFromToken(token.substring(7));
+        User userToChange = this.getUser(id);
+
+        //checks
+        if (!callerTokenMail.equals(userToChange.getEmail())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Validierung des Users fehlgeschlagen - Abmeldung");
+        }
+
+        //Check the old pw
+        if (passwordEncoder.matches(payload.getOldpassword(), userToChange.getPassword())) {
+                if (payload.getNewpassword().equals(payload.getNewpasswordconfirm())) {
+                    userToChange.setPassword(passwordEncoder.encode(payload.getNewpassword()));
+                } else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Passwörter stimmen nicht überein");
+            return ResponseEntity.status(HttpStatus.OK).body(repository.save(userToChange));
+
+        } else throw new WrongPasswordException();
+
     }
 
     @CrossOrigin(origins = "http://localhost:4200")

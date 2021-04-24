@@ -35,8 +35,6 @@
         </mat-card-content>
 
         <p>* sind Pflichtfelder</p>
-        <div class = "card-error-style" *ngIf = "error">{{errorMessage}}</div>
-        <div class = "card-success-style" *ngIf = "success">{{successMessage}}</div>
         <button style="margin-top: 2%;" mat-stroked-button color="primary" [disabled] = "!form.valid" (click) = "signUpUser()" class="btn-block">Registrieren</button>
         
   

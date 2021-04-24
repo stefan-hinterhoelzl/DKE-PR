@@ -19,7 +19,6 @@
             <mat-error *ngIf="password.invalid">{{getErrorMessage()}}</mat-error>
           </mat-form-field>
         </mat-card-content>
-        <div class="card-error-style" *ngIf = "error">{{errorMessage}}</div>
         <button style="margin-top: 2%;" mat-stroked-button color=primary (click) = "signIn()" class="btn-block">Anmelden</button>
       </form>
     </mat-card>

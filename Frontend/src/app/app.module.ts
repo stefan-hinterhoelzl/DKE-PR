@@ -21,6 +21,7 @@ import { UserPageEditComponent } from './user-page-edit/user-page-edit.component
 import { UserPagePostingsComponent } from './user-page-postings/user-page-postings.component';
 import { ErrorInterceptor } from './helpers/ErrorInterceptor';
 import { JwtInterceptor } from './helpers/JwtInterceptor';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { JwtInterceptor } from './helpers/JwtInterceptor';
     UserPageFollowingListComponent,
     UserPageEditComponent,
     UserPagePostingsComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +47,7 @@ import { JwtInterceptor } from './helpers/JwtInterceptor';
     HttpClientModule,
     BootstrapModule
   ],
-  providers: [AuthService, AuthGuard, 
+  providers: [AuthService, AuthGuard,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
 

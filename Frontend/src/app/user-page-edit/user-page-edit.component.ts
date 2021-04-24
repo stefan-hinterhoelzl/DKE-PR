@@ -3,7 +3,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { notEqual, notStrictEqual } from 'node:assert';
 import { MyErrorStateMatcher } from '../helpers/MyErrorStateMatcher';
+import { PasswordChangeCredential } from '../model/PasswordChangeCredential';
 import { User } from '../model/User';
+import { AlertService } from '../services/alertService';
 import { AuthService } from '../services/AuthService';
 
 @Component({
@@ -16,14 +18,6 @@ export class UserPageEditComponent implements OnInit {
   routeUserID: string; 
   dataform: FormGroup;
   pwform: FormGroup;
-  errorMessageD: String;
-  successMessageD: String;
-  errorMessageP: String;
-  successMessageP: String;
-  errorD: boolean;
-  successD: boolean;
-  errorP: boolean;
-  successP: boolean;
   matcher: MyErrorStateMatcher = new MyErrorStateMatcher();
   user: User;
   
@@ -35,7 +29,7 @@ export class UserPageEditComponent implements OnInit {
   newpw = new FormControl('', [Validators.required]);
   newpwconfirm = new FormControl('');
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private auth: AuthService) { }
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private auth: AuthService, private alertservice: AlertService) { }
 
   ngOnInit(): void {
 
@@ -77,7 +71,9 @@ export class UserPageEditComponent implements OnInit {
       phonenumber:  this.phonenumber.value,
       pokemonid: this.user.pokemonid,
     }   
+
     //save to database
+    this.auth.token.next("");
     this.auth.updateUser(changes, this.user.id).subscribe((data: User) => {
       //on success, cache the data and change the observable
       this.user = data;
@@ -89,16 +85,11 @@ export class UserPageEditComponent implements OnInit {
 
       Object.keys(this.dataform.controls).forEach(key => {
       this.dataform.get(key).setErrors(null);
-
-      this.successMessageD = "Benutzer "+data.email+ " wurde aktualsiert.";
-      this.successD = true;
-      setTimeout(() => this.successD = false, 3500);
+      this.alertservice.success("Benutzer "+data.email+ " wurde aktualsiert.");
     });
     },
     (error) => {
-      this.errorMessageD = error.error;
-      this.errorD = true;
-      setTimeout(() => this.errorD = false, 3500);
+      this.alertservice.error(error.error);
       }
     );
 
@@ -106,7 +97,26 @@ export class UserPageEditComponent implements OnInit {
   }
 
   updateUserPassword() {
-    console.log("nothingg")
+    let payload: PasswordChangeCredential = {
+      oldpassword: this.oldpw.value,
+      newpassword: this.newpw.value,
+      newpasswordconfirm: this.newpwconfirm.value,
+    }
+    this.auth.updateUserPassword(payload, this.user.id).subscribe((data: User) => {
+      this.dataform.reset();
+
+      Object.keys(this.dataform.controls).forEach(key => {
+      this.dataform.get(key).setErrors(null);
+
+      this.alertservice.success("Passwort wurde aktualisiert. Sie werden abgemeldet");
+      setTimeout(() => this.auth.logout(),3000);
+
+    });
+    },
+    (error) => {
+      this.alertservice.error(error.error);
+    }
+    );
   }
 
   getErrorMessage() {
