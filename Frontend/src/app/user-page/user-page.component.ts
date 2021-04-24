@@ -60,18 +60,29 @@ export class UserPageComponent implements OnInit, OnDestroy {
       while (newpokemon == this.user.pokemonid) {
       newpokemon = (Math.floor(Math.random() * 494)+1).toString();
       }
-    this.user.pokemonid = newpokemon;
-    //Change the pokemonid in the localstorage
-    localStorage.setItem('user', JSON.stringify(this.user));
+      this.setPokemonID(newpokemon);
 
-    this.getPokemonData();
+  }
+
+  setPokemonID(pokemonid: String) {
+    let changedUser = Object.assign({}, this.user);
+
+    changedUser.pokemonid = pokemonid;
+    
+    this.auth.updateUser(changedUser, changedUser.id).subscribe((data: User) => {
+        this.user = data;
+        this.auth.user.next(this.user);
+        localStorage.setItem('user', JSON.stringify(this.user))
+        this.getPokemonData();
+    });
   }
 
   getPokemonData() {
     //Erst mal nachsehen ob es gecached ist
     if (localStorage.getItem("Pokemondata") && JSON.parse(localStorage.getItem("Pokemondata")).id == this.user.pokemonid && this.selfprofile) {
       this.pokemondata = {...JSON.parse(localStorage.getItem("Pokemondata"))};
-      console.log(this.pokemondata);
+
+
       //Wenn nicht danh holen und gleich cachen wenn im self profile
     } else {
       var data;
@@ -89,20 +100,9 @@ export class UserPageComponent implements OnInit, OnDestroy {
         if (this.selfprofile) {
           //save data to localstorage
           localStorage.setItem("Pokemondata", JSON.stringify(this.pokemondata));
-  
-          //update the User on the database
-          this.updateUser(this.user, this.user.id);
         }
       });
     }
   }
-
-  updateUser(user: User, id: number) {
-    this.auth.updateUser(user, id).subscribe((data: User) => {
-      console.log(data)
-    });
-
-  }
-
   
 }

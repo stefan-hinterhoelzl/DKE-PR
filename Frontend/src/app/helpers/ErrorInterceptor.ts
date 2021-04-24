@@ -22,8 +22,14 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (err.status === 401) {
                 this.authenticationService.logout();
                 this.alertservice.error("Die Sitzung ist abgelaufen");
-            return of(EMPTY); // or EMPTY may be appropriate here
+            return of(EMPTY);
         }
+
+        if (err.status === 0) {
+            this.alertservice.error("Die Server sind Offline. Bitte Entschuldigen Sie die Unannehmlichkeiten")
+            return of(EMPTY);
+        }
+
         return throwError(err);
     }
 }

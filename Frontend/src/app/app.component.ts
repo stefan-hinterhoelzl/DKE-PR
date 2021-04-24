@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { User } from './model/User';
 import { AuthService } from './services/AuthService';
 
@@ -12,6 +14,9 @@ export class AppComponent implements OnInit {
 
 
   user: User = null;
+  searchterm = new FormControl();
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<string[]>;
 
   constructor(private auth: AuthService) {}
 

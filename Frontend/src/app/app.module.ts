@@ -22,6 +22,7 @@ import { UserPagePostingsComponent } from './user-page-postings/user-page-postin
 import { ErrorInterceptor } from './helpers/ErrorInterceptor';
 import { JwtInterceptor } from './helpers/JwtInterceptor';
 import { AlertComponent } from './alert/alert.component';
+import { SearchbarComponent } from './searchbar/searchbar.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { AlertComponent } from './alert/alert.component';
     UserPageEditComponent,
     UserPagePostingsComponent,
     AlertComponent,
+    SearchbarComponent,
   ],
   imports: [
     BrowserModule,
