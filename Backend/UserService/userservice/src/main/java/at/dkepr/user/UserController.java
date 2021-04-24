@@ -1,6 +1,8 @@
 package at.dkepr.user;
 
 
+import java.util.Optional;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -25,15 +27,14 @@ import at.dkepr.entity.User;
 public class UserController {
 
     private final UserRepository repository;
-    private UserService userService;
-
+    private final JwtTokenService jwtservice;
    
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    UserController(UserRepository repository, UserService userservice) {
+    UserController(UserRepository repository, JwtTokenService jwt) {
         this.repository = repository;
-        this.userService = userservice;
+        this.jwtservice = jwt;
     }
 
 
@@ -64,7 +65,26 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/authenticate")
     public ResponseEntity<JwtTokenResponse> authenticate(@RequestBody Credential payload) {
-        return new ResponseEntity<>(this.userService.generateJWTToken(payload.getEmail(), payload.getPassword()), HttpStatus.OK);
+        Optional<User> optional = repository.findByEmail(payload.getEmail());
+
+        if (optional.isPresent()) {
+            User user = optional.get();
+            //Match the password
+            if (passwordEncoder.matches(payload.getPassword(), user.getPassword())){
+
+                //Create the JWT TOKEN
+                JwtTokenResponse res = new JwtTokenResponse(this.jwtservice.generateToken(user));
+                return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(res);
+               
+            }else {
+                throw new WrongPasswordException();
+            }   
+        } else {
+            System.out.println("I am here");
+            throw new UserNotFoundException(payload.getEmail());
+        }
     }
 
     @CrossOrigin(origins = "http://localhost:4200")

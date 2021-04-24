@@ -38,8 +38,6 @@ export class LoginPageComponent implements OnInit {
         password: this.password.value
       }
 
-      
-
       this.auth.authenticateUser(payload).subscribe((response: any) => {
         let user: User;
         console.log(response);

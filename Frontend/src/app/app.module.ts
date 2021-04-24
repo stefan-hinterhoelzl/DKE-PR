@@ -10,7 +10,7 @@ import { RegisterComponent } from './register/register.component';
 import { AngularMaterialModule } from './angular-material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MainComponent } from './main/main.component';
 import {AuthService } from './services/AuthService';
 import { AuthGuard } from './services/authguard';
@@ -19,6 +19,8 @@ import { UserPageComponent } from './user-page/user-page.component';
 import { UserPageFollowingListComponent } from './user-page-following-list/user-page-following-list.component';
 import { UserPageEditComponent } from './user-page-edit/user-page-edit.component';
 import { UserPagePostingsComponent } from './user-page-postings/user-page-postings.component';
+import { ErrorInterceptor } from './helpers/ErrorInterceptor';
+import { JwtInterceptor } from './helpers/JwtInterceptor';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,11 @@ import { UserPagePostingsComponent } from './user-page-postings/user-page-postin
     HttpClientModule,
     BootstrapModule
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthService, AuthGuard, 
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

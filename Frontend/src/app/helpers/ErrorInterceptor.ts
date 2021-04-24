@@ -14,11 +14,12 @@ export class ErrorInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(catchError(err => {
             if (err.status === 401) {
                 // Logout, if the status 401 is received
+                console.log("401 detected");
                 this.authenticationService.logout();
             }
             
-            const error = err.error.message || err.statusText;
-            return throwError(error);
+            //const error = err.error.message || err.statusText;
+            return throwError(err);
         }))
     }
 }
