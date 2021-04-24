@@ -65,9 +65,12 @@ export class AuthService
       localStorage.removeItem('user');
       localStorage.removeItem('token');
       this.user.next(null);
+      this.token.next("");
       this.router.navigate(['login']);
     }
 
+
+    //basically redundantly stored because in localstorage too, but what the hell.
     public get currentUserValue(): User {
       return this.user.value;
     }

@@ -39,17 +39,21 @@ export class LoginPageComponent implements OnInit {
       }
 
       this.auth.authenticateUser(payload).subscribe((response: any) => {
-        let user: User;
-        console.log(response);
+        
+        //cache the response token
         localStorage.setItem("token", response.token);
         this.auth.token.next(response.token)
 
+
+        let user: User;
         this.auth.getUser(payload.email).subscribe((data: User) => {
+          //get the user data and cache it
           user = {...data};
           this.auth.user.next(user);
-          console.log(user);
           localStorage.setItem('user', JSON.stringify(user));
 
+
+          //navigate to the redirect URL if necessary
           let redirectURL = "";
           let params = this.route.snapshot.queryParams;
           if (params['redirectURL']) {
