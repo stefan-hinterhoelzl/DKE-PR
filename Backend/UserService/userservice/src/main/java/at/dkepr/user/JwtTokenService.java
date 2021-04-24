@@ -1,5 +1,6 @@
 package at.dkepr.user;
 
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Optional;
 import java.util.function.Function;
@@ -27,8 +28,7 @@ public class JwtTokenService {
     public String generateToken(User user) {
         try{
             //Add some Claims
-            Algorithm algo = Algorithm.HMAC256(this.secret);
-
+            Algorithm algo = Algorithm.HMAC512(this.secret);
             return JWT.create()
             .withIssuer("DefinitelyNotTwitter")
             .withSubject(user.getEmail())
@@ -60,7 +60,7 @@ public class JwtTokenService {
 
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(secret)
+                .setSigningKey(this.secret.getBytes(Charset.forName("UTF-8")))
                 .parseClaimsJws(token)
                 .getBody();
     }
