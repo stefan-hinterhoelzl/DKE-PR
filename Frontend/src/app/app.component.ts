@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { User } from './model/User';
 import { AuthService } from './services/AuthService';
@@ -14,11 +15,10 @@ export class AppComponent implements OnInit {
 
 
   user: User = null;
-  searchterm = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<string[]>;
+  searchbar = new FormControl();
+  
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.auth.user.subscribe((data:User) => {
@@ -29,6 +29,14 @@ export class AppComponent implements OnInit {
   logout() {
     this.auth.logout();
   }
+
+
+  search() {
+    console.log("searching");
+    let searchterm: string = this.searchbar.value;
+    this.router.navigate(['/search'], {queryParams:{'key': searchterm}});
+  }
+  
 
 
 }

@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { MainComponent } from './main/main.component';
 import { RegisterComponent } from './register/register.component';
+import { SearchComponent } from './search/search.component';
 import { AuthGuard } from './services/authguard';
 import { UserPageEditComponent } from './user-page-edit/user-page-edit.component';
 import { UserPageFollowingListComponent } from './user-page-following-list/user-page-following-list.component';
@@ -21,6 +22,10 @@ component: RegisterComponent
 },
 {path: 'app',
 component: MainComponent,
+canActivate: [AuthGuard]
+},
+{path: 'search',
+component: SearchComponent,
 canActivate: [AuthGuard]
 },
 {path: 'user/:id',

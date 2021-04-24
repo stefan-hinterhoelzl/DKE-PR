@@ -42,7 +42,7 @@ export class LoginPageComponent implements OnInit {
         //cache the response token
         localStorage.setItem("token", response.token);
         this.auth.token.next(response.token)
-
+        console.log(response.token);
 
         let user: User;
         this.auth.getUser(payload.email).subscribe((data: User) => {

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { notEqual, notStrictEqual } from 'node:assert';
 import { MyErrorStateMatcher } from '../helpers/MyErrorStateMatcher';
 import { PasswordChangeCredential } from '../model/PasswordChangeCredential';
 import { User } from '../model/User';
@@ -63,7 +62,6 @@ export class UserPageEditComponent implements OnInit {
 
 
   updateUserData() {
-
     let changes = <User> {
       firstname:  this.firstname.value,
       lastname:  this.lastname.value,

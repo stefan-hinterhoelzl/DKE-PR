@@ -22,7 +22,8 @@ import { UserPagePostingsComponent } from './user-page-postings/user-page-postin
 import { ErrorInterceptor } from './helpers/ErrorInterceptor';
 import { JwtInterceptor } from './helpers/JwtInterceptor';
 import { AlertComponent } from './alert/alert.component';
-import { SearchbarComponent } from './searchbar/searchbar.component';
+import { NgMatSearchBarModule } from 'ng-mat-search-bar';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { SearchbarComponent } from './searchbar/searchbar.component';
     UserPageEditComponent,
     UserPagePostingsComponent,
     AlertComponent,
-    SearchbarComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +48,8 @@ import { SearchbarComponent } from './searchbar/searchbar.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BootstrapModule
+    BootstrapModule,
+    NgMatSearchBarModule
   ],
   providers: [AuthService, AuthGuard,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
