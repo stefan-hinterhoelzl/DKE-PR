@@ -20,6 +20,7 @@ export class UserPageEditComponent implements OnInit {
   pwform: FormGroup;
   matcher: MyErrorStateMatcher = new MyErrorStateMatcher();
   user: User;
+  reallydelete = false;
   
   firstname = new FormControl('', [Validators.required]);
   lastname = new FormControl('', [Validators.required]);
@@ -58,8 +59,6 @@ export class UserPageEditComponent implements OnInit {
       
     }   
     );
-
-    
   }
 
 
@@ -128,6 +127,22 @@ export class UserPageEditComponent implements OnInit {
     let pass = group.controls.newpw.value;
     let confirmPass = group.controls.newpwconfirm.value;
     return pass === confirmPass ? null : { notSame: true };
+  }
+
+
+  deleteUser() {
+    this.auth.deleteUser(this.user.id).subscribe(() => {
+
+      this.alertservice.success("Der User wurde erfolgreich gelöscht. Auf Wiedersehen!");
+      setTimeout(() => this.auth.logout(),3000);
+
+    },
+    (error) => {
+      console.log(error)
+      this.alertservice.error("Fehler beim Löschen des Users");
+    }
+    );
+
   }
 
 }

@@ -71,25 +71,16 @@ export class RegisterComponent implements OnInit {
     this.apiservice.postUser(user).subscribe((data: User) => {
       addedUser = {...data}
       this.alertservice.success("Benutzer "+addedUser.email+" wurde angelegt.");
-    },
-    (error) => {
-      this.alertservice.error(error.error);
-    });
-    
-    this.form.reset();
+      this.form.reset();
 
-    Object.keys(this.form.controls).forEach(key => {
+      Object.keys(this.form.controls).forEach(key => {
       this.form.get(key).setErrors(null);
     });
-
-    // this.form.setValue({
-    //   email: "",
-    //   firstname: "",
-    //   lastname: "",
-    //   password: "",
-    //   phonenumber: "",
-    // });
-  
+    },
+    (error) => {
+      this.alertservice.error(error.error.response);
+    });
+    
   }
 
   getErrorMessage() {

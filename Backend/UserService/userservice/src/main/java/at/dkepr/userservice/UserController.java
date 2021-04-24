@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import at.dkepr.entity.Credential;
 import at.dkepr.entity.PasswordChangeCredential;
+import at.dkepr.entity.StringResponse;
 import at.dkepr.entity.User;
 import at.dkepr.exceptions.UserNotFoundException;
 import at.dkepr.exceptions.WrongPasswordException;
@@ -60,11 +61,9 @@ public class UserController {
             if (e.getCause() instanceof ConstraintViolationException) {
                 Message = "Diese Mail Adresse existiert bereits.";
             }
-
-            e.printStackTrace();
             return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
-            .body(Message);
+            .body(new StringResponse(Message));
         }
 
     }
@@ -133,14 +132,14 @@ public class UserController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("user/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<StringResponse> deleteUser(@PathVariable Long id) {
         User userToDelete = this.getUser(id);
 
         repository.deleteById(userToDelete.getId());
 
         return ResponseEntity.
                 status(HttpStatus.OK)
-                .body("\"response\":\"Deleted\"");
+                .body(new StringResponse("Deleted"));
     }
 
     @CrossOrigin(origins = "http://localhost:4200")

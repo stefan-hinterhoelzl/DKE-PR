@@ -17,7 +17,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
   pokemondata: any;
   selfprofile: boolean;
   subscription;
-  reallydelete = false;
+  
 
   constructor(private http: HttpClient, private auth: AuthService, private route: ActivatedRoute, private poke: PokemonService, public router: Router, private alertservice: AlertService) { }
 
@@ -104,17 +104,5 @@ export class UserPageComponent implements OnInit, OnDestroy {
 
   }
 
-  deleteUser() {
-    this.auth.deleteUser(this.user.id).subscribe(() => {
-
-      this.alertservice.success("Der User wurde erfolgreich gelöscht. Auf Wiedersehen!");
-      setTimeout(() => this.auth.logout(),3000);
-
-    },
-    (error) => {
-      this.alertservice.error("Fehler beim Löschen des Users");
-    }
-    );
-
-  }
+  
 }
