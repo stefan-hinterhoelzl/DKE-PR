@@ -19,6 +19,36 @@
             "mainClass": "at.dkepr.UserserviceApplication",
             "projectName": "userservice",
             "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-RelationserviceApplication<relationservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "at.dkepr.relationservice.RelationserviceApplication",
+            "projectName": "relationservice",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-PostingserviceApplication<postingservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "at.dkepr.postingservice.PostingserviceApplication",
+            "projectName": "postingservice",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ElasticsearchApplication<elasticsearch>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "at.dkepr.elasticsearch.ElasticsearchApplication",
+            "projectName": "elasticsearch",
+            "args": ""
         }
     ]
 }

@@ -5,8 +5,8 @@
       <a mat-button routerLink="login" routerLinkActive="active">Einloggen</a>
       <a mat-button mat-raised-button routerLink="register" routerLinkActive="active">Registrieren</a>
     </span>
-    <div *ngIf="user !== null">
-      <mat-search-bar style="font-size: 10pt" [formControl] = "searchbar" (onEnter) = "search()"></mat-search-bar>
+    <div style = "margin-left: 75%;" *ngIf="user !== null">
+        <mat-search-bar style="font-size: 10pt" [formControl] = "searchbar" (onEnter) = "search()"></mat-search-bar>
     </div>
     <span *ngIf="user !== null" class="nav-tool-items">  
       <a mat-button routerLink = "user/{{user.id}}">{{user.firstname}} {{user.lastname}}</a>
