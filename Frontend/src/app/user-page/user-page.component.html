@@ -37,11 +37,14 @@
                     <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./posts']">Meine Postings</a>
                 </div>
                 <div>
-                    <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./edit']">Userdaten bearbeiten</a>
-                </div> 
-                <div>
                     <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./following']">Abonnierte Benutzer</a>
                 </div>
+                <div>
+                    <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./followers']">Meine Abonennten</a>
+                </div>
+                <div>
+                    <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./edit']">Userdaten bearbeiten</a>
+                </div> 
             </div>
 
         <div style= "margin-top: 4%">

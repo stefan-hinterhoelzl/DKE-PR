@@ -24,6 +24,7 @@ import { JwtInterceptor } from './helpers/JwtInterceptor';
 import { AlertComponent } from './alert/alert.component';
 import { NgMatSearchBarModule } from 'ng-mat-search-bar';
 import { SearchComponent } from './search/search.component';
+import { UserPagerFollowersListComponent } from './user-pager-followers-list/user-pager-followers-list.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { SearchComponent } from './search/search.component';
     UserPagePostingsComponent,
     AlertComponent,
     SearchComponent,
+    UserPagerFollowersListComponent,
   ],
   imports: [
     BrowserModule,
