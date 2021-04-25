@@ -69,12 +69,13 @@ export class AuthService
 
     }
 
-    logout() {
+    logout(stateurl: string = "") {
       localStorage.removeItem('user');
       localStorage.removeItem('token');
       this.user.next(null);
       this.token.next("");
-      this.router.navigate(['login']);
+      if (stateurl != "") this.router.navigate(['login'],  {queryParams:{'redirectURL': stateurl}});
+      else this.router.navigate(['login']);
     }
 
 
