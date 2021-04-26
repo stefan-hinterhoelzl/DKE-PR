@@ -49,6 +49,16 @@
             "mainClass": "at.dkepr.elasticsearch.ElasticsearchApplication",
             "projectName": "elasticsearch",
             "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-IndexingserviceApplication<indexingservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "at.dkepr.indexingservice.IndexingserviceApplication",
+            "projectName": "indexingservice",
+            "args": ""
         }
     ]
 }

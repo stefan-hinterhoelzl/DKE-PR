@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "jsa.activemq.queue",
+    "type": "java.lang.String",
+    "description": "A description for 'jsa.activemq.queue'"
+  },
+  {
+    "name": "jsa.activemq.broker.url",
+    "type": "java.lang.String",
+    "description": "A description for 'jsa.activemq.broker.url'"
+  },
+  {
+    "name": "jsa.activemq.broker.username",
+    "type": "java.lang.String",
+    "description": "A description for 'jsa.activemq.broker.username'"
+  },
+  {
+    "name": "jsa.activemq.broker.password",
+    "type": "java.lang.String",
+    "description": "A description for 'jsa.activemq.broker.password'"
+  }
+]}

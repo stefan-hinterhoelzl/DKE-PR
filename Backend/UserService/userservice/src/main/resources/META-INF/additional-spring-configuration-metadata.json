@@ -13,7 +13,7 @@
     "name": "jsa.activemq.borker.password",
     "type": "java.lang.String",
     "description": "A description for 'jsa.activemq.borker.password'"
-  }, 
+  },
   {
     "name": "jsa.activemq.borker.username",
     "type": "java.lang.String",
@@ -23,5 +23,16 @@
     "name": "jsa.activemq.broker.url",
     "type": "java.lang.String",
     "description": "A description for 'jsa.activemq.broker.url'"
+  },
+  {
+    "name": "jsa.activemq.broker.password",
+    "type": "java.lang.String",
+    "description": "A description for 'jsa.activemq.broker.password'"
+  },
+  {
+    "name": "jsa.activemq.broker.username",
+    "type": "java.lang.String",
+    "description": "A description for 'jsa.activemq.broker.username'"
   }
+
 ]}

@@ -3,11 +3,14 @@ package at.dkepr.userservice;
 
 import java.util.Optional;
 
+import javax.jms.Queue;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +29,6 @@ import at.dkepr.entity.User;
 import at.dkepr.entity.UserSearchEntity;
 import at.dkepr.exceptions.UserNotFoundException;
 import at.dkepr.exceptions.WrongPasswordException;
-import at.dkepr.queueservice.JmsProducer;
 import at.dkepr.security.JwtTokenResponse;
 import at.dkepr.security.JwtTokenService;
 
@@ -42,7 +44,10 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JmsProducer producer;
+    private JmsTemplate jmsTemplate;
+
+    @Autowired
+    private Queue queue;
 
     UserController(UserRepository repository, JwtTokenService jwt) {
         this.repository = repository;
@@ -58,7 +63,8 @@ public class UserController {
         
         try{
             User addedUser = this.repository.save(newUser);
-            producer.send(new UserSearchEntity(newUser.getEmail(), newUser.getFirstname(), newUser.getLastname()));
+
+            jmsTemplate.convertAndSend(queue, new UserSearchEntity(newUser.getEmail(), newUser.getFirstname(), newUser.getLastname()));
 
             return ResponseEntity.
             status(HttpStatus.CREATED)
