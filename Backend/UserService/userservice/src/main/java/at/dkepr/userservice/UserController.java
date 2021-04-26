@@ -23,8 +23,10 @@ import at.dkepr.entity.Credential;
 import at.dkepr.entity.PasswordChangeCredential;
 import at.dkepr.entity.StringResponse;
 import at.dkepr.entity.User;
+import at.dkepr.entity.UserSearchEntity;
 import at.dkepr.exceptions.UserNotFoundException;
 import at.dkepr.exceptions.WrongPasswordException;
+import at.dkepr.queueservice.JmsProducer;
 import at.dkepr.security.JwtTokenResponse;
 import at.dkepr.security.JwtTokenService;
 
@@ -39,6 +41,9 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JmsProducer producer;
+
     UserController(UserRepository repository, JwtTokenService jwt) {
         this.repository = repository;
         this.jwtservice = jwt;
@@ -51,11 +56,13 @@ public class UserController {
         //Hash the password
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         
-
         try{
+            User addedUser = this.repository.save(newUser);
+            producer.send(new UserSearchEntity(newUser.getEmail(), newUser.getFirstname(), newUser.getLastname()));
+
             return ResponseEntity.
             status(HttpStatus.CREATED)
-            .body(this.repository.save(newUser));
+            .body(addedUser);
         }catch(DataAccessException e) {
             String Message = "Error";
             if (e.getCause() instanceof ConstraintViolationException) {
@@ -65,8 +72,8 @@ public class UserController {
             .status(HttpStatus.BAD_REQUEST)
             .body(new StringResponse(Message));
         }
-
     }
+
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/authenticate")
     public ResponseEntity<JwtTokenResponse> authenticate(@RequestBody Credential payload) {

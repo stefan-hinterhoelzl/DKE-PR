@@ -25,6 +25,7 @@ import { AlertComponent } from './alert/alert.component';
 import { NgMatSearchBarModule } from 'ng-mat-search-bar';
 import { SearchComponent } from './search/search.component';
 import { UserPagerFollowersListComponent } from './user-pager-followers-list/user-pager-followers-list.component';
+import { RouterStateSnapshot } from '@angular/router';
 
 @NgModule({
   declarations: [
