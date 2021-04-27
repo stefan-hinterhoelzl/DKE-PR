@@ -8,7 +8,6 @@ public class UserNotFoundException extends RuntimeException {
 
     public UserNotFoundException(Long ID) {
         super("User mit der ID "+ID+" wurde nicht gefunden");
-        //fjdsklfjsdklöfd
     }
     
 }
