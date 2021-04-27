@@ -2,13 +2,6 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch IndexingserviceApplication",
-            "request": "launch",
-            "mainClass": "at.dkepr.IndexingserviceApplication",
-            "projectName": "indexingservice"
-        },
-        {
-            "type": "java",
             "name": "Spring Boot-UserserviceApplication<userservice>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
@@ -49,12 +42,12 @@
         },
         {
             "type": "java",
-            "name": "Spring Boot-ElasticsearchApplication<elasticsearch>",
+            "name": "Spring Boot-IndexingserviceApplication<indexingservice>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
-            "mainClass": "at.dkepr.elasticsearch.ElasticsearchApplication",
-            "projectName": "elasticsearch",
+            "mainClass": "at.dkepr.indexingservice.IndexingserviceApplication",
+            "projectName": "indexingservice",
             "args": ""
         },
         {
@@ -63,7 +56,7 @@
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
-            "mainClass": "at.dkepr.indexingservice.IndexingserviceApplication",
+            "mainClass": "at.dkepr.IndexingserviceApplication",
             "projectName": "indexingservice",
             "args": ""
         }

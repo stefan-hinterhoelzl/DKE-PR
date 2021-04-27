@@ -64,6 +64,7 @@ public class UserController {
         try{
             User addedUser = this.repository.save(newUser);
 
+            //index the User in the SearchEngine
             jmsTemplate.convertAndSend(queue, new UserSearchEntity(newUser.getEmail(), newUser.getFirstname(), newUser.getLastname()));
 
             return ResponseEntity.
@@ -84,8 +85,6 @@ public class UserController {
     @PostMapping("/authenticate")
     public ResponseEntity<JwtTokenResponse> authenticate(@RequestBody Credential payload) {
         Optional<User> optional = repository.findByEmail(payload.getEmail());
-
-        jmsTemplate.convertAndSend(queue, "Ich bin eine Nachricht");
 
         if (optional.isPresent()) {
             User user = optional.get();
