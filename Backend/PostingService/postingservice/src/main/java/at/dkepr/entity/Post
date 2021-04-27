@@ -1,0 +1,40 @@
+package at.dkepr.postingservice.entity;
+
+import org.springframework.data.annotation.AccessType;
+
+@Document
+public class Post {
+    
+    @Id
+    private final Long id;
+    @Field
+    private String emoticon;
+    @Field
+    private String content;    
+    @Field
+    private Date date;
+
+    public Post(Long id, String emoticon, String content, Date date) {
+        this.id = id;
+        this.emoticon = emoticon;
+        this.content = content;
+        this.date = date;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getEmoticon() {
+        return emoticon;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+}
