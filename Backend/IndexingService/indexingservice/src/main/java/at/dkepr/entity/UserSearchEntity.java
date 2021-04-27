@@ -6,12 +6,15 @@ import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
-@SolrDocument(collection = "dkepr")
+@SolrDocument(collection = "DKEPR")
 public class UserSearchEntity implements Serializable {
 
     @Id
     @Field
-    private Long id;
+    private String id;
+
+    @Field
+    private Long uid;
 
     @Field
     private String email;
@@ -36,6 +39,14 @@ public class UserSearchEntity implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Long getUID() {
+        return uid;
+    }
+
+    public void setUID(Long uid) {
+        this.uid = uid;
     }
 
     public String getFirstname() {
