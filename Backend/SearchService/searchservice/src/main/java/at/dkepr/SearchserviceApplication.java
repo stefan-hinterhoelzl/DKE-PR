@@ -1,5 +1,6 @@
-package at.dkepr.searchservice;
+package at.dkepr;
 
+import java.util.Collections;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,7 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SearchserviceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SearchserviceApplication.class, args);
+		SpringApplication app = new SpringApplication(SearchserviceApplication.class);
+		app.setDefaultProperties(Collections.singletonMap("server.port", "8086"));
+		app.run(args);
 	}
 
 }

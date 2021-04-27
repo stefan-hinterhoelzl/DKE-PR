@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { User } from '../model/User';
+import { SearchService } from '../services/searchService';
 
 @Component({
   selector: 'app-search',
@@ -9,8 +11,9 @@ import { ActivatedRoute } from '@angular/router';
 export class SearchComponent implements OnInit {
 
   key: string;
+  Users: User[]
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private searchService: SearchService) { }
 
 
   ngOnInit(): void {
@@ -22,7 +25,10 @@ export class SearchComponent implements OnInit {
 
 
   search() {
-    //TO DO
+    this.searchService.getUsers(this.key).subscribe((data: User[]) => {
+      this.Users = {... data};
+      console.log(this.Users);
+    })
   }
 
 

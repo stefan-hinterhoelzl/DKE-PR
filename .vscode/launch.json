@@ -59,6 +59,16 @@
             "mainClass": "at.dkepr.IndexingserviceApplication",
             "projectName": "indexingservice",
             "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SearchserviceApplication<searchservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "at.dkepr.SearchserviceApplication",
+            "projectName": "searchservice",
+            "args": ""
         }
     ]
 }
