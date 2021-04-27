@@ -65,7 +65,7 @@ public class UserController {
             User addedUser = this.repository.save(newUser);
 
             //index the User in the SearchEngine
-            jmsTemplate.convertAndSend(queue, new UserSearchEntity(newUser.getEmail(), newUser.getFirstname(), newUser.getLastname()));
+            jmsTemplate.convertAndSend(queue, new UserSearchEntity(newUser.getId(), newUser.getEmail(), newUser.getFirstname(), newUser.getLastname()));
 
             return ResponseEntity.
             status(HttpStatus.CREATED)
