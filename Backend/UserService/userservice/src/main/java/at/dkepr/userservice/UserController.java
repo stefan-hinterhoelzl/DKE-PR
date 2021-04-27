@@ -47,8 +47,6 @@ public class UserController {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    // @Autowired
-    // private Queue queue;
 
     UserController(UserRepository repository, JwtTokenService jwt) {
         this.repository = repository;
@@ -63,11 +61,13 @@ public class UserController {
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         
         try{
+
+
+            
             User addedUser = this.repository.save(newUser);
 
+            //send to solr
             Queue queue = new ActiveMQQueue("user-add-queue");
-            
-            //index the User in the SearchEngine
             jmsTemplate.convertAndSend(queue, new UserSearchEntity(String.valueOf(addedUser.getId()), addedUser.getEmail(), addedUser.getFirstname(), addedUser.getLastname()));
 
             return ResponseEntity.
@@ -120,6 +120,8 @@ public class UserController {
        userToChange.setPhonenumber(user.getPhonenumber());
        userToChange.setPokemonid(user.getPokemonid());
 
+
+       //send to solr
        Queue queue = new ActiveMQQueue("user-add-queue");
 
        UserSearchEntity newsearchuser = new UserSearchEntity(String.valueOf(userToChange.getId()), userToChange.getEmail(), userToChange.getFirstname(), userToChange.getLastname());
@@ -160,11 +162,10 @@ public class UserController {
 
         repository.deleteById(userToDelete.getId());
 
+        //send to solr
         Queue queue = new ActiveMQQueue("user-delete-queue");
-
         UserSearchEntity deleteuser = new UserSearchEntity(String.valueOf(userToDelete.getId()), userToDelete.getEmail(), userToDelete.getFirstname(), userToDelete.getLastname());
 
-        System.out.println(deleteuser);
 
         this.jmsTemplate.convertAndSend(queue, deleteuser);
         

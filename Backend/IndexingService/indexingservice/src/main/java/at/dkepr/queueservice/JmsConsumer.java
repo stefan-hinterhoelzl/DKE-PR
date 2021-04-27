@@ -28,6 +28,7 @@ public class JmsConsumer {
 
 	@JmsListener(destination = "user-delete-queue", containerFactory = "jmsListenerContainerFactory")
 	public void receivedelete(UserSearchEntity message) {
+		//delete the user
 		this.repository.deleteById(message.getId());
 	}
 
