@@ -1,5 +1,17 @@
 <div class="main-wrapper" fxLayout="column" fxLayoutAlign="start center">
-
-    Suchergebnisse für Suchanfrage: {{key}}
-
+    <mat-card class = "box" style = "margin-top: 3%">
+    
+        <div>
+            <h2>Personen:</h2>
+        </div>
+        
+        <ul>
+            <div *ngFor = "let user of users">
+                <div>
+                    <button routerLink = "/user/{{user.id}}" *ngIf = "user.id != currentuser.id" style = "margin-top: 10px" mat-button>{{user.firstname}} {{user.lastname}}</button>
+                    <hr>
+                </div>
+            </div>
+        </ul>
+    </mat-card>
 </div>

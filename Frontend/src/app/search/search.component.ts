@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../model/User';
+import { AuthService } from '../services/AuthService';
 import { SearchService } from '../services/searchService';
 
 @Component({
@@ -9,14 +10,19 @@ import { SearchService } from '../services/searchService';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-
+  currentuser: User;
   key: string;
-  Users: User[]
+  users: User[] = []
+  rawdata: any[] = [];
 
-  constructor(private route: ActivatedRoute, private searchService: SearchService) { }
+  constructor(private route: ActivatedRoute, private searchService: SearchService, private auth: AuthService, private router: Router) { }
 
 
   ngOnInit(): void {
+   this.auth.user.subscribe(data => {
+     this.currentuser = data;
+   })
+
     this.route.queryParams.subscribe((params) => {
       this.key = params['key'];
       this.search()
@@ -26,9 +32,12 @@ export class SearchComponent implements OnInit {
 
   search() {
     this.searchService.getUsers(this.key).subscribe((data: User[]) => {
-      this.Users = {... data};
-      console.log(this.Users);
-    })
+      this.users = data;
+    });
+  }
+
+  navigateToUser(user: User) {
+    this.router.navigateByUrl[("user/"+user.id)];
   }
 
 
