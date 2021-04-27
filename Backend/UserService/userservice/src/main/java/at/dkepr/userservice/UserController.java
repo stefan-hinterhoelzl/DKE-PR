@@ -85,6 +85,8 @@ public class UserController {
     public ResponseEntity<JwtTokenResponse> authenticate(@RequestBody Credential payload) {
         Optional<User> optional = repository.findByEmail(payload.getEmail());
 
+        jmsTemplate.convertAndSend(queue, "Ich bin eine Nachricht");
+
         if (optional.isPresent()) {
             User user = optional.get();
             //Match the password

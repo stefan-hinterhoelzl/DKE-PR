@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch IndexingserviceApplication",
+            "request": "launch",
+            "mainClass": "at.dkepr.IndexingserviceApplication",
+            "projectName": "indexingservice"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-UserserviceApplication<userservice>",
             "request": "launch",
             "cwd": "${workspaceFolder}",

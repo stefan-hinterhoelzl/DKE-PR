@@ -1,4 +1,4 @@
-package at.dkepr.indexingservice;
+package at.dkepr;
 
 import java.util.Collections;
 
@@ -15,4 +15,7 @@ public class IndexingserviceApplication {
 		app.setDefaultProperties(Collections.singletonMap("server.port", "8085"));
 		app.run(args);
 	}
+
+	
+
 }
