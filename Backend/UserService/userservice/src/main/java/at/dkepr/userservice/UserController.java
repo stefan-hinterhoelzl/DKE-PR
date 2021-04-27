@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.jms.Queue;
 
+import org.apache.activemq.command.ActiveMQQueue;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -46,8 +47,8 @@ public class UserController {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    @Autowired
-    private Queue queue;
+    // @Autowired
+    // private Queue queue;
 
     UserController(UserRepository repository, JwtTokenService jwt) {
         this.repository = repository;
@@ -64,8 +65,10 @@ public class UserController {
         try{
             User addedUser = this.repository.save(newUser);
 
+            Queue queue = new ActiveMQQueue("user-add-queue");
+            
             //index the User in the SearchEngine
-            jmsTemplate.convertAndSend(queue, new UserSearchEntity(newUser.getId(), newUser.getEmail(), newUser.getFirstname(), newUser.getLastname()));
+            jmsTemplate.convertAndSend(queue, new UserSearchEntity(String.valueOf(addedUser.getId()), addedUser.getEmail(), addedUser.getFirstname(), addedUser.getLastname()));
 
             return ResponseEntity.
             status(HttpStatus.CREATED)
@@ -117,6 +120,12 @@ public class UserController {
        userToChange.setPhonenumber(user.getPhonenumber());
        userToChange.setPokemonid(user.getPokemonid());
 
+       Queue queue = new ActiveMQQueue("user-add-queue");
+
+       UserSearchEntity newsearchuser = new UserSearchEntity(String.valueOf(userToChange.getId()), userToChange.getEmail(), userToChange.getFirstname(), userToChange.getLastname());
+
+       this.jmsTemplate.convertAndSend(queue, newsearchuser);
+
        return ResponseEntity
        .status(HttpStatus.OK)
        .body(repository.save(userToChange));
@@ -150,6 +159,15 @@ public class UserController {
         User userToDelete = this.getUser(id);
 
         repository.deleteById(userToDelete.getId());
+
+        Queue queue = new ActiveMQQueue("user-delete-queue");
+
+        UserSearchEntity deleteuser = new UserSearchEntity(String.valueOf(userToDelete.getId()), userToDelete.getEmail(), userToDelete.getFirstname(), userToDelete.getLastname());
+
+        System.out.println(deleteuser);
+
+        this.jmsTemplate.convertAndSend(queue, deleteuser);
+        
 
         return ResponseEntity.
                 status(HttpStatus.OK)

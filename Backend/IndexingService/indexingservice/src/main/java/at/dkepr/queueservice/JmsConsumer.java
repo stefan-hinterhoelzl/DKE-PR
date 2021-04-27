@@ -18,12 +18,18 @@ public class JmsConsumer {
 	@Autowired
 	private UserRepository repository;
     
-    @JmsListener(destination = "user-search-queue", containerFactory = "jmsListenerContainerFactory")
-	public void receive(UserSearchEntity message){
+    @JmsListener(destination = "user-add-queue", containerFactory = "jmsListenerContainerFactory")
+	public void receiveadd(UserSearchEntity message){
 
+		System.out.println(message.getId() + " " + message.getFirstname()+ " " + message.getLastname() + " " + message.getEmail());
 		//save the new user to the solr database
 		this.repository.save(message);
-
-
 	}
+
+	@JmsListener(destination = "user-delete-queue", containerFactory = "jmsListenerContainerFactory")
+	public void receivedelete(UserSearchEntity message) {
+		this.repository.deleteById(message.getId());
+	}
+
+
 }

@@ -4,6 +4,7 @@ import org.springframework.data.solr.repository.SolrCrudRepository;
 
 import at.dkepr.entity.UserSearchEntity;
 
-public interface UserRepository extends SolrCrudRepository<UserSearchEntity, Long> {
+public interface UserRepository extends SolrCrudRepository<UserSearchEntity, String> {
 
+    
 }

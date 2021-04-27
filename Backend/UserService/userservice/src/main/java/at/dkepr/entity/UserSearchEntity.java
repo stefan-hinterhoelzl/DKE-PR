@@ -3,15 +3,15 @@ package at.dkepr.entity;
 import java.io.Serializable;
 
 public class UserSearchEntity implements Serializable {
-    private Long uid;
+    private String id;
     private String email;
     private String firstname;
     private String lastname;
 
     public UserSearchEntity() {}
 
-    public UserSearchEntity(Long uid, String email, String firstname, String lastname) {
-        this.uid = uid;
+    public UserSearchEntity(String id, String email, String firstname, String lastname) {
+        this.id = id;
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -21,12 +21,12 @@ public class UserSearchEntity implements Serializable {
         return email;
     }
 
-    public Long getUID() {
-        return uid;
+    public String getId() {
+        return id;
     }
 
-    public void setUID(Long id) {
-        this.uid = id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setEmail(String email) {
