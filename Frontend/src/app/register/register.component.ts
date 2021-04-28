@@ -58,8 +58,11 @@ export class RegisterComponent implements OnInit {
   signUpUser() {
     let pokemonid: String = (Math.floor(Math.random() * 494)+1).toString();
 
+    let tempemail: String = this.email.value;
+    tempemail = tempemail.toLowerCase();
+
     const user = <User> {
-      email: this.email.value,
+      email: tempemail,
       firstname: this.firstname.value,
       lastname: this.lastname.value,
       password: this.password.value,

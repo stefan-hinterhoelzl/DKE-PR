@@ -133,9 +133,22 @@ body {
 
 .row {
 	display: flex;
-	justify-content: start;
+	justify-content: flex-start;
 	align-items: center;
 	flex-direction: row;
-	
+}
+
+.navbar {
+	width: 100%;
+	justify-content: space-between;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+}
+
+.row-end {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
 }
 

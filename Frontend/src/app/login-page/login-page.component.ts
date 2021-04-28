@@ -32,8 +32,11 @@ export class LoginPageComponent implements OnInit {
   signIn() {
     if(this.form.valid) {
 
+      let email: String = this.email.value;
+      email = email.toLowerCase();
+
       let payload = <Credential> {
-        email: this.email.value,
+        email: email,
         password: this.password.value
       }
 
