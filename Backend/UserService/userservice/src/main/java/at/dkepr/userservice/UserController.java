@@ -61,8 +61,6 @@ public class UserController {
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         
         try{
-
-
             
             User addedUser = this.repository.save(newUser);
 
