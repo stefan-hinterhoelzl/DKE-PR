@@ -1,18 +1,24 @@
-<div class="main-wrapper" fxLayout="column" fxLayoutAlign="start center">
-    <mat-card class = "box" style = "margin-top: 3%">
+<div class="main-wrapper" style ="width: 100%;" fxLayout="column" fxLayoutAlign="start center">
+    <mat-card  style = "margin-top: 3%; width: 30%;">
     
         <div>
             <h2>Personen:</h2>
         </div>
         
-        <ul>
+        <div style="width: 100%">
             <div *ngFor = "let user of users">
                 <div *ngIf = "user.id != currentuser.id">
-                    <img style="margin-top: 3%; border: 1px solid black; border-radius: 50%;" src="https://pokeres.bastionbot.org/images/pokemon/{{user.pokemonid}}.png" width="50px" height="50px" alt="">
-                    <button routerLink = "/user/{{user.id}}"  style = "margin-top: 10px;" mat-button>{{user.firstname}} {{user.lastname}}</button>
+                    <div class = "row">
+                        <app-image-with-loading
+                            image= "https://pokeres.bastionbot.org/images/pokemon/{{user.pokemonid}}.png"
+                            height = 100
+                            width = 100>
+                        </app-image-with-loading>
+                        <button routerLink = "/user/{{user.id}}"  style = "margin-top: 10px; margin-left: 20%;" mat-button>{{user.firstname}} {{user.lastname}}</button>
+                    </div>
                     <hr>
                 </div>
             </div>
-        </ul>
+        </div>
     </mat-card>
 </div>

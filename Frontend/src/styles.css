@@ -51,7 +51,8 @@ body {
 	max-width: 330px;
 }
 
-.box.back {
+
+/* .box.back {
 	transform: scale(.95);
 	-webkit-transform: scale(.95);
 	-ms-transform: scale(.95);
@@ -73,7 +74,7 @@ body {
 	-webkit-transform: scale(.95);
 	-ms-transform: scale(.95);
 	z-index: -1;
-}
+} */
 
 .main-wrapper .example-form {
 	min-width: 100%;
@@ -130,10 +131,11 @@ body {
 	width: 20%;
 }
 
-.vertical-center {
-	margin: 0;
-	position: absolute;
-	top: 50%;
-	-ms-transform: translateY(-50%);
-	transform: translateY(-50%);
-  }
+.row {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	flex-direction: row;
+	
+}
+
