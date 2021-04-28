@@ -24,12 +24,12 @@
         {{user.firstname}}' Profilpokemon ist {{pokemondata?.name}}
        </div>
 
-
-       <app-image-with-loading
+        <app-image-with-loading
             image= "https://pokeres.bastionbot.org/images/pokemon/{{user.pokemonid}}.png"
             height = 400
             width = 400>
         </app-image-with-loading>
+        
         <div *ngIf = "selfprofile" style = "margin-top: 5%; margin-bottom: 15%;">
             <button mat-button mat-raised-button color = "primary" (click) = "changePokemon()">Ich will ein anderes Pokemon</button>
         </div>
