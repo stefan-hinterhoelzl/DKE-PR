@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   searchbar = new FormControl();
   
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, public router: Router) {}
 
   ngOnInit(): void {
     this.auth.user.subscribe((data:User) => {
