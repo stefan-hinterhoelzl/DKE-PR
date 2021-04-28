@@ -21,13 +21,25 @@ public class UserSearchEntity implements Serializable {
     @Field
     private String lastname;
 
+    @Field
+    private String pokemonid;
+
     public UserSearchEntity() {}
 
-    public UserSearchEntity(String id, String email, String firstname, String lastname) {
+    public UserSearchEntity(String id, String email, String firstname, String lastname, String pokemonid) {
         this.id = id;
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.pokemonid = pokemonid;
+    }
+
+    public String getPokemonid() {
+        return pokemonid;
+    }
+
+    public void setPokemonid(String pokemonid) {
+        this.pokemonid = pokemonid;
     }
 
     public String getEmail() {

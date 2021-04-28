@@ -22,7 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         //handle 401 and rethrow the rest
         if (err.status === 401) {
                 this.authenticationService.logout();
-                this.alertservice.error("Die Sitzung ist abgelaufen");
+                this.alertservice.error("Die Sitzung ist abgelaufen. Loggen Sie sich bitte neu ein.");
             return of(EMPTY);
         }
 

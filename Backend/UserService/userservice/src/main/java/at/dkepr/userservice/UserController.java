@@ -68,7 +68,7 @@ public class UserController {
 
             //send to solr
             Queue queue = new ActiveMQQueue("user-add-queue");
-            jmsTemplate.convertAndSend(queue, new UserSearchEntity(String.valueOf(addedUser.getId()), addedUser.getEmail(), addedUser.getFirstname(), addedUser.getLastname()));
+            jmsTemplate.convertAndSend(queue, new UserSearchEntity(String.valueOf(addedUser.getId()), addedUser.getEmail(), addedUser.getFirstname(), addedUser.getLastname(), addedUser.getPokemonid()));
 
             return ResponseEntity.
             status(HttpStatus.CREATED)
@@ -124,7 +124,7 @@ public class UserController {
        //send to solr
        Queue queue = new ActiveMQQueue("user-add-queue");
 
-       UserSearchEntity newsearchuser = new UserSearchEntity(String.valueOf(userToChange.getId()), userToChange.getEmail(), userToChange.getFirstname(), userToChange.getLastname());
+       UserSearchEntity newsearchuser = new UserSearchEntity(String.valueOf(userToChange.getId()), userToChange.getEmail(), userToChange.getFirstname(), userToChange.getLastname(), userToChange.getPokemonid());
 
        this.jmsTemplate.convertAndSend(queue, newsearchuser);
 
@@ -164,7 +164,7 @@ public class UserController {
 
         //send to solr
         Queue queue = new ActiveMQQueue("user-delete-queue");
-        UserSearchEntity deleteuser = new UserSearchEntity(String.valueOf(userToDelete.getId()), userToDelete.getEmail(), userToDelete.getFirstname(), userToDelete.getLastname());
+        UserSearchEntity deleteuser = new UserSearchEntity(String.valueOf(userToDelete.getId()), userToDelete.getEmail(), userToDelete.getFirstname(), userToDelete.getLastname(), userToDelete.getPokemonid());
 
 
         this.jmsTemplate.convertAndSend(queue, deleteuser);

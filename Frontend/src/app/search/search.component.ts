@@ -33,6 +33,7 @@ export class SearchComponent implements OnInit {
   search() {
     this.searchService.getUsers(this.key).subscribe((data: User[]) => {
       this.users = data;
+      console.log(this.users);
     });
   }
 

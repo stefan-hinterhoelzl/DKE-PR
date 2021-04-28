@@ -22,7 +22,7 @@
 
 
 
-        <img style="margin-top: 3%;" src="https://pokeres.bastionbot.org/images/pokemon/{{user.pokemonid}}.png" width="400px" height="400px" alt="">
+        <img style="margin-top: 3%; border: 1.5px solid black; border-radius: 50%;" src="https://pokeres.bastionbot.org/images/pokemon/{{user.pokemonid}}.png" width="400px" height="400px" alt="">
 
         <div *ngIf = "selfprofile" style = "margin-top: 5%; margin-bottom: 15%;">
             <button mat-button mat-raised-button color = "primary" (click) = "changePokemon()">Ich will ein anderes Pokemon</button>
@@ -43,7 +43,7 @@
                     <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./followers']">Meine Abonennten</a>
                 </div>
                 <div>
-                    <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./edit']">Userdaten bearbeiten</a>
+                    <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./edit']">Benutzer bearbeiten</a>
                 </div> 
             </div>
 
