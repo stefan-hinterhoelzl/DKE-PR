@@ -1,5 +1,5 @@
 <div   *ngIf="isLoading">
-    <img [ngStyle]="{height:height+'px',width:width+'px'}" style="margin-top: 3%; margin-right: 5%; border: 2.5px solid lightgray;" src = "../../assets/loader.gif" />
+    <img [ngStyle]="{height:height+'px',width:width+'px'}" style="margin-top: 3%; margin-right: 5%; border-radius: 50%;" src = "../../assets/loader.gif" />
   </div>
-  <img style="margin-top: 3%; margin-right: 5%; border: 2.5px solid lightgray; " [src]=image [ngStyle]="{visibility:isLoading?'hidden':'',height:height+'px',width:width+'px'}"
+  <img style="margin-top: 3%; margin-right: 5%; border: 2.5px solid lightgray; border-radius: 50%; " [src]=image [ngStyle]="{visibility:isLoading?'hidden':'',height:height+'px',width:width+'px'}"
   (load)="hideLoader()" (error)="hideLoader()"/>
