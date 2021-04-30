@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AlertService {
@@ -29,11 +30,17 @@ export class AlertService {
     success(message: string, keepAfterRouteChange = false) {
         this.keepAfterRouteChange = keepAfterRouteChange;
         this.subject.next({ type: 'success', text: message });
+        setTimeout(()=> {
+            this.clear()
+        }, 5000)
     }
 
     error(message: string, keepAfterRouteChange = false) {
         this.keepAfterRouteChange = keepAfterRouteChange;
         this.subject.next({ type: 'error', text: message });
+        setTimeout(()=> {
+            this.clear()
+        }, 5000)
     }
 
     clear() {
