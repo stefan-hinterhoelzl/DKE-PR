@@ -7,6 +7,7 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
+import at.dkepr.entity.PostSearchEntity;
 import at.dkepr.entity.UserSearchEntity;
 import at.dkepr.solrservice.UserRepository;
 
@@ -30,6 +31,11 @@ public class JmsConsumer {
 	public void receivedelete(UserSearchEntity message) {
 		//delete the user
 		this.repository.deleteById(message.getId());
+	}
+
+	@JmsListener(destination = "posting-add-topic", containerFactory = "jmsListenerContainerFactoryTopic")
+	public void receiveposting (PostSearchEntity message) {
+		System.out.println("Hello i received a posting");
 	}
 
 

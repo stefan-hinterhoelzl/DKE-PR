@@ -25,21 +25,34 @@ public class JmsConfig {
         return new ActiveMQQueue("indexing-queue");
     }
 
+
     @Bean
     public ActiveMQConnectionFactory activeMQConnectionFactory() {
       ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory();
       activeMQConnectionFactory.setBrokerURL(brokerUrl);
       return activeMQConnectionFactory;
     }
-  
+    
+    //Factory for Queue
     @Bean
     public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
       DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
       factory.setConnectionFactory(activeMQConnectionFactory());
-      factory.setConcurrency("3-5");
+      factory.setConcurrency("1-1");
       factory.setMessageConverter(jacksonJmsMessageConverter());
       return factory;
     }
+
+    //Factory for Topic
+    @Bean
+    public DefaultJmsListenerContainerFactory jmsListenerContainerFactoryTopic() {
+      DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+      factory.setPubSubDomain(true);
+      factory.setConnectionFactory(activeMQConnectionFactory());
+      factory.setMessageConverter(jacksonJmsMessageConverter());
+      return factory;
+    }
+    
 
     @Bean // Serialize message content to json using TextMessage
 	  public MessageConverter jacksonJmsMessageConverter() {
