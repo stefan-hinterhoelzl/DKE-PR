@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch RelationserviceApplication",
+            "request": "launch",
+            "mainClass": "at.dkepr.RelationserviceApplication",
+            "projectName": "relationservice"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-UserserviceApplication<userservice>",
             "request": "launch",
             "cwd": "${workspaceFolder}",

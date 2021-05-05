@@ -1,11 +1,16 @@
-package at.dkepr.relationservice;
+package at.dkepr;
 
 import java.util.Collections;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@SpringBootApplication
+@EnableTransactionManagement
+@EnableNeo4jRepositories
+@SpringBootApplication(scanBasePackages={
+	"at.dkepr.service"})
 public class RelationserviceApplication {
 
 	public static void main(String[] args) {
@@ -13,6 +18,8 @@ public class RelationserviceApplication {
 		app.setDefaultProperties(Collections.singletonMap("server.port", "8081"));
 		app.run(args);
 	}
+
+	
 }
 
 
