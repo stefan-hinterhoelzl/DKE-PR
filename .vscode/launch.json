@@ -2,8 +2,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch RelationserviceApplication",
+            "name": "Spring Boot-RelationserviceApplication<relationservice>",
             "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
             "mainClass": "at.dkepr.RelationserviceApplication",
             "projectName": "relationservice"
         },

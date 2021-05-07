@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import at.dkepr.entity.Credential;
 import at.dkepr.entity.PasswordChangeCredential;
@@ -47,6 +48,8 @@ public class UserController {
     @Autowired
     private JmsTemplate jmsTemplate;
 
+    RestTemplate restTemplate = new RestTemplate();
+
 
     UserController(UserRepository repository, JwtTokenService jwt) {
         this.repository = repository;
@@ -67,6 +70,9 @@ public class UserController {
             //send to solr
             Queue queue = new ActiveMQQueue("user-add-queue");
             jmsTemplate.convertAndSend(queue, new UserSearchEntity(String.valueOf(addedUser.getId()), addedUser.getEmail(), addedUser.getFirstname(), addedUser.getLastname(), addedUser.getPokemonid()));
+
+            //send to neo4j
+            
 
             return ResponseEntity.
             status(HttpStatus.CREATED)

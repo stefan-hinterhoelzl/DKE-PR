@@ -3,7 +3,6 @@ package at.dkepr.model;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
@@ -21,34 +20,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class User {
 
-	@Id @GeneratedValue
+	@Id
 	private long id;
 
-	@Getter
-	@Setter
-	private String email;
+	//No other Fields necessary
 
-	@Getter
-	@Setter
-	private String firstname;
 
-	@Getter
-	@Setter
-	private String lastname;
 
-	@Getter
-	@Setter
-	private String phonenumber;
-
-	@Getter
-	@Setter
-	private String password;
-
-	@Getter
-	@Setter
-	private String pokemonid;
-
-	
 	@Getter
 	@Setter
 	@Relationship(type="FOLLOWS")
