@@ -34,6 +34,7 @@ public class UserResource {
         return ResponseEntity
         .status(HttpStatus.OK)
         .body(repo.save(newUser));
+
     }
 
 }

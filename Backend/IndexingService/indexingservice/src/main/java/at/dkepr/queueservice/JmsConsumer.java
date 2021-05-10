@@ -21,7 +21,6 @@ public class JmsConsumer {
     
     @JmsListener(destination = "user-add-queue", containerFactory = "jmsListenerContainerFactory")
 	public void receiveadd(UserSearchEntity message){
-
 		System.out.println(message.getId() + " " + message.getFirstname()+ " " + message.getLastname() + " " + message.getEmail());
 		//save the new user to the solr database
 		this.repository.save(message);
