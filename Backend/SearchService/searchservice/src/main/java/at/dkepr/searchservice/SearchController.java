@@ -1,6 +1,5 @@
 package at.dkepr.searchservice;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,15 +37,10 @@ public class SearchController {
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("users") 
     public ResponseEntity<List<UserSearchEntity>> getAllUsers() {
-    
-        Iterable<UserSearchEntity> users =  this.repository.findAll();
-        List<UserSearchEntity> userlist = new ArrayList<UserSearchEntity>();
-        users.forEach(userlist::add);
-
-        System.out.println(userlist.size());
-
+        
+        List<UserSearchEntity> users =  this.repository.findByCustomQuery("*");
         return ResponseEntity.status(HttpStatus.OK)
-            .body(userlist);
+            .body(users);
         
     }
 
