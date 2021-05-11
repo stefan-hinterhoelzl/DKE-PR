@@ -34,7 +34,10 @@ export class AppComponent implements OnInit {
   search() {
     console.log("searching");
     let searchterm: string = this.searchbar.value;
+    if (searchterm == undefined) searchterm = " ";
     this.router.navigate(['/search'], {queryParams:{'key': searchterm}});
+
+
   }
   
 
