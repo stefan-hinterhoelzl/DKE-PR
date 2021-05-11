@@ -78,6 +78,16 @@
             "mainClass": "at.dkepr.SearchserviceApplication",
             "projectName": "searchservice",
             "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-PostingserviceApplication<postingservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "at.dkepr.PostingserviceApplication",
+            "projectName": "postingservice",
+            "args": ""
         }
     ]
 }

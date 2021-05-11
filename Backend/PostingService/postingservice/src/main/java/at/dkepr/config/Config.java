@@ -23,7 +23,7 @@ public class Config extends AbstractCouchbaseConfiguration {
 
     @Override
     public String getBucketName() {
-        return "travel-sample";
+        return "postings";
     }
     
 }

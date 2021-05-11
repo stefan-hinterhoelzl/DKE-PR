@@ -1,4 +1,4 @@
-package at.dkepr.postingservice;
+package at.dkepr;
 
 import java.util.Collections;
 

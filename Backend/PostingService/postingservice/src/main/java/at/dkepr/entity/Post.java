@@ -1,51 +1,79 @@
 package at.dkepr.entity;
 
-import java.util.Date;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.couchbase.core.mapping.Document;
 import org.springframework.data.couchbase.core.mapping.Field;
 
 @Document
 public class Post {
-    
     @Id
-    private final Long id;
-    @Field
-    private String emoticon;
-    @Field
-    private String content;    
-    @Field
-    private Date date;
-    @Field
-    private Long user;   
+    private String id;
 
-    public Post(Long id, String emoticon, String content, Date date, Long user) {
-        this.id = id;
-        this.emoticon = emoticon;
-        this.content = content;
-        this.date = date;
-        this.user = user;
+    @Field
+    private String content;
+
+    @Field
+    private String mood;
+
+    @Field
+    private Long user;
+
+    @Field
+    private Long createdAt;
+
+
+    //Required
+    public Post() {
     }
 
-    public Long getId() {
+    public Post(String id, String content, String mood, Long user, Long createdAt) {
+        this.id = id;
+        this.content = content;
+        this.mood = mood;
+        this.user = user;
+        this.createdAt = createdAt;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public String getEmoticon() {
-        return emoticon;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getContent() {
         return content;
     }
 
-    public Date getDate() {
-        return date;
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    
+
+    public String getMood() {
+        return mood;
+    }
+
+    public void setMood(String mood) {
+        this.mood = mood;
     }
 
     public Long getUser() {
         return user;
     }
 
+    public void setUser(Long user) {
+        this.user = user;
+    }
+
+    public Long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
+    }
+    
 }
