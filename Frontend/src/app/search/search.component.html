@@ -18,14 +18,17 @@
                         </div>
                         <div fxFlex>
                             <button routerLink = "/user/{{user.id}}"  mat-button>{{user.firstname}} {{user.lastname}}</button>
+                            <div>
+                                <h4>#{{user.id}}</h4>
+                            </div>
                         </div>
                         <div fxFlex = "30">
-                            <div *ngIf="user.firstname != 'Stefan'">
+                            <div>
                                 <button style = "width: 150px" mat-button mat-raised-button color ="primary">{{user.firstname}} folgen</button>
                             </div>
-                            <div *ngIf="user.firstname == 'Stefan'">
+                            <!-- <div *ngIf="user.firstname == 'Stefan'">
                                 <button style = "width: 150px"  mat-button mat-raised-button color = "primary">Entfolgen</button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <hr>

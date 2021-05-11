@@ -10,7 +10,7 @@ import at.dkepr.entity.UserSearchEntity;
 public interface UserRepository extends SolrCrudRepository<UserSearchEntity, String> {
 
 
-    @Query("firstname:*?0* OR lastname:*?0*")
+    @Query("*?0*")
     public List<UserSearchEntity> findByCustomQuery(String searchTerm);
     
 }
