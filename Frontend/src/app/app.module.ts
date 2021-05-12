@@ -27,6 +27,8 @@ import { SearchComponent } from './search/search.component';
 import { UserPagerFollowersListComponent } from './user-pager-followers-list/user-pager-followers-list.component';
 import { RouterStateSnapshot } from '@angular/router';
 import { ImageWithLoadingComponentComponent } from './image-with-loading-component/image-with-loading-component.component';
+import { PostCreateComponent } from './post-create/post-create.component';
+import  {  NgxEmojiPickerModule  }  from  'ngx-emoji-picker';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import { ImageWithLoadingComponentComponent } from './image-with-loading-compone
     SearchComponent,
     UserPagerFollowersListComponent,
     ImageWithLoadingComponentComponent,
+    PostCreateComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +57,8 @@ import { ImageWithLoadingComponentComponent } from './image-with-loading-compone
     ReactiveFormsModule,
     HttpClientModule,
     BootstrapModule,
-    NgMatSearchBarModule
+    NgMatSearchBarModule,
+    NgxEmojiPickerModule.forRoot()
   ],
   providers: [AuthService, AuthGuard,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

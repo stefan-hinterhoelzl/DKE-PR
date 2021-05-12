@@ -7,7 +7,9 @@ public class Post {
 
     private String mood;
 
-    private String author;
+    private String authorid;
+
+    private String authorname;
 
     private Long createdAt;
 
@@ -16,10 +18,11 @@ public class Post {
     public Post() {
     }
 
-    public Post(String id, String content, String mood, String author, Long createdAt) {
+    public Post(String id, String content, String mood, String authorid, String authorname, Long createdAt) {
         this.content = content;
         this.mood = mood;
-        this.author = author;
+        this.authorid = authorid;
+        this.authorname = authorname;
         this.createdAt = createdAt;
     }
 
@@ -32,8 +35,6 @@ public class Post {
         this.content = content;
     }
 
-    
-
     public String getMood() {
         return mood;
     }
@@ -42,16 +43,24 @@ public class Post {
         this.mood = mood;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuther(String author) {
-        this.author = author;
-    }
-
     public Long getCreatedAt() {
         return createdAt;
+    }
+
+    public String getAuthorid() {
+        return authorid;
+    }
+
+    public void setAuthorid(String authorid) {
+        this.authorid = authorid;
+    }
+
+    public String getAuthorname() {
+        return authorname;
+    }
+
+    public void setAuthorname(String authorname) {
+        this.authorname = authorname;
     }
 
     public void setCreatedAt(Long createdAt) {

@@ -12,7 +12,10 @@ public class Post {
     private String id;
 
     @Field
-    private String author;
+    private String authorid;
+
+    @Field
+    private String authorname;
 
     @Field
     private String content;
@@ -23,9 +26,10 @@ public class Post {
     @Field
     private String mood;
 
-    public Post(String id, String author, String content, String createdAt, String mood) {
+    public Post(String id, String authorid, String authorname, String content, String createdAt, String mood) {
         this.id = id;
-        this.author = author;
+        this.authorid = authorid;
+        this.authorname = authorname;
         this.content = content;
         this.createdAt = createdAt;
         this.mood = mood;
@@ -42,16 +46,24 @@ public class Post {
         this.id = id;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public String getContent() {
         return content;
+    }
+
+    public String getAuthorid() {
+        return authorid;
+    }
+
+    public void setAuthorid(String authorid) {
+        this.authorid = authorid;
+    }
+
+    public String getAuthorname() {
+        return authorname;
+    }
+
+    public void setAuthorname(String authorname) {
+        this.authorname = authorname;
     }
 
     public void setContent(String content) {
