@@ -3,4 +3,19 @@
        <app-post-create></app-post-create>
     </div>
 
+    
+    <mat-card  style = "margin-top: 3%; width: 30%;">
+        <div>
+            <h3>Profilpostings:</h3>
+        </div>
+        <div style="width: 100%">
+            <div *ngFor = "let post of posts">
+                <div fxLayout = "row" fxLayoutAlign = "start center">
+                    {{post.content}} {{post.authorname}} {{post.authorid}} {{post.createdAt}} {{post.mood}}
+                </div>
+                <hr>
+            </div>
+        </div>
+    </mat-card>
+
 </div>

@@ -26,8 +26,8 @@ public class PostingService {
         return this.repository.findById(id);
     }
 
-    public List<Post> findByAuthor(String author) {
-        return this.repository.findByAuthor(author);
+    public List<Post> findByAuthor(String authorid) {
+        return this.repository.findByAuthorid(authorid);
     }
     
 }
