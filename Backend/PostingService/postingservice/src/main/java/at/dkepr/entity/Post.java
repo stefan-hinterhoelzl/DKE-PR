@@ -16,7 +16,7 @@ public class Post {
     private String mood;
 
     @Field
-    private Long user;
+    private String author;
 
     @Field
     private Long createdAt;
@@ -26,11 +26,11 @@ public class Post {
     public Post() {
     }
 
-    public Post(String id, String content, String mood, Long user, Long createdAt) {
+    public Post(String id, String content, String mood, String author, Long createdAt) {
         this.id = id;
         this.content = content;
         this.mood = mood;
-        this.user = user;
+        this.author = author;
         this.createdAt = createdAt;
     }
 
@@ -60,12 +60,12 @@ public class Post {
         this.mood = mood;
     }
 
-    public Long getUser() {
-        return user;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setUser(Long user) {
-        this.user = user;
+    public void setAuther(String author) {
+        this.author = author;
     }
 
     public Long getCreatedAt() {
