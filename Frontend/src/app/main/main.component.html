@@ -1,5 +1,17 @@
 <div class="main-wrapper" fxLayout="column" fxLayoutAlign="start center">
+    <form class="example-form" [formGroup] = "postform">
+        <mat-form-field class="example-full-width">
+        <input matInput placeholder="Was gibt es neues?" type = "text" [formControl] = "content">
+        <mat-error *ngIf="content.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
 
- Main page works
+        <mat-form-field class="example-full-width">
+        <input matInput placeholder="Fröhlich" type = "text" [formControl] = "mood">
+        <mat-error *ngIf="mood">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+    
+        <button style="margin-top: 2%;" mat-stroked-button color="primary" [disabled] = "!postform.valid" (click) = "savePost()" class="btn-block">Posten</button>
+    </form>
+
 
 </div>

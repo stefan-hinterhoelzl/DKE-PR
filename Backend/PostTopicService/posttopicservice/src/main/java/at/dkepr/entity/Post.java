@@ -2,8 +2,7 @@ package at.dkepr.entity;
 
 
 public class Post {
-    private String id;
-
+   
     private String content;
 
     private String mood;
@@ -18,20 +17,12 @@ public class Post {
     }
 
     public Post(String id, String content, String mood, String author, Long createdAt) {
-        this.id = id;
         this.content = content;
         this.mood = mood;
         this.author = author;
         this.createdAt = createdAt;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getContent() {
         return content;
