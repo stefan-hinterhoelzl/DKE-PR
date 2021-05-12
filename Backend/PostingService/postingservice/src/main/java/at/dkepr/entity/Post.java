@@ -54,7 +54,6 @@ public class Post {
     }
 
     
-
     public String getMood() {
         return mood;
     }

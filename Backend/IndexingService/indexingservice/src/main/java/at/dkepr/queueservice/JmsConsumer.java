@@ -7,8 +7,9 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
-import at.dkepr.entity.PostSearchEntity;
+import at.dkepr.entity.Post;
 import at.dkepr.entity.UserSearchEntity;
+import at.dkepr.solrservice.PostRepository;
 import at.dkepr.solrservice.UserRepository;
 
 
@@ -17,24 +18,27 @@ import at.dkepr.solrservice.UserRepository;
 public class JmsConsumer {
 
 	@Autowired
-	private UserRepository repository;
+	private UserRepository urepository;
+
+	@Autowired
+	private PostRepository prepository;
     
     @JmsListener(destination = "user-add-queue", containerFactory = "jmsListenerContainerFactory")
 	public void receiveadd(UserSearchEntity message){
 		System.out.println(message.getId() + " " + message.getFirstname()+ " " + message.getLastname() + " " + message.getEmail());
 		//save the new user to the solr database
-		this.repository.save(message);
+		this.urepository.save(message);
 	}
 
 	@JmsListener(destination = "user-delete-queue", containerFactory = "jmsListenerContainerFactory")
 	public void receivedelete(UserSearchEntity message) {
 		//delete the user
-		this.repository.deleteById(message.getId());
+		this.urepository.deleteById(message.getId());
 	}
 
 	@JmsListener(destination = "posting-add-topic", containerFactory = "jmsListenerContainerFactoryTopic")
-	public void receiveposting (PostSearchEntity message) {
-		System.out.println("Hello i received a posting");
+	public void receiveposting (Post message) {
+		this.prepository.save(message);
 	}
 
 
