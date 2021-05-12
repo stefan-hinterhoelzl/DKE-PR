@@ -88,6 +88,16 @@
             "mainClass": "at.dkepr.PostingserviceApplication",
             "projectName": "postingservice",
             "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-PosttopicserviceApplication<posttopicservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "at.dkepr.PosttopicserviceApplication",
+            "projectName": "posttopicservice",
+            "args": ""
         }
     ]
 }
