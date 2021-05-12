@@ -26,7 +26,7 @@ export class PostCreateComponent implements OnInit {
   content: FormControl
   emoji: FormControl
   toggled: boolean = false;
-  emojies: String[] = ["\uD83D\uDE00","\ud83d\ude02","\ud83d\ude05","\ud83d\ude07","\ud83d\ude08","\ud83d\ude09","\ud83d\ude09","\ud83d\ude0a","\ud83d\ude0d","\ud83d\ude0e","\ud83d\ude14","\ud83d\ude20"];
+  emojies: String[] = ["\uD83D\uDE00","\ud83d\ude02","\ud83d\ude05","\ud83d\ude07","\ud83d\ude08","\ud83d\ude09","\ud83d\ude0a","\ud83d\ude0d","\ud83d\ude0e","\ud83d\ude14","\ud83d\ude20"];
 
 
   ngOnInit(): void {
@@ -55,15 +55,9 @@ triggerResize() {
 
 
   getErrorMessage() {
-    if (this.content.hasError('required')) {
-      return "Posting-Inhalt kann nicht leer sein"
+    if (this.content.hasError('required') || this.emoji.hasError('required')) {
+      return "Feld darf nicht leer sein"
     }
-
-    if(this.emoji.hasError('required')) {
-      return "Emoji Auswahl kann nicht leer sein"
-    }
-
-
 
   }
 }

@@ -25,6 +25,7 @@
                                 {{emoji}}     
                             </mat-option>
                         </mat-select>
+                        <mat-error *ngIf="emoji.invalid">{{getErrorMessage()}}</mat-error>  
                     </mat-form-field>
                 </div>
                 
