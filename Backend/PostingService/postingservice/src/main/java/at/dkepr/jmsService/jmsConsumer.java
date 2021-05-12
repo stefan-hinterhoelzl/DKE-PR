@@ -20,7 +20,6 @@ public class jmsConsumer {
 
     @JmsListener(destination = "posting-add-topic", containerFactory = "jmsListenerContainerFactoryTopic")
 	public void receiveposting (Post message) {
-        System.out.println(message.getId());
 		service.savePost(message);
 	}
     
