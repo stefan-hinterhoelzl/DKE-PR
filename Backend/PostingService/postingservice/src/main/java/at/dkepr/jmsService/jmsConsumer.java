@@ -22,5 +22,10 @@ public class jmsConsumer {
 	public void receiveposting (Post message) {
 		service.savePost(message);
 	}
+
+    @JmsListener(destination = "posting-delete-topic", containerFactory = "jmsListenerContainerFactoryTopic")
+	public void deleteposting (Post message) {
+		service.deletebyId(message.getId());
+	}
     
 }

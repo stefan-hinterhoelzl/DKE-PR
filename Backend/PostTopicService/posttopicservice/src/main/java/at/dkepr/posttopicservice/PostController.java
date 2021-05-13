@@ -22,12 +22,21 @@ public class PostController {
     private JmsTemplate jmsTemplate;
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @PostMapping("/posts")
+    @PostMapping("/post")
     public ResponseEntity<?> addPosting(@RequestBody Post post) {
         Topic topic = new ActiveMQTopic("posting-add-topic");
 
         jmsTemplate.convertAndSend(topic, post);
         return ResponseEntity.status(HttpStatus.OK).body(new StringResponse("Posting enqueued"));
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/deletepost")
+    public ResponseEntity<?> deletebyAuthorAndCreatedAt(@RequestBody Post post) {
+        Topic topic = new ActiveMQTopic("posting-delete-topic");
+        
+        jmsTemplate.convertAndSend(topic, post);
+        return ResponseEntity.status(HttpStatus.OK).body(new StringResponse("Deletion enqueued"));
     }
     
 }

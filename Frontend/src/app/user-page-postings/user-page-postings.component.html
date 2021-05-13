@@ -11,7 +11,8 @@
         <div style="width: 100%">
             <div *ngFor = "let post of posts">
                 <div fxLayout = "row" fxLayoutAlign = "start center">
-                    {{post.content}} {{post.authorname}} {{post.authorid}} {{post.createdAt}} {{post.mood}}
+                    {{post.content}} {{post.authorname}} {{post.authorid}}  {{post.mood}} {{post.createdAt | date:'dd.MM.yyyy HH:mm'}}
+                    <button (click) = "deletePosting(post)"></button>
                 </div>
                 <hr>
             </div>

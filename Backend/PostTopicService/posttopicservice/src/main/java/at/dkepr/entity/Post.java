@@ -2,6 +2,8 @@ package at.dkepr.entity;
 
 
 public class Post {
+
+    private String id;
    
     private String content;
 
@@ -19,6 +21,7 @@ public class Post {
     }
 
     public Post(String id, String content, String mood, String authorid, String authorname, Long createdAt) {
+        this.id = id;
         this.content = content;
         this.mood = mood;
         this.authorid = authorid;
@@ -26,6 +29,14 @@ public class Post {
         this.createdAt = createdAt;
     }
 
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getContent() {
         return content;

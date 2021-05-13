@@ -41,5 +41,10 @@ public class JmsConsumer {
 		this.prepository.save(message);
 	}
 
+	@JmsListener(destination = "posting-delete-topic", containerFactory = "jmsListenerContainerFactoryTopic")
+	public void deleteposting (Post message) {
+		this.prepository.deleteById(message.getId());
+	}
+
 
 }

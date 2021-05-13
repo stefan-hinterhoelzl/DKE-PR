@@ -29,5 +29,9 @@ public class PostingService {
     public List<Post> findByAuthor(String authorid) {
         return this.repository.findByAuthorid(authorid);
     }
+
+    public void deletebyId(String id) {
+        this.repository.deleteById(id);
+    }
     
 }

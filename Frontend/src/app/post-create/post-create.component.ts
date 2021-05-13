@@ -8,6 +8,7 @@ import { Posting } from '../model/Posting';
 import { User } from '../model/User';
 import { AuthService } from '../services/AuthService';
 import { PostService } from '../services/postservice';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-post-create',
@@ -40,6 +41,7 @@ triggerResize() {
 
   savePost() {
     const payload = <Posting> {
+      id: uuidv4(),
       authorname: this.user.firstname + " " +this.user.lastname,
       authorid: this.user.id.toString(),
       mood: this.emoji.value,

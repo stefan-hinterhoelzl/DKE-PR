@@ -26,11 +26,15 @@ export class PostService
 
 
     savePost(post: Posting): Observable<Posting> {
-        return this.http.post<Posting>(userServicePOSTAPIURL+"posts", post, httpOptions).pipe(take(1));
+        return this.http.post<Posting>(userServicePOSTAPIURL+"post", post, httpOptions).pipe(take(1));
     }
 
     getAllUserPosts(userid: String): Observable<Posting[]> {
        return this.http.get<Posting[]>(userServiceGETAPIURL+"posts/"+userid, httpOptions).pipe(take(1));
+    }
+
+    deletePost(post: Posting): Observable<any> {
+       return this.http.post(userServicePOSTAPIURL+"deletepost", post, httpOptions).pipe(take(1));
     }
 
     public get userPosts(): Posting[] {

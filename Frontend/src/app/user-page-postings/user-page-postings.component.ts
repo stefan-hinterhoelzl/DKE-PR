@@ -32,15 +32,27 @@ export class UserPagePostingsComponent implements OnInit {
     if (this.user.id.toString() === id) {
       this.ps.posts.asObservable().subscribe((data: Posting[]) => {
         this.posts = data;
+        this.posts.sort((a,b)=> {
+          return b.createdAt-a.createdAt;
+        });
         console.log(data);
       });
     }
     else {
       this.postservice.getAllUserPosts(id).subscribe((data: Posting[]) => {
         this.posts = data;
+        this.posts.sort((a,b)=> {
+          return b.createdAt-a.createdAt;
+        });
         console.log(data);
       });
     }
+  }
+
+  deletePosting(post: Posting) {
+    this.ps.deletePost(post).subscribe((data: any) => {
+      console.log(data);
+    });
   }
 
 }
