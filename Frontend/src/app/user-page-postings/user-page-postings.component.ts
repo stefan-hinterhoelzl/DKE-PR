@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Posting } from '../model/Posting';
 import { User } from '../model/User';
@@ -12,7 +13,7 @@ import { PostService } from '../services/postservice';
 })
 export class UserPagePostingsComponent implements OnInit {
 
-  constructor(private postservice: PostService, private authservice: AuthService, private route: ActivatedRoute, private ps: PostService) { }
+  constructor(private postservice: PostService, private authservice: AuthService, private route: ActivatedRoute, private ps: PostService, public dialog: MatDialog) { }
   posts: Posting[];
   subscription;
   user: User;

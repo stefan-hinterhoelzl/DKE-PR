@@ -1,5 +1,5 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { validateBasis } from '@angular/flex-layout';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
@@ -9,6 +9,7 @@ import { User } from '../model/User';
 import { AuthService } from '../services/AuthService';
 import { PostService } from '../services/postservice';
 import { v4 as uuidv4 } from 'uuid';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-post-create',
@@ -17,7 +18,7 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class PostCreateComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private postservice: PostService, private _ngZone: NgZone, private ps: PostService) { 
+  constructor(private fb: FormBuilder, private auth: AuthService, private postservice: PostService, private _ngZone: NgZone, private ps: PostService, public dialog: MatDialog) { 
     this.content = new FormControl('', Validators.required)
     this.emoji = new FormControl('', Validators.required)
   }
@@ -32,12 +33,13 @@ export class PostCreateComponent implements OnInit {
 
   ngOnInit(): void {
   this.user = this.auth.currentUserValue;
-}
+  }
 
-triggerResize() {
-  this._ngZone.onStable.pipe(take(1))
+  
+  triggerResize() {
+    this._ngZone.onStable.pipe(take(1))
         .subscribe(() => this.autosize.resizeToFitContent(true));
-}
+  }
 
   savePost() {
     const payload = <Posting> {
@@ -66,4 +68,7 @@ triggerResize() {
 
   }
 }
+
+
+
 
