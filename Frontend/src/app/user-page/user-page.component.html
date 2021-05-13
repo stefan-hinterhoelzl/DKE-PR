@@ -16,15 +16,15 @@
         </mat-card-title>
 
         <div *ngIf = "selfprofile" style="margin-top: 7%">
-             Dein Profilpokemon ist {{pokemondata?.name}}
+             <h4>Dein Profilpokemon ist {{pokemondata?.name}}</h4>
         </div>
 
         <div *ngIf = "!selfprofile && user.firstname.charAt(user.firstname.length-1) != 's'" style="margin-top: 7%">
-            {{user.firstname}}'s Profilpokemon ist {{pokemondata?.name}}
+            <h4>{{user.firstname}}'s Profilpokemon ist {{pokemondata?.name}}</h4>
        </div>
 
        <div *ngIf = "!selfprofile && user.firstname.charAt(user.firstname.length-1) == 's'" style="margin-top: 7%">
-        {{user.firstname}}' Profilpokemon ist {{pokemondata?.name}}
+        <h4>{{user.firstname}}' Profilpokemon ist {{pokemondata?.name}}</h4>
        </div>
 
         <app-image-with-loading

@@ -16,6 +16,7 @@ export class UserPagePostingsComponent implements OnInit {
   posts: Posting[];
   subscription;
   user: User;
+  selfprofile: boolean;
 
 
   ngOnInit(): void {
@@ -36,6 +37,7 @@ export class UserPagePostingsComponent implements OnInit {
           return b.createdAt-a.createdAt;
         });
         console.log(data);
+        this.selfprofile = true;
       });
     }
     else {
@@ -45,6 +47,7 @@ export class UserPagePostingsComponent implements OnInit {
           return b.createdAt-a.createdAt;
         });
         console.log(data);
+        this.selfprofile = false;
       });
     }
   }
@@ -52,7 +55,7 @@ export class UserPagePostingsComponent implements OnInit {
   deletePosting(post: Posting) {
     this.ps.deletePost(post).subscribe((data: any) => {
       console.log(data);
-      this.posts = this.posts.filter(currpost => currpost.id !== post.id);
+      this.ps.posts.next(this.posts.filter(currpost => currpost.id !== post.id));
     });
   }
 
