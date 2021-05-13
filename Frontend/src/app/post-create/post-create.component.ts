@@ -16,7 +16,7 @@ import { PostService } from '../services/postservice';
 })
 export class PostCreateComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private postservice: PostService, private _ngZone: NgZone) { 
+  constructor(private fb: FormBuilder, private auth: AuthService, private postservice: PostService, private _ngZone: NgZone, private ps: PostService) { 
     this.content = new FormControl('', Validators.required)
     this.emoji = new FormControl('', Validators.required)
   }
@@ -50,6 +50,9 @@ triggerResize() {
     this.postservice.savePost(payload).subscribe((data: Posting) => {
       this.content.reset();
       this.emoji.reset();
+      let currPostings:Posting[] =this.ps.userPosts;
+      currPostings.push(payload);
+      this.ps.posts.next(currPostings);
     });
   }
 

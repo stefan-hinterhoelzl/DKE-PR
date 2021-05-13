@@ -20,6 +20,7 @@ const userServiceGETAPIURL: String = "http://localhost:8082/"
 export class PostService
  {
 
+   posts= new BehaviorSubject<Posting[]>([]);
 
     constructor(private http: HttpClient) {}
 
@@ -30,6 +31,15 @@ export class PostService
 
     getAllUserPosts(userid: String): Observable<Posting[]> {
        return this.http.get<Posting[]>(userServiceGETAPIURL+"posts/"+userid, httpOptions).pipe(take(1));
+    }
+
+    public get userPosts(): Posting[] {
+       return this.posts.value;
+    }
+
+    //used to cache the users own posting
+    public async setPostObservable(userid: String){
+      this.posts.next(await this.getAllUserPosts(userid).toPromise())
     }
 
  }

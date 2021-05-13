@@ -5,6 +5,7 @@ import {Credential} from '../model/Credential';
 import { AuthService } from '../services/AuthService';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '../services/alertService';
+import { PostService } from '../services/postservice';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class LoginPageComponent implements OnInit {
   password = new FormControl('', [Validators.required]);
   form: FormGroup
 
-  constructor(private auth: AuthService, private router: Router, private fb: FormBuilder, private route: ActivatedRoute, private alertservice: AlertService) { }
+  constructor(private auth: AuthService, private router: Router, private fb: FormBuilder, private route: ActivatedRoute, private alertservice: AlertService, private ps: PostService) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -53,6 +54,9 @@ export class LoginPageComponent implements OnInit {
           user = {...data};
           this.auth.user.next(user);
           localStorage.setItem('user', JSON.stringify(user));
+
+          //cach the user postings
+          this.ps.setPostObservable(user.id.toString());
 
 
           //navigate to the redirect URL if necessary

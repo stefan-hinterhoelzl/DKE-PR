@@ -5,6 +5,7 @@ import { catchError, retry, take } from 'rxjs/operators';
 import {User} from "src/app/model/User";
 import {Credential} from "src/app/model/Credential";
 import { Router } from "@angular/router";
+import { PostService } from "./postservice";
 
 const httpOptions =  {
    headers: new HttpHeaders({
@@ -25,7 +26,7 @@ export class AuthService
 
 
 
-    constructor(private http: HttpClient, private router: Router) {}
+    constructor(private http: HttpClient, private router: Router, private ps: PostService) {}
 
     
     //UserService API
@@ -66,7 +67,7 @@ export class AuthService
       }
       this.token.next(localStorage.getItem("token"))
       this.user.next(user);
-
+      this.ps.setPostObservable(user.id.toString());
     }
 
     logout(stateurl: string = "") {
