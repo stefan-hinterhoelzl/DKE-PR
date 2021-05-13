@@ -16,7 +16,7 @@
                     <mat-error *ngIf="content.invalid">{{getErrorMessage()}}</mat-error>  
                 </mat-form-field>
             </div>
-            <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="space-around center">
                 <div>
                     <mat-form-field appearance="fill">
                         <mat-label>Emoji auswählen</mat-label>
@@ -30,7 +30,7 @@
                 </div>
                 
                 <div>
-                    <button style="margin-top: 2%;" mat-button mat-raised-button color = "primary" [disabled]="content.invalid || emoji.invalid" (click) = "savePost()">Posten</button>
+                    <button mat-button mat-raised-button color = "primary" [disabled]="content.invalid || emoji.invalid" (click) = "savePost()">Posten</button>
                 </div>
             </div>
         </div>
