@@ -52,6 +52,7 @@ export class UserPagePostingsComponent implements OnInit {
   deletePosting(post: Posting) {
     this.ps.deletePost(post).subscribe((data: any) => {
       console.log(data);
+      this.posts = this.posts.filter(currpost => currpost.id !== post.id);
     });
   }
 
