@@ -6,5 +6,6 @@ import at.dkepr.entity.UserSearchEntity;
 
 public interface UserRepository extends SolrCrudRepository<UserSearchEntity, String> {
 
+   
     
 }

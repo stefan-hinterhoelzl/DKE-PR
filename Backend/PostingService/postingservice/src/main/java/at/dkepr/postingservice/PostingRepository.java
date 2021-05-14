@@ -16,5 +16,7 @@ public interface PostingRepository extends CrudRepository<Post, String> {
 
 
     public List<Post> findByAuthorid(String authorid);
+
+    public void deleteByAuthorid(String authorid);
     
 }

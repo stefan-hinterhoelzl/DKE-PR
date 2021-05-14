@@ -6,6 +6,7 @@ import {User} from "src/app/model/User";
 import {Credential} from "src/app/model/Credential";
 import { Router } from "@angular/router";
 import { Posting } from "../model/Posting";
+import { ObserversModule } from "@angular/cdk/observers";
 
 const httpOptions =  {
    headers: new HttpHeaders({
@@ -35,6 +36,10 @@ export class PostService
 
     deletePost(post: Posting): Observable<any> {
        return this.http.post(userServicePOSTAPIURL+"deletepost", post, httpOptions).pipe(take(1));
+    }
+
+    deleteAllByAuthor(authorid: String): Observable<any> {
+      return this.http.post(userServicePOSTAPIURL+"deleteAll/"+authorid, httpOptions).pipe(take(1));
     }
 
     public get userPosts(): Posting[] {

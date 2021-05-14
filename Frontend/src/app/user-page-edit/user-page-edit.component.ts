@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { DeletePostDialogComponent } from '../delete-post-dialog/delete-post-dialog.component';
 import { MyErrorStateMatcher } from '../helpers/MyErrorStateMatcher';
 import { PasswordChangeCredential } from '../model/PasswordChangeCredential';
 import { User } from '../model/User';
 import { AlertService } from '../services/alertService';
 import { AuthService } from '../services/AuthService';
+import { PostService } from '../services/postservice';
 
 @Component({
   selector: 'app-user-page-edit',
@@ -19,7 +23,6 @@ export class UserPageEditComponent implements OnInit {
   pwform: FormGroup;
   matcher: MyErrorStateMatcher = new MyErrorStateMatcher();
   user: User;
-  reallydelete = false;
   
   firstname = new FormControl('', [Validators.required]);
   lastname = new FormControl('', [Validators.required]);
@@ -29,7 +32,7 @@ export class UserPageEditComponent implements OnInit {
   newpw = new FormControl('', [Validators.required]);
   newpwconfirm = new FormControl('');
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private auth: AuthService, private alertservice: AlertService) { }
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private auth: AuthService, private alertservice: AlertService, private dialog: MatDialog, private ps: PostService) { }
 
   ngOnInit(): void {
 
@@ -131,9 +134,13 @@ export class UserPageEditComponent implements OnInit {
   deleteUser() {
     this.auth.deleteUser(this.user.id).subscribe(() => {
 
+      this.ps.deleteAllByAuthor(this.user.id.toString()).subscribe(
+        data => console.log(data)
+      );
+      
       this.alertservice.success("Der User wurde erfolgreich gelöscht. Auf Wiedersehen!");
       setTimeout(() => this.auth.logout(),3000);
-
+      
     },
     (error) => {
       console.log(error)
@@ -142,5 +149,25 @@ export class UserPageEditComponent implements OnInit {
     );
 
   }
+
+  openDeleteDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    dialogConfig.data= {
+      description: "Benutzer " + this.user.email + " Löschen?",
+      content: "Der Benutzer kann nicht wieder hergestellt werden. Sind Sie sicher?"
+    }
+    
+    const dialogRef = this.dialog.open(DeletePostDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().pipe(take(1)).subscribe((data) => {
+      if (data == true) {
+        this.deleteUser();
+      }
+    });
+  }  
 
 }

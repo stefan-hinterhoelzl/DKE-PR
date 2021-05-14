@@ -1,5 +1,8 @@
 package at.dkepr.jmsService;
 
+import javax.jms.JMSException;
+
+import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
@@ -24,8 +27,22 @@ public class jmsConsumer {
 	}
 
     @JmsListener(destination = "posting-delete-topic", containerFactory = "jmsListenerContainerFactoryTopic")
-	public void deleteposting (Post message) {
-		service.deletebyId(message.getId());
+	public void deleteposting (ActiveMQTextMessage message) {
+        String text = "";
+        try {
+            text = message.getText();
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
+        
+        if(text.contains("postid")) {
+            service.deletebyId(text.substring(8, text.length()-1));
+        }
+        else{
+            service.deleteAllbyAuthorId(text.substring(10, text.length()-1));
+        }       
+       
+		
 	}
     
 }

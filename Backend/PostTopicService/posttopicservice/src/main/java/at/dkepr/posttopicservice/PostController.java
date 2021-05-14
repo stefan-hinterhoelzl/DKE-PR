@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,10 +33,19 @@ public class PostController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/deletepost")
-    public ResponseEntity<?> deletebyAuthorAndCreatedAt(@RequestBody Post post) {
+    public ResponseEntity<?> deletebyPostID(@RequestBody Post post) {
         Topic topic = new ActiveMQTopic("posting-delete-topic");
         
-        jmsTemplate.convertAndSend(topic, post);
+        jmsTemplate.convertAndSend(topic, "postid:"+post.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(new StringResponse("Deletion enqueued"));
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/deleteAll/{authorid}")
+    public ResponseEntity<?> deleteAllByAuthorID(@PathVariable String authorid) {
+        Topic topic = new ActiveMQTopic("posting-delete-topic");
+        
+        jmsTemplate.convertAndSend(topic, "authorid:"+authorid);
         return ResponseEntity.status(HttpStatus.OK).body(new StringResponse("Deletion enqueued"));
     }
     

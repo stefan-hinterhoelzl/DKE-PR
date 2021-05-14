@@ -2,6 +2,9 @@ package at.dkepr.queueservice;
 
 
 
+import javax.jms.JMSException;
+
+import org.apache.activemq.command.ActiveMQTextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.annotation.JmsListener;
@@ -42,9 +45,28 @@ public class JmsConsumer {
 	}
 
 	@JmsListener(destination = "posting-delete-topic", containerFactory = "jmsListenerContainerFactoryTopic")
-	public void deleteposting (Post message) {
-		this.prepository.deleteById(message.getId());
+	public void deleteposting (ActiveMQTextMessage message) {
+		String text = "";
+		try {
+			text = message.getText();
+		} catch (JMSException e) {
+			e.printStackTrace();
+		}
+		
+		if(text.contains("postid")) {
+			prepository.deleteById(text.substring(8, text.length()-1));
+		}
+		else{
+			prepository.deleteAllByAuthorid(text.substring(10,text.length()-1));
+			
+		}       
+		
+		
 	}
+
+		
+	
+	
 
 
 }

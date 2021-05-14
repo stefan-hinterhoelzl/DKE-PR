@@ -29,6 +29,7 @@ import { RouterStateSnapshot } from '@angular/router';
 import { ImageWithLoadingComponentComponent } from './image-with-loading-component/image-with-loading-component.component';
 import { PostCreateComponent } from './post-create/post-create.component';
 import  {  NgxEmojiPickerModule  }  from  'ngx-emoji-picker';
+import { DeletePostDialogComponent } from './delete-post-dialog/delete-post-dialog.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import  {  NgxEmojiPickerModule  }  from  'ngx-emoji-picker';
     UserPagerFollowersListComponent,
     ImageWithLoadingComponentComponent,
     PostCreateComponent,
+    DeletePostDialogComponent,
   ],
   imports: [
     BrowserModule,

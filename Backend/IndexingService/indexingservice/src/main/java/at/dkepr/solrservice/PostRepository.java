@@ -6,4 +6,5 @@ import at.dkepr.entity.Post;
 
 public interface PostRepository extends SolrCrudRepository<Post, String> {
     
+    public void deleteAllByAuthorid(String authorid);
 }

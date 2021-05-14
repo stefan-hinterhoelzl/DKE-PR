@@ -57,25 +57,8 @@
         </div>
     </div>
 
-    <div style = "margin-bottom: 10%; margin-top: 20%;">
-        <button mat-button mat-raised-button (click) = "reallydelete = true">Dieses Profil löschen</button>
+    <div style = "margin-bottom: 10%; margin-top: 10%;">
+        <button mat-button mat-raised-button color = "accent" (click) = "openDeleteDialog()">Dieses Profil löschen</button>
     </div>
-
-    <div *ngIf = "reallydelete">
-        Das Profil kann nicht wieder hergestellt werden! <br>
-        Wirklich löschen?
-        <div style = "margin-top: 5%;" fxLayout="row" fxLayoutAlign="space-evenly center">
-            <div>
-                <button mat-button mat-raised-button color="primary" (click) = "deleteUser()">Ja</button>
-            </div>
-            <div>
-                <button mat-button mat-raised-button color = "accent" (click) = "reallydelete = false">Nein</button>
-            </div>
-
-        </div>
-
-
-    </div>
-        
 
 </div>

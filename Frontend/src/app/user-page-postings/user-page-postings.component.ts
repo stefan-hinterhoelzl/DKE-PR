@@ -1,6 +1,8 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { DeletePostDialogComponent } from '../delete-post-dialog/delete-post-dialog.component';
 import { Posting } from '../model/Posting';
 import { User } from '../model/User';
 import { AuthService } from '../services/AuthService';
@@ -59,5 +61,28 @@ export class UserPagePostingsComponent implements OnInit {
       this.ps.posts.next(this.posts.filter(currpost => currpost.id !== post.id));
     });
   }
+
+  openDeleteDialog(post: Posting) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    dialogConfig.data= {
+      description: "Posting Löschen",
+      content: "Der Post kann nicht wieder hergestellt werden. Sind Sie sicher?"
+    }
+    
+    const dialogRef = this.dialog.open(DeletePostDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().pipe(take(1)).subscribe((data) => {
+      if (data == true) {
+        this.deletePosting(post);
+      }
+    });
+  }  
+    
+
+  
 
 }

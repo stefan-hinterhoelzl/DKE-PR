@@ -33,5 +33,9 @@ public class PostingService {
     public void deletebyId(String id) {
         this.repository.deleteById(id);
     }
+
+    public void deleteAllbyAuthorId(String id) {
+       this.repository.deleteByAuthorid(id);
+    }
     
 }
