@@ -38,4 +38,8 @@ public class PostingService {
        this.repository.deleteByAuthorid(id);
     }
     
+    public Iterable<Post> getAll() {
+        return this.repository.findAll();
+    }
+
 }

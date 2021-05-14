@@ -23,6 +23,8 @@ export class PostService
 
    posts= new BehaviorSubject<Posting[]>([]);
 
+   feed = new BehaviorSubject<Posting[]>([]);
+
     constructor(private http: HttpClient) {}
 
 
@@ -42,13 +44,27 @@ export class PostService
       return this.http.post(userServicePOSTAPIURL+"deleteAll/"+authorid, httpOptions).pipe(take(1));
     }
 
+    getAllPosts(): Observable<Posting[]> {
+      return this.http.get<Posting[]>(userServiceGETAPIURL+"posts", httpOptions).pipe(take(1));
+    }
+
     public get userPosts(): Posting[] {
        return this.posts.value;
+    }
+
+    public get feedPosts(): Posting[] {
+       return this.feed.value;
     }
 
     //used to cache the users own posting
     public async setPostObservable(userid: String){
       this.posts.next(await this.getAllUserPosts(userid).toPromise())
+    }
+
+    public async setFeedObservable(userid: String){
+       let posts: Posting[] = await this.getAllPosts().toPromise();
+       posts = posts.filter(curr => curr.authorid !== userid);
+      this.feed.next(posts);
     }
 
  }

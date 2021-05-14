@@ -55,8 +55,11 @@ export class PostCreateComponent implements OnInit {
       this.content.reset();
       this.emoji.reset();
       let currPostings:Posting[] =this.ps.userPosts;
+      let currFeed: Posting[] = this.ps.feedPosts;
       currPostings.push(payload);
+      currFeed.push(payload);
       this.ps.posts.next(currPostings);
+      this.ps.feed.next(currFeed);
     });
   }
 

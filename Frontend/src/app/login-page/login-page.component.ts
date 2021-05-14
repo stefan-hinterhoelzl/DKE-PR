@@ -58,6 +58,8 @@ export class LoginPageComponent implements OnInit {
           //cach the user postings
           this.ps.setPostObservable(user.id.toString());
 
+          this.ps.setFeedObservable(user.id.toString());
+
 
           //navigate to the redirect URL if necessary
           let redirectURL = "";

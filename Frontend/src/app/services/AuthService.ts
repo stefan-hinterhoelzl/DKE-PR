@@ -68,6 +68,7 @@ export class AuthService
       this.token.next(localStorage.getItem("token"))
       this.user.next(user);
       this.ps.setPostObservable(user.id.toString());
+      this.ps.setFeedObservable(user.id.toString())
     }
 
     logout(stateurl: string = "") {

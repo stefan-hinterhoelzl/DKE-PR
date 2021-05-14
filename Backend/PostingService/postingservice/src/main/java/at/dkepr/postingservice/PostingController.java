@@ -1,5 +1,6 @@
 package at.dkepr.postingservice;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +68,17 @@ public class PostingController {
     public ResponseEntity<?> getAllPostsbyAuthor(@PathVariable String author) {
         List<Post> posts = this.service.findByAuthor(author);
         return ResponseEntity.status(HttpStatus.OK).body(posts);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("posts")
+    public ResponseEntity<?> getAllPosts() {
+       Iterable<Post> posts = this.service.getAll();
+       List<Post> listpost = new ArrayList<Post>();
+       
+       posts.iterator().forEachRemaining(listpost::add);
+
+        return ResponseEntity.status(HttpStatus.OK).body(listpost);
     }
 
 }
