@@ -30,6 +30,7 @@ import { ImageWithLoadingComponentComponent } from './image-with-loading-compone
 import { PostCreateComponent } from './post-create/post-create.component';
 import  {  NgxEmojiPickerModule  }  from  'ngx-emoji-picker';
 import { DeletePostDialogComponent } from './delete-post-dialog/delete-post-dialog.component';
+import { EditPostDialogComponent } from './edit-post-dialog/edit-post-dialog.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { DeletePostDialogComponent } from './delete-post-dialog/delete-post-dial
     ImageWithLoadingComponentComponent,
     PostCreateComponent,
     DeletePostDialogComponent,
+    EditPostDialogComponent,
   ],
   imports: [
     BrowserModule,

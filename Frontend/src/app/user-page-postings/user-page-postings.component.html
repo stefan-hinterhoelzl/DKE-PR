@@ -24,11 +24,14 @@
                             <h4>{{post.content}}</h4>
                         </div>
                     </div>
-                    <div style = "width:100%;" fxLayout = "row" fxLayoutAlign = "space-between center" >
-                        <div>
+                    <div style = "width:100%;" fxLayout = "row">
+                        <div fxFlex="88">
                             {{post.createdAt | date:'dd.MM.yyyy HH:mm'}}
                         </div>
-                        <div *ngIf = "this.selfprofile">
+                        <div fxFlex="6" *ngIf = "this.selfprofile">
+                            <img style ="width: 20px; cursor: pointer;" src="../../assets/edit.png" (click) = "openEditDialog(post)">
+                        </div>
+                        <div fxFlex="6" *ngIf = "this.selfprofile">
                             <img style ="width: 20px; cursor: pointer;" src="../../assets/delete.png" (click) = "openDeleteDialog(post)">
                         </div>
                     </div>
