@@ -4,25 +4,23 @@
     </div>
 
     
-    <mat-card  style = "margin-top: 3%; width: 30%;">
+    <mat-card  style = "margin-top: 3%; width: 40%;">
         <div>
             <h2>Profilpostings:</h2>
         </div>
-        <div style="width: 100%">
+        <div style="width: 100%;">
             <div *ngFor = "let post of posts">
                 <div fxLayout = "column" fxLayoutAlign = "center start">
-                    <div style = "width:100%;" fxLayout = "row" fxLayoutAlign = "space-between center" >
+                    <div style = "width:100%; margin-bottom: 3%;" fxLayout = "row" fxLayoutAlign = "space-between center" >
                          <div>
-                            <h3>{{post.authorname}}</h3>
+                            <h3>{{post.authorname}}:</h3>
                         </div> 
                         <div style = "font-size: 40px;">
                             {{post.mood}}
                         </div>
                     </div>
-                    <div style = "width:100%;" fxLayout = "row" fxLayoutAlign = "start center" >
-                        <div>
-                            <h4>{{post.content}}</h4>
-                        </div>
+                    <div class = "postingcontent"> 
+                        {{post.content}}
                     </div>
                     <div style = "width:100%;" fxLayout = "row">
                         <div fxFlex="88">
