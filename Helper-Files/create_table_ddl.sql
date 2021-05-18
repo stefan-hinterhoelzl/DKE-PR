@@ -7,3 +7,5 @@ Create Table Users (
 	password varchar2(500) Not Null,
 	pokemonid varchar2(20) Not Null
 );
+
+Create Sequence user_seq INCREMENT BY 1 START WITH 1;

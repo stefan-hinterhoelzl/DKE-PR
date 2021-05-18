@@ -39,12 +39,12 @@ public class JmsConsumer {
 		this.urepository.deleteById(message.getId());
 	}
 
-	@JmsListener(destination = "posting-add-topic", containerFactory = "jmsListenerContainerFactoryTopic")
+	@JmsListener(destination = "posting-add-solr", containerFactory = "jmsListenerContainerFactory")
 	public void receiveposting (Post message) {
 		this.prepository.save(message);
 	}
 
-	@JmsListener(destination = "posting-delete-topic", containerFactory = "jmsListenerContainerFactoryTopic")
+	@JmsListener(destination = "posting-delete-solr", containerFactory = "jmsListenerContainerFactory")
 	public void deleteposting (ActiveMQTextMessage message) {
 		String text = "";
 		try {

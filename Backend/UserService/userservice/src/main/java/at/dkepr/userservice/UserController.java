@@ -1,6 +1,7 @@
 package at.dkepr.userservice;
 
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 import javax.jms.Queue;
@@ -81,6 +82,10 @@ public class UserController {
             String Message = "Error";
             if (e.getCause() instanceof ConstraintViolationException) {
                 Message = "Diese Mail Adresse existiert bereits.";
+            }
+
+            if (e.getCause() instanceof SQLException) {
+                Message = "Datenbankfehler - Wurde der Table und die Sequence erstellt?";
             }
             return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)

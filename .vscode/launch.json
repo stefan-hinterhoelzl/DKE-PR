@@ -15,28 +15,8 @@
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
-            "mainClass": "at.dkepr.userservice.UserserviceApplication",
-            "projectName": "userservice",
-            "args": ""
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-UserserviceApplication<userservice>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
             "mainClass": "at.dkepr.UserserviceApplication",
             "projectName": "userservice",
-            "args": ""
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-RelationserviceApplication<relationservice>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
-            "mainClass": "at.dkepr.relationservice.RelationserviceApplication",
-            "projectName": "relationservice",
             "args": ""
         },
         {
@@ -45,18 +25,8 @@
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
-            "mainClass": "at.dkepr.postingservice.PostingserviceApplication",
+            "mainClass": "at.dkepr.PostingserviceApplication",
             "projectName": "postingservice",
-            "args": ""
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-IndexingserviceApplication<indexingservice>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
-            "mainClass": "at.dkepr.indexingservice.IndexingserviceApplication",
-            "projectName": "indexingservice",
             "args": ""
         },
         {
@@ -81,22 +51,22 @@
         },
         {
             "type": "java",
-            "name": "Spring Boot-PostingserviceApplication<postingservice>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
-            "mainClass": "at.dkepr.PostingserviceApplication",
-            "projectName": "postingservice",
-            "args": ""
-        },
-        {
-            "type": "java",
             "name": "Spring Boot-PosttopicserviceApplication<posttopicservice>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "mainClass": "at.dkepr.PosttopicserviceApplication",
             "projectName": "posttopicservice",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-NotificationserviceApplication<notificationservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "at.dkepr.NotificationserviceApplication",
+            "projectName": "notificationservice",
             "args": ""
         }
     ]

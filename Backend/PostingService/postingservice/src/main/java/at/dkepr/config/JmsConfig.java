@@ -26,12 +26,12 @@ public class JmsConfig {
       return activeMQConnectionFactory;
     }
     
-    //Factory for Topic
+    //Factory for Queue
     @Bean
-    public DefaultJmsListenerContainerFactory jmsListenerContainerFactoryTopic() {
+    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
       DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-      factory.setPubSubDomain(true);
       factory.setConnectionFactory(activeMQConnectionFactory());
+      factory.setConcurrency("1-1");
       factory.setMessageConverter(jacksonJmsMessageConverter());
       return factory;
     }

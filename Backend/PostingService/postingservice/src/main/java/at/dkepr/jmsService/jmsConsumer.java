@@ -21,12 +21,12 @@ public class jmsConsumer {
     }
 
 
-    @JmsListener(destination = "posting-add-topic", containerFactory = "jmsListenerContainerFactoryTopic")
+    @JmsListener(destination = "posting-add-couchbase", containerFactory = "jmsListenerContainerFactory")
 	public void receiveposting (Post message) {
 		service.savePost(message);
 	}
 
-    @JmsListener(destination = "posting-delete-topic", containerFactory = "jmsListenerContainerFactoryTopic")
+    @JmsListener(destination = "posting-delete-couchbase", containerFactory = "jmsListenerContainerFactory")
 	public void deleteposting (ActiveMQTextMessage message) {
         String text = "";
         try {

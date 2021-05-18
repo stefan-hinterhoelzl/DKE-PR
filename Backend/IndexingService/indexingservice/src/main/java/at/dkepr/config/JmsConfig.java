@@ -43,17 +43,6 @@ public class JmsConfig {
       return factory;
     }
 
-    //Factory for Topic
-    @Bean
-    public DefaultJmsListenerContainerFactory jmsListenerContainerFactoryTopic() {
-      DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-      factory.setPubSubDomain(true);
-      factory.setConnectionFactory(activeMQConnectionFactory());
-      factory.setMessageConverter(jacksonJmsMessageConverter());
-      return factory;
-    }
-    
-
     @Bean // Serialize message content to json using TextMessage
 	  public MessageConverter jacksonJmsMessageConverter() {
 	    MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
