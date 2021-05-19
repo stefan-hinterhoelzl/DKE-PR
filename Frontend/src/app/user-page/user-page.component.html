@@ -1,59 +1,58 @@
 <div class="main-wrapper" fxLayout="row" fxLayoutAlign="space-between start" >
     
     <div fxFlex="30"   fxLayout="column" fxLayoutAlign="center center">
+            <mat-card-title style = "margin-top: 10%; justify-content:space-evenly; display: flex;">
+            <div fxLayout="column" fxLayoutAlign="space-between center">
+                    <div>
+                        <h1>{{user.firstname}} {{user.lastname}}</h1>
+                    </div>
+                    <div>
+                        <h4> #{{user.id}} </h4>
+                    </div>
+                    <button *ngIf = "!selfprofile" mat-button mat-raised-button color = "primary">{{user.firstname}} Folgen</button>
+                    
+            </div> 
+            </mat-card-title>
 
-        <mat-card-title style = "margin-top: 10%; justify-content:space-evenly; display: flex;">
-        <div fxLayout="column" fxLayoutAlign="space-between center">
-                <div>
-                    <h1>{{user.firstname}} {{user.lastname}}</h1>
-                </div>
-                <div>
-                    <h4> #{{user.id}} </h4>
-                </div>
-                <button *ngIf = "!selfprofile" mat-button mat-raised-button color = "primary">{{user.firstname}} Folgen</button>
-                
-        </div> 
-        </mat-card-title>
+            <div *ngIf = "selfprofile" style="margin-top: 7%">
+                <h4>Dein Profilpokemon ist {{pokemondata?.name}}</h4>
+            </div>
 
-        <div *ngIf = "selfprofile" style="margin-top: 7%">
-             <h4>Dein Profilpokemon ist {{pokemondata?.name}}</h4>
+            <div *ngIf = "!selfprofile && user.firstname.charAt(user.firstname.length-1) != 's'" style="margin-top: 7%">
+                <h4>{{user.firstname}}'s Profilpokemon ist {{pokemondata?.name}}</h4>
         </div>
 
-        <div *ngIf = "!selfprofile && user.firstname.charAt(user.firstname.length-1) != 's'" style="margin-top: 7%">
-            <h4>{{user.firstname}}'s Profilpokemon ist {{pokemondata?.name}}</h4>
-       </div>
-
-       <div *ngIf = "!selfprofile && user.firstname.charAt(user.firstname.length-1) == 's'" style="margin-top: 7%">
-        <h4>{{user.firstname}}' Profilpokemon ist {{pokemondata?.name}}</h4>
-       </div>
-
-        <app-image-with-loading
-            image= "https://pokeres.bastionbot.org/images/pokemon/{{user.pokemonid}}.png"
-            height = 400
-            width = 400>
-        </app-image-with-loading>
-        
-        <div *ngIf = "selfprofile" style = "margin-top: 5%; margin-bottom: 15%;">
-            <button mat-button mat-raised-button color = "primary" (click) = "changePokemon()">Ich will ein anderes Pokemon</button>
+        <div *ngIf = "!selfprofile && user.firstname.charAt(user.firstname.length-1) == 's'" style="margin-top: 7%">
+            <h4>{{user.firstname}}' Profilpokemon ist {{pokemondata?.name}}</h4>
         </div>
 
+            <app-image-with-loading
+                image= "https://pokeres.bastionbot.org/images/pokemon/{{user.pokemonid}}.png"
+                height = 400
+                width = 400>
+            </app-image-with-loading>
+            
+            <div *ngIf = "selfprofile" style = "margin-top: 5%; margin-bottom: 15%;">
+                <button mat-button mat-raised-button color = "primary" (click) = "changePokemon()">Ich will ein anderes Pokemon</button>
+            </div>
 
     </div>
     <div fxFlex fxLayout="column" fxLayoutAlign="start center">
-
-            <div fxFlex fxLayout="row" fxLayoutAlign="center start">
-                <div>
-                    <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./posts']">Meine Postings</a>
+            <div style="position: fixed; z-index: 10; width: 35%">
+                <div *ngIf = "selfprofile" fxFlex fxLayout="row" fxLayoutAlign="space-between start">
+                    <div>
+                        <a  mat-button mat-raised-button color = "primary" [routerLink] = "['./posts']">Meine Postings</a>
+                    </div>
+                    <div>
+                        <a  mat-button mat-raised-button color = "primary" [routerLink] = "['./following']">Abonnierte Benutzer</a>
+                    </div>
+                    <div>
+                        <a  mat-button mat-raised-button color= "primary" [routerLink] = "['./followers']">Meine Abonennten</a>
+                    </div>
+                    <div>
+                        <a  mat-button mat-raised-button color = "primary" [routerLink] = "['./edit']">Benutzer bearbeiten</a>
+                    </div> 
                 </div>
-                <div>
-                    <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./following']">Abonnierte Benutzer</a>
-                </div>
-                <div>
-                    <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./followers']">Meine Abonennten</a>
-                </div>
-                <div>
-                    <a *ngIf = "selfprofile" mat-button color = "primary" [routerLink] = "['./edit']">Benutzer bearbeiten</a>
-                </div> 
             </div>
 
         <div style= "margin-top: 4%; width:100%;">

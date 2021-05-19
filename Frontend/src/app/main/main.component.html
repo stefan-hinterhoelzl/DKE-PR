@@ -4,6 +4,7 @@
     </div>
 
     <mat-card  style = "margin-top: 3%; width:35%;">
+        <img style ="width: 20px; cursor: pointer;" src="../../assets/reload.png" (click) = "refresh()">
         <div>
             <h2>Profilpostings:</h2>
         </div>
@@ -12,7 +13,7 @@
                 <div fxLayout = "column" fxLayoutAlign = "center start">
                     <div style = "width:100%; margin-bottom: 3%;" fxLayout = "row" fxLayoutAlign = "space-between center" >
                          <div>
-                            <h3>{{post.authorname}}:</h3>
+                            <h3 style = "cursor: pointer;" (click)="navigateToAuthor(post)">{{post.authorname}}:</h3>
                         </div> 
                         <div style = "font-size: 40px;">
                             {{post.mood}}
@@ -25,10 +26,10 @@
                         <div fxFlex="88">
                             {{post.createdAt | date:'dd.MM.yyyy HH:mm'}}
                         </div>
-                        <div fxFlex="6" *ngIf = "this.selfprofile">
+                        <div fxFlex="6" *ngIf = "user.id == post.authorid">
                             <img style ="width: 20px; cursor: pointer;" src="../../assets/edit.png" (click) = "openEditDialog(post)">
                         </div>
-                        <div fxFlex="6" *ngIf = "this.selfprofile">
+                        <div fxFlex="6" *ngIf = "user.id == post.authorid">
                             <img style ="width: 20px; cursor: pointer;" src="../../assets/delete.png" (click) = "openDeleteDialog(post)">
                         </div>
                     </div>

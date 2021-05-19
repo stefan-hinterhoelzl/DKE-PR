@@ -2,11 +2,13 @@ import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_FACTORY } from '@angular/cdk/over
 import { Component, OnInit, SystemJsNgModuleLoader } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { DeletePostDialogComponent } from '../delete-post-dialog/delete-post-dialog.component';
 import { EditPostDialogComponent } from '../edit-post-dialog/edit-post-dialog.component';
 import { Posting } from '../model/Posting';
 import { User } from '../model/User';
+import { AlertService } from '../services/alertService';
 import { AuthService } from '../services/AuthService';
 import { PostService } from '../services/postservice';
 
@@ -20,7 +22,7 @@ export class MainComponent implements OnInit {
   posts: Posting[]
   user: User;
 
-  constructor(private ps: PostService, private auth: AuthService, private dialog: MatDialog) { }
+  constructor(private ps: PostService, private auth: AuthService, private dialog: MatDialog, private alert: AlertService, public router: Router) { }
 
   ngOnInit(): void {
     this.getPosts();
@@ -98,6 +100,10 @@ export class MainComponent implements OnInit {
   }
 
   refresh() {
-    this.ps.setFeedObservable(this.user.id.toString());
+  this.ps.setFeedObservable(this.user.id.toString())
+  }
+
+  navigateToAuthor(post: Posting) {
+    this.router.navigate(['user/'+post.authorid])
   }
 }

@@ -7,6 +7,7 @@ import {Credential} from "src/app/model/Credential";
 import { Router } from "@angular/router";
 import { Posting } from "../model/Posting";
 import { ObserversModule } from "@angular/cdk/observers";
+import { AlertService } from "./alertService";
 
 const httpOptions =  {
    headers: new HttpHeaders({
@@ -64,6 +65,7 @@ export class PostService
     public async setFeedObservable(userid: String){
        let posts: Posting[] = await this.getAllPosts().toPromise();
        posts = posts.filter(curr => curr.authorid !== userid);
+      
       this.feed.next(posts);
     }
 

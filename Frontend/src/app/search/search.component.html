@@ -1,5 +1,5 @@
 <div class="main-wrapper" style ="width: 100%;" fxLayout="column" fxLayoutAlign="start center">
-    <mat-card  style = "margin-top: 3%; width: 30%;">
+    <mat-card *ngIf ="users.length != 0"  style = "margin-top: 3%; width: 30%;">
     
         <div>
             <h2>Personen:</h2>
@@ -33,6 +33,37 @@
                     </div>
                     <hr>
                 </div>
+            </div>
+        </div>
+    </mat-card>
+
+    <mat-card *ngIf ="posts.length != 0" style = "margin-top: 3%; width: 30%;">
+    
+        <div>
+            <h2>Postings:</h2>
+        </div>
+        
+        <div style="width: 100%;">
+            <div *ngFor = "let post of posts">
+                <div fxLayout = "column" fxLayoutAlign = "center start">
+                    <div style = "width:100%; margin-bottom: 3%;" fxLayout = "row" fxLayoutAlign = "space-between center" >
+                         <div>
+                            <h3 style = "cursor: pointer;" (click)="navigateToAuthor(post)">{{post.authorname}}:</h3>
+                        </div> 
+                        <div style = "font-size: 40px;">
+                            {{post.mood}}
+                        </div>
+                    </div>
+                    <div class = "postingcontent"> 
+                        {{post.content}}
+                    </div>
+                    <div style = "width:100%;" fxLayout = "row">
+                        <div>
+                            {{post.createdAt | date:'dd.MM.yyyy HH:mm'}}
+                        </div>
+                    </div>
+                </div>
+                <hr>
             </div>
         </div>
     </mat-card>
