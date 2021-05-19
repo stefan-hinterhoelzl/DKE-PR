@@ -17,14 +17,14 @@ public class User {
 	private String id;
 
 	@Relationship(type="FOLLOWS")
-	private List<User> follows;
+	private List<String> follows;
 
 
 	@Relationship(type="FOLLOWED_BY")
-	private List<User> followedByUsers;
+	private List<String> followedByUsers;
 
 
-	public User(String id, List<User> follows, List<User> followedByUsers) {
+	public User(String id, List<String> follows, List<String> followedByUsers) {
 		this.id = id;
 		this.follows = follows;
 		this.followedByUsers = followedByUsers;
@@ -46,22 +46,22 @@ public class User {
 	}
 
 
-	public List<User> getFollows() {
+	public List<String> getFollows() {
 		return follows;
 	}
 
 
-	public void setFollows(List<User> follows) {
+	public void setFollows(List<String> follows) {
 		this.follows = follows;
 	}
 
 
-	public List<User> getFollowedByUsers() {
+	public List<String> getFollowedByUsers() {
 		return followedByUsers;
 	}
 
 
-	public void setFollowedByUsers(List<User> followedByUsers) {
+	public void setFollowedByUsers(List<String> followedByUsers) {
 		this.followedByUsers = followedByUsers;
 	}
 
