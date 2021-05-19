@@ -8,7 +8,7 @@ import org.springframework.data.neo4j.repository.query.Query;
 import at.dkepr.model.User;
 
 
-public interface UserRepository extends Neo4jRepository<User, Long> {
+public interface UserRepository extends Neo4jRepository<User, String> {
     
     @Query("MATCH (u:User) RETURN n LIMIT 50")
     Collection<User> getAllUsers();

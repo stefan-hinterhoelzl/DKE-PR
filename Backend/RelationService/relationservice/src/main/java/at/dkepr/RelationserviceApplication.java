@@ -9,8 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
 @EnableNeo4jRepositories
-@SpringBootApplication(scanBasePackages={
-	"at.dkepr.service"})
+@SpringBootApplication
 public class RelationserviceApplication {
 
 	public static void main(String[] args) {
