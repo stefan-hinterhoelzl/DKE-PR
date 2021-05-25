@@ -2,19 +2,24 @@ package at.dkepr.model;
 
 import java.util.List;
 
+import org.neo4j.driver.internal.shaded.reactor.util.annotation.NonNull;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
-
-
-
+import lombok.Getter;
+import lombok.Setter;
 
 @Node
 public class User {
 
-	@Id
-	private String id;
+	@Id @GeneratedValue
+	private Long id;
+
+	@Getter
+	@Setter
+	private long relDBid; 
 
 	@Relationship(type="FOLLOWS")
 	private List<String> follows;
@@ -24,8 +29,9 @@ public class User {
 	private List<String> followedByUsers;
 
 
-	public User(String id, List<String> follows, List<String> followedByUsers) {
+	public User(Long id, long relDBid, List<String> follows, List<String> followedByUsers) {
 		this.id = id;
+		this.relDBid = relDBid;
 		this.follows = follows;
 		this.followedByUsers = followedByUsers;
 	}
@@ -36,12 +42,12 @@ public class User {
 	}
 
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
