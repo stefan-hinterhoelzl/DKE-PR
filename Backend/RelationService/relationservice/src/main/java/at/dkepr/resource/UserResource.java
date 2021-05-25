@@ -20,16 +20,14 @@ public class UserResource {
     @Autowired
     UserRepository repo;
 
-    @PostMapping("/user/{id}")
+    @PostMapping("/user")
     public ResponseEntity<?> newUser(@RequestBody User newUser) {
-        return ResponseEntity
-        .status(HttpStatus.OK)
-        .body(repo.save(newUser));
+        return ResponseEntity.status(HttpStatus.OK).body(this.repo.save(newUser));
     }
 
     @GetMapping("/users")
-    public ResponseEntity<?> getUser() {
-        return ResponseEntity.status(HttpStatus.OK).body(repo.getAllUsers());
+    public ResponseEntity<?> getUsers() {
+        return ResponseEntity.status(HttpStatus.OK).body(repo.findAll());
     }
 
     @GetMapping("/user/{id}")
@@ -40,6 +38,12 @@ public class UserResource {
     @DeleteMapping("/user/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         repo.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Deleted User with ID"+id);
+        return ResponseEntity.status(HttpStatus.OK).body("Deleted user with ID: "+id);
+    }
+
+    @DeleteMapping("/users")
+    public ResponseEntity<?> deleteUsers() {
+        repo.deleteAll();
+        return ResponseEntity.status(HttpStatus.OK).body("Deleted all user");
     }
 }

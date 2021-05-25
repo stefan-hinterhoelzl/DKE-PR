@@ -10,7 +10,6 @@ import at.dkepr.model.User;
 
 public interface UserRepository extends Neo4jRepository<User, Long> {
     
-    //@Query("MATCH (u:User) RETURN n LIMIT 50")
-    @Query("MATCH (n) RETURN n LIMIT 25")
+    @Query("MATCH (u:User) RETURN n LIMIT 25")
     Collection<User> getAllUsers();
 }
