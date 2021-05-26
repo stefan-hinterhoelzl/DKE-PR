@@ -1,6 +1,5 @@
 package at.dkepr.userservice;
 
-
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -10,7 +9,9 @@ import org.apache.activemq.command.ActiveMQQueue;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import at.dkepr.entity.Credential;
 import at.dkepr.entity.PasswordChangeCredential;
@@ -34,8 +36,6 @@ import at.dkepr.exceptions.UserNotFoundException;
 import at.dkepr.exceptions.WrongPasswordException;
 import at.dkepr.security.JwtTokenResponse;
 import at.dkepr.security.JwtTokenService;
-
-
 
 @RestController
 public class UserController {
@@ -73,7 +73,16 @@ public class UserController {
             jmsTemplate.convertAndSend(queue, new UserSearchEntity(String.valueOf(addedUser.getId()), addedUser.getEmail(), addedUser.getFirstname(), addedUser.getLastname(), addedUser.getPokemonid()));
 
             //send to neo4j
-            
+            WebClient.Builder builder = WebClient.builder();
+
+            builder.build().post()
+                .uri("http://localhost:8081/user")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .bodyValue(newUser)
+                .retrieve()
+                .bodyToMono(User.class)
+                .block();
+            //===========================
 
             return ResponseEntity.
             status(HttpStatus.CREATED)
