@@ -8,7 +8,6 @@ import javax.jms.Queue;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,16 +25,20 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import at.dkepr.entity.Credential;
 import at.dkepr.entity.PasswordChangeCredential;
 import at.dkepr.entity.StringResponse;
 import at.dkepr.entity.User;
 import at.dkepr.entity.UserSearchEntity;
+
 import at.dkepr.exceptions.UserNotFoundException;
 import at.dkepr.exceptions.WrongPasswordException;
 import at.dkepr.security.JwtTokenResponse;
 import at.dkepr.security.JwtTokenService;
+
 
 @RestController
 public class UserController {
@@ -65,29 +68,34 @@ public class UserController {
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         
         try{
-            
+
+            //Zuerst in Neo4J versuchen, wenn kein Fehler --> Oracle DB, wenn kein Fehler --> in die Queue für Solr
+
+            //send to neo4j
+            WebClient.Builder builder = WebClient.builder();
+
+            builder.build().post()
+            .uri("http://localhost:8081/user")
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .bodyValue(newUser)
+            .retrieve()
+            .bodyToMono(User.class)
+            .block();
+           
+            //Store in Oracle Db
             User addedUser = this.repository.save(newUser);
 
             //send to solr
             Queue queue = new ActiveMQQueue("user-add-queue");
             jmsTemplate.convertAndSend(queue, new UserSearchEntity(String.valueOf(addedUser.getId()), addedUser.getEmail(), addedUser.getFirstname(), addedUser.getLastname(), addedUser.getPokemonid()));
 
-            //send to neo4j
-            WebClient.Builder builder = WebClient.builder();
-
-            builder.build().post()
-                .uri("http://localhost:8081/user")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .bodyValue(newUser)
-                .retrieve()
-                .bodyToMono(User.class)
-                .block();
-            //===========================
-
             return ResponseEntity.
             status(HttpStatus.CREATED)
             .body(addedUser);
-        }catch(DataAccessException e) {
+
+
+        }catch(Exception e) {
+            System.out.println(e.getCause());
             String Message = "Error";
             if (e.getCause() instanceof ConstraintViolationException) {
                 Message = "Diese Mail Adresse existiert bereits.";
@@ -96,6 +104,11 @@ public class UserController {
             if (e.getCause() instanceof SQLException) {
                 Message = "Datenbankfehler - Wurde der Table und die Sequence erstellt?";
             }
+
+            if (e.getCause() instanceof WebClientResponseException) {
+                Message = "Verbindung zur Networking DB war nicht möglich. Versuchen Sie es später noch einmal";
+            }
+
             return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(new StringResponse(Message));
