@@ -15,13 +15,9 @@ public class User {
 	@Relationship(type="FOLLOWS")
 	private List<Long> follows;
 
-	@Relationship(type="FOLLOWED_BY")
-	private List<Long> followedByUsers;
-
-	public User(Long id, List<Long> follows, List<Long> followedByUsers) {
+	public User(Long id, List<Long> follows) {
 		this.id = id;
 		this.follows = follows;
-		this.followedByUsers = followedByUsers;
 	}	
 
 	public User() {
@@ -41,13 +37,5 @@ public class User {
 
 	public void setFollows(List<Long> follows) {
 		this.follows = follows;
-	}
-
-	public List<Long> getFollowedByUsers() {
-		return followedByUsers;
-	}
-
-	public void setFollowedByUsers(List<Long> followedByUsers) {
-		this.followedByUsers = followedByUsers;
 	}
 }
