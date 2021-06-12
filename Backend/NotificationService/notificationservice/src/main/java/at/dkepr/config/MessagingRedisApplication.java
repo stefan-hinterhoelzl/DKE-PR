@@ -1,22 +1,84 @@
 package at.dkepr.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.listener.PatternTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 
-@SpringBootApplication
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.ReactiveKeyCommands;
+import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
+import org.springframework.data.redis.connection.ReactiveStringCommands;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+import at.dkepr.entity.Notification;
+import javax.annotation.PreDestroy;
+
+@Configuration
 public class MessagingRedisApplication {
+
+
+	@Autowired
+    RedisConnectionFactory factory;
+
+    @Bean
+    public ReactiveRedisTemplate<String, Notification> reactiveRedisTemplate(ReactiveRedisConnectionFactory factory) {
+        Jackson2JsonRedisSerializer<Notification> serializer = new Jackson2JsonRedisSerializer<>(Notification.class);
+        RedisSerializationContext.RedisSerializationContextBuilder<String, Notification> builder = RedisSerializationContext.newSerializationContext(new StringRedisSerializer());
+        RedisSerializationContext<String, Notification> context = builder.value(serializer)
+            .build();
+        return new ReactiveRedisTemplate<>(factory, context);
+    }
+
+    @Bean
+    public ReactiveKeyCommands keyCommands(final ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
+        return reactiveRedisConnectionFactory.getReactiveConnection()
+            .keyCommands();
+    }
+
+    @Bean
+    public ReactiveStringCommands stringCommands(final ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
+        return reactiveRedisConnectionFactory.getReactiveConnection()
+            .stringCommands();
+    }
+
+    @PreDestroy
+    public void cleanRedis() {
+        factory.getConnection()
+            .flushDb();
+    }
+
+
+
+	/*
+	@Bean
+	JedisConnectionFactory jedisConnectionFactory() {
+		return new JedisConnectionFactory();
+	}
+	
+	@Bean
+	public RedisTemplate<String, Object> redisTemplate() {
+		RedisTemplate<String, Object> template = new RedisTemplate<>();
+		template.setConnectionFactory(jedisConnectionFactory());
+		return template;
+	}
+
+	public static void main(String[] args) {
+
+		Date date=java.util.Calendar.getInstance().getTime();
+		Notification noti = new Notification(
+			"Eng2015001", "John Doe",date, true);
+			NotificationRepository.save(noti, "test");
+	}
+
+
+
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MessagingRedisApplication.class);
 
+
+	
 	@Bean
 	RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
 			MessageListenerAdapter listenerAdapter) {
@@ -27,6 +89,15 @@ public class MessagingRedisApplication {
 
 		return container;
 	}
+
+	@Bean
+	public RedisTemplate<Long, Notification> redisTemplate(RedisConnectionFactory connectionFactory) {
+		RedisTemplate<Long, Notification> template = new RedisTemplate<>();
+		template.setConnectionFactory(connectionFactory);
+		// Add some specific configuration here. Key serializers, etc.
+		return template;
+	}
+
 
 	@Bean
 	MessageListenerAdapter listenerAdapter(Receiver receiver) {
@@ -49,7 +120,7 @@ public class MessagingRedisApplication {
 
 		StringRedisTemplate template = ctx.getBean(StringRedisTemplate.class);
 		Receiver receiver = ctx.getBean(Receiver.class);
-
+		
 		while (receiver.getCount() == 0) {
 
 			LOGGER.info("Sending message...");
@@ -59,4 +130,5 @@ public class MessagingRedisApplication {
 
 		System.exit(0);
 	}
+	*/
 }

@@ -1,17 +1,25 @@
 package at.dkepr.entity;
 
 import java.util.Date;
+import java.io.Serializable;
 
-public class Notification {
+
+import org.springframework.data.redis.core.RedisHash;
+
+@Data
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+public class Notification implements Serializable {
 
     private String id;
     private String text;
     private Date createdAt;
     private boolean read;
 
-    public Notification() {
-    }
 
+    /*
     public Notification(String id, String text, Date createdAt, boolean read) {
         this.id = id;
         this.text = text;
@@ -50,5 +58,6 @@ public class Notification {
     public void setRead(boolean read) {
         this.read = read;
     }
+*/
 
 }
