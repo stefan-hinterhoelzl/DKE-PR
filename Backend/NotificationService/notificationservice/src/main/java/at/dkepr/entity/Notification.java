@@ -25,6 +25,8 @@ public class Notification implements Serializable {
         this.text = text;
         this.createdAt = createdAt;
         this.read = read;
+
+        //test
     }
 
     public String getId() {
