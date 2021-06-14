@@ -23,4 +23,14 @@ public interface UserRepository extends Neo4jRepository<User, Long> {
     "-[r:follows]->(a2:User{id : $1}) DELETE r")
     void deleteRelationship(long id1, long id2);
 
+    @Query("MATCH (a1:User{id: $0}) -[r:follows]->(a2:User) RETURN a2")
+    Iterable<User> getFollows(long id);
+
+    @Query("MATCH (a1:User) -[r:follows]->(a2:User{id : $0}) RETURN a1")
+    Iterable<User> getFollowedBy(long id);
+
+
+
+
+
 }
