@@ -5,19 +5,19 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
+import org.springframework.data.neo4j.core.schema.Relationship.Direction;
 
-@Node
+@Node("User")
 public class User {
 
 	@Id
 	private Long id;
 
-	@Relationship(type="FOLLOWS")
-	private List<Long> follows;
+	@Relationship(type="FOLLOWS", direction = Direction.OUTGOING)
+	private Iterable<Long> follows;
 
-	public User(Long id, List<Long> follows) {
+	public User(Long id) {
 		this.id = id;
-		this.follows = follows;
 	}	
 
 	public User() {
@@ -31,7 +31,7 @@ public class User {
 		this.id = id;
 	}
 
-	public List<Long> getFollows() {
+	public Iterable<Long> getFollows() {
 		return follows;
 	}
 

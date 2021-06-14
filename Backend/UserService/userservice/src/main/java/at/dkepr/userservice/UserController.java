@@ -69,7 +69,8 @@ public class UserController {
         
         try{
 
-            //Zuerst in Neo4J versuchen, wenn kein Fehler --> Oracle DB, wenn kein Fehler --> in die Queue für Solr
+            //Store in Oracle Db
+            User addedUser = this.repository.save(newUser);
 
             //send to neo4j
             WebClient.Builder builder = WebClient.builder();
@@ -77,22 +78,19 @@ public class UserController {
             builder.build().post()
             .uri("http://localhost:8081/user")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(newUser)
+            .bodyValue(addedUser)
             .retrieve()
             .onStatus(HttpStatus::is4xxClientError, response -> {
-                return Mono.error(new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen."));
+                return Mono.error(new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", addedUser.getId()));
             })
             .onStatus(HttpStatus::is5xxServerError, response -> {
-                return Mono.error(new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen."));
+                return Mono.error(new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", addedUser.getId()));
             })
             .bodyToMono(User.class)
             .onErrorMap(throwable -> {
-                return new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.");
+                return new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", addedUser.getId());
             })
             .block();
-           
-            //Store in Oracle Db
-            User addedUser = this.repository.save(newUser);
 
             //send to solr
             Queue queue = new ActiveMQQueue("user-add-queue");
@@ -115,9 +113,11 @@ public class UserController {
             }
 
             //In Case of Error with the Neo4J DB
-
             if(e instanceof Neo4JException) {
-                Message = e.getMessage();
+                Neo4JException ex = (Neo4JException) e;
+                Message = ex.getMessage();
+                //Delete User from SQL Table
+                this.repository.deleteById(ex.getId());
             }
 
             return ResponseEntity

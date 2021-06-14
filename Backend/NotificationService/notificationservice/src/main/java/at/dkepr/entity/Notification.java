@@ -6,11 +6,7 @@ import java.io.Serializable;
 
 import org.springframework.data.redis.core.RedisHash;
 
-@Data
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
+@RedisHash
 public class Notification implements Serializable {
 
     private String id;
@@ -19,7 +15,7 @@ public class Notification implements Serializable {
     private boolean read;
 
 
-    /*
+    
     public Notification(String id, String text, Date createdAt, boolean read) {
         this.id = id;
         this.text = text;
@@ -27,37 +23,55 @@ public class Notification implements Serializable {
         this.read = read;
     }
 
+
+
     public String getId() {
         return id;
     }
+
+
 
     public void setId(String id) {
         this.id = id;
     }
 
+
+
     public String getText() {
         return text;
     }
+
+
 
     public void setText(String text) {
         this.text = text;
     }
 
-    public Date getText(Date createdAt) {
+
+
+    public Date getCreatedAt() {
         return createdAt;
     }
+
+
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public boolean getRead() {
+
+
+    public boolean isRead() {
         return read;
     }
+
+
 
     public void setRead(boolean read) {
         this.read = read;
     }
-*/
+
+    
+
 
 }
