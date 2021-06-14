@@ -25,23 +25,23 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
-//import org.springframework.web.reactive.function.client.WebClientException;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import at.dkepr.entity.Credential;
 import at.dkepr.entity.PasswordChangeCredential;
 import at.dkepr.entity.StringResponse;
 import at.dkepr.entity.User;
 import at.dkepr.entity.UserSearchEntity;
-
+import at.dkepr.exceptions.Neo4JException;
 import at.dkepr.exceptions.UserNotFoundException;
 import at.dkepr.exceptions.WrongPasswordException;
 import at.dkepr.security.JwtTokenResponse;
 import at.dkepr.security.JwtTokenService;
+import reactor.core.publisher.Mono;
 
 
 @RestController
 public class UserController {
+
 
     private final UserRepository repository;
     private final JwtTokenService jwtservice;
@@ -69,7 +69,8 @@ public class UserController {
         
         try{
 
-            //Zuerst in Neo4J versuchen, wenn kein Fehler --> Oracle DB, wenn kein Fehler --> in die Queue für Solr
+            //Store in Oracle Db
+            User addedUser = this.repository.save(newUser);
 
             //send to neo4j
             WebClient.Builder builder = WebClient.builder();
@@ -77,13 +78,19 @@ public class UserController {
             builder.build().post()
             .uri("http://localhost:8081/user")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(newUser)
+            .bodyValue(addedUser)
             .retrieve()
+            .onStatus(HttpStatus::is4xxClientError, response -> {
+                return Mono.error(new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", addedUser.getId()));
+            })
+            .onStatus(HttpStatus::is5xxServerError, response -> {
+                return Mono.error(new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", addedUser.getId()));
+            })
             .bodyToMono(User.class)
+            .onErrorMap(throwable -> {
+                return new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", addedUser.getId());
+            })
             .block();
-           
-            //Store in Oracle Db
-            User addedUser = this.repository.save(newUser);
 
             //send to solr
             Queue queue = new ActiveMQQueue("user-add-queue");
@@ -95,8 +102,8 @@ public class UserController {
 
 
         }catch(Exception e) {
-            System.out.println(e.getCause());
             String Message = "Error";
+            System.out.println(e);
             if (e.getCause() instanceof ConstraintViolationException) {
                 Message = "Diese Mail Adresse existiert bereits.";
             }
@@ -105,8 +112,12 @@ public class UserController {
                 Message = "Datenbankfehler - Wurde der Table und die Sequence erstellt?";
             }
 
-            if (e.getCause() instanceof WebClientResponseException) {
-                Message = "Verbindung zur Networking DB war nicht möglich. Versuchen Sie es später noch einmal";
+            //In Case of Error with the Neo4J DB
+            if(e instanceof Neo4JException) {
+                Neo4JException ex = (Neo4JException) e;
+                Message = ex.getMessage();
+                //Delete User from SQL Table
+                this.repository.deleteById(ex.getId());
             }
 
             return ResponseEntity
@@ -135,7 +146,6 @@ public class UserController {
                 throw new WrongPasswordException();
             }   
         } else {
-            System.out.println("I am here");
             throw new UserNotFoundException(payload.getEmail());
         }
     }
