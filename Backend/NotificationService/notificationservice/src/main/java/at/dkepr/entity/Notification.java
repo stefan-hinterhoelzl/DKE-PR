@@ -22,7 +22,7 @@ public class Notification implements Serializable {
         this.createdAt = createdAt;
         this.read = read;
 
-        //test
+        //test again
     }
 
 
