@@ -2,6 +2,7 @@ package at.dkepr.userservice;
 
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import javax.jms.Queue;
 
@@ -25,23 +26,23 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientException;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import at.dkepr.entity.Credential;
 import at.dkepr.entity.PasswordChangeCredential;
 import at.dkepr.entity.StringResponse;
 import at.dkepr.entity.User;
 import at.dkepr.entity.UserSearchEntity;
-
+import at.dkepr.exceptions.Neo4JException;
 import at.dkepr.exceptions.UserNotFoundException;
 import at.dkepr.exceptions.WrongPasswordException;
 import at.dkepr.security.JwtTokenResponse;
 import at.dkepr.security.JwtTokenService;
+import reactor.core.publisher.Mono;
 
 
 @RestController
 public class UserController {
+
 
     private final UserRepository repository;
     private final JwtTokenService jwtservice;
@@ -79,7 +80,16 @@ public class UserController {
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .bodyValue(newUser)
             .retrieve()
+            .onStatus(HttpStatus::is4xxClientError, response -> {
+                return Mono.error(new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen."));
+            })
+            .onStatus(HttpStatus::is5xxServerError, response -> {
+                return Mono.error(new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen."));
+            })
             .bodyToMono(User.class)
+            .onErrorMap(throwable -> {
+                return new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.");
+            })
             .block();
            
             //Store in Oracle Db
@@ -95,8 +105,8 @@ public class UserController {
 
 
         }catch(Exception e) {
-            System.out.println(e.getCause());
             String Message = "Error";
+            System.out.println(e);
             if (e.getCause() instanceof ConstraintViolationException) {
                 Message = "Diese Mail Adresse existiert bereits.";
             }
@@ -105,8 +115,10 @@ public class UserController {
                 Message = "Datenbankfehler - Wurde der Table und die Sequence erstellt?";
             }
 
-            if (e.getCause() instanceof WebClientResponseException) {
-                Message = "Verbindung zur Networking DB war nicht möglich. Versuchen Sie es später noch einmal";
+            //In Case of Error with the Neo4J DB
+
+            if(e instanceof Neo4JException) {
+                Message = e.getMessage();
             }
 
             return ResponseEntity
@@ -135,7 +147,6 @@ public class UserController {
                 throw new WrongPasswordException();
             }   
         } else {
-            System.out.println("I am here");
             throw new UserNotFoundException(payload.getEmail());
         }
     }
