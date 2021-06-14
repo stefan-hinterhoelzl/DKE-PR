@@ -2,7 +2,6 @@ package at.dkepr.userservice;
 
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import javax.jms.Queue;
 
