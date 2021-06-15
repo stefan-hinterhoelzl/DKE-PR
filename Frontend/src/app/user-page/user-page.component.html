@@ -9,7 +9,9 @@
                     <div>
                         <h4> #{{user.id}} </h4>
                     </div>
-                    <button *ngIf = "!selfprofile" mat-button mat-raised-button color = "primary">{{user.firstname}} Folgen</button>
+                    <button *ngIf = "!selfprofile && following.indexOf(user.id) == -1" mat-button mat-raised-button color = "primary" (click) = "followUser()">{{user.firstname}} Folgen</button>
+                    <button *ngIf = "!selfprofile && following.indexOf(user.id) != -1" mat-button mat-raised-button color = "primary" (click) = "UnfollowUser()">{{user.firstname}} Entfolgen</button>
+
                     
             </div> 
             </mat-card-title>
@@ -38,23 +40,6 @@
 
     </div>
     <div fxFlex fxLayout="column" fxLayoutAlign="start center">
-            <div style = "width: 50%">
-                <div *ngIf = "selfprofile" fxFlex fxLayout="row" fxLayoutAlign="space-between start">
-                    <div>
-                        <a  mat-button mat-raised-button color = "primary" [routerLink] = "['./posts']">Meine Postings</a>
-                    </div>
-                    <div>
-                        <a  mat-button mat-raised-button color = "primary" [routerLink] = "['./following']">Abonnierte Benutzer</a>
-                    </div>
-                    <div>
-                        <a  mat-button mat-raised-button color= "primary" [routerLink] = "['./followers']">Meine Abonennten</a>
-                    </div>
-                    <div>
-                        <a  mat-button mat-raised-button color = "primary" [routerLink] = "['./edit']">Benutzer bearbeiten</a>
-                    </div> 
-                </div>
-            </div>
-
         <div style= "margin-top: 4%; width:100%;">
             <router-outlet>
 

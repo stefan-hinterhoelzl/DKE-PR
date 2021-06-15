@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../model/User';
+import { AuthService } from '../services/AuthService';
+import { FollowerService } from '../services/followerservice';
 
 @Component({
   selector: 'app-user-pager-followers-list',
@@ -7,9 +10,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserPagerFollowersListComponent implements OnInit {
 
-  constructor() { }
+  users: User[] = [];
+  followers: number[] = [];
 
-  ngOnInit(): void {
+  constructor(private auth: AuthService, private fs: FollowerService) { }
+
+  ngOnInit() {
+
+    this.fs.followers.subscribe(async (data) => {
+      this.followers = data;
+      console.log(data);
+      this.users = await this.auth.getUsersPerList(data);
+      console.log(this.users);
+    });
+  }
+
+  async unfollowUser(user: User){
+    await this.fs.UnfollowUser(this.auth.currentUserValue.id, user.id).then(() =>{
+      let i = this.followers.indexOf(user.id);
+      this.followers.splice(i, 1);
+      this.fs.following.next(this.followers);
+    });
+
   }
 
 }

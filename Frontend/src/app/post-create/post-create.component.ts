@@ -10,6 +10,7 @@ import { AuthService } from '../services/AuthService';
 import { PostService } from '../services/postservice';
 import { v4 as uuidv4 } from 'uuid';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AlertService } from '../services/alertService';
 
 @Component({
   selector: 'app-post-create',
@@ -18,7 +19,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 export class PostCreateComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private postservice: PostService, private _ngZone: NgZone, private ps: PostService, public dialog: MatDialog) { 
+  constructor(private fb: FormBuilder, private auth: AuthService, private postservice: PostService, private _ngZone: NgZone, private ps: PostService, public dialog: MatDialog, public alert: AlertService) { 
     this.content = new FormControl('', Validators.required)
     this.emoji = new FormControl('', Validators.required)
   }
@@ -60,6 +61,7 @@ export class PostCreateComponent implements OnInit {
       currFeed.push(payload);
       this.ps.posts.next(currPostings);
       this.ps.feed.next(currFeed);
+      this.alert.success("Posting wurde abgegeben.")
     });
   }
 

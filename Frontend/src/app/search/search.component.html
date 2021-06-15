@@ -6,7 +6,7 @@
         </div>
         
         <div style="width: 100%">
-            <div *ngFor = "let user of users">
+            <div *ngFor = "let user of usersU">
                 <div *ngIf = "user.id != currentuser.id">
                     <div fxLayout = "row" fxLayoutAlign = "center center">
                         <div fxFlex="20">
@@ -23,12 +23,8 @@
                             </div>
                         </div>
                         <div fxFlex = "30">
-                            <div>
-                                <button style = "width: 150px" mat-button mat-raised-button color ="primary">{{user.firstname}} folgen</button>
-                            </div>
-                            <!-- <div *ngIf="user.firstname == 'Stefan'">
-                                <button style = "width: 150px"  mat-button mat-raised-button color = "primary">Entfolgen</button>
-                            </div> -->
+                            <button *ngIf = "following.indexOf(user.id) == -1"  style = "width: 150px" mat-button mat-raised-button color ="primary" (click) = "followUser(user)">{{user.firstname}} folgen</button>
+                            <button *ngIf = "following.indexOf(user.id) != -1" style = "width: 150px"  mat-button mat-raised-button color = "primary" (click) = "unfollowUser(user)"> {{user.firstname}} entfolgen</button>
                         </div>
                     </div>
                     <hr>

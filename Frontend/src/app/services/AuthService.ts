@@ -6,6 +6,7 @@ import {User} from "src/app/model/User";
 import {Credential} from "src/app/model/Credential";
 import { Router } from "@angular/router";
 import { PostService } from "./postservice";
+import { FollowerService } from "./followerservice";
 
 const httpOptions =  {
    headers: new HttpHeaders({
@@ -26,7 +27,7 @@ export class AuthService
 
 
 
-    constructor(private http: HttpClient, private router: Router, private ps: PostService) {}
+    constructor(private http: HttpClient, private router: Router, private ps: PostService, private fs: FollowerService) {}
 
     
     //UserService API
@@ -36,6 +37,10 @@ export class AuthService
 
     getUserPerID(id: number) {
       return this.http.get<User>(userServiceAPIURL+"userPerID/"+id).pipe(take(1));
+    }
+
+    getUsersPerList(ids: number[]) {
+      return this.http.get<User[]>(userServiceAPIURL+"userInList?ids="+ids.join()).toPromise()
     }
 
     postUser(user: User): Observable<User> {
@@ -58,7 +63,7 @@ export class AuthService
       return this.http.delete<any>(userServiceAPIURL+"user/"+id).pipe(take(1));
     }
 
-    autoLogin() {
+    async autoLogin() {
       const user: User = JSON.parse(localStorage.getItem('user'));
       if(!user) {
         this.user.next(null);
@@ -69,6 +74,8 @@ export class AuthService
       this.user.next(user);
       this.ps.setPostObservable(user.id.toString());
       this.ps.setFeedObservable(user.id.toString())
+      await this.fs.setFollowersObservable(user.id);
+      await this.fs.setFollowingObservable(user.id);
     }
 
     logout(stateurl: string = "") {

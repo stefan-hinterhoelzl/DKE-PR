@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../model/User';
 import { AlertService } from '../services/alertService';
 import { AuthService } from '../services/AuthService';
+import { FollowerService } from '../services/followerservice';
 import { PokemonService } from '../services/pokemonservice';
 
 @Component({
@@ -17,9 +18,10 @@ export class UserPageComponent implements OnInit, OnDestroy {
   pokemondata: any;
   selfprofile: boolean;
   subscription;
+  following: number[];
   
 
-  constructor(private http: HttpClient, private auth: AuthService, private route: ActivatedRoute, private poke: PokemonService, public router: Router, private alertservice: AlertService) { }
+  constructor(private http: HttpClient, private auth: AuthService, private route: ActivatedRoute, private poke: PokemonService, public router: Router, private alertservice: AlertService, private fs: FollowerService) { }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -28,6 +30,10 @@ export class UserPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.auth.user.subscribe((data: User) => {
       this.user = data;
+    });
+
+    this.fs.following.subscribe((data) => {
+      this.following = data;
     });
 
     //subscription to the active route
@@ -47,6 +53,10 @@ export class UserPageComponent implements OnInit, OnDestroy {
         this.selfprofile = false;
         this.getPokemonData();
       });
+
+      
+
+
     } else {
       this.selfprofile = true;
       this.getPokemonData();
@@ -103,6 +113,23 @@ export class UserPageComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  async followUser() {
+    await this.fs.followUser(this.auth.currentUserValue.id, this.user.id).then(() =>{
+      this.following.push(this.user.id);
+      this.fs.following.next(this.following);
+      console.log(this.following)
+    });
+  }
+
+  async unfollowUser(){
+    await this.fs.UnfollowUser(this.auth.currentUserValue.id, this.user.id).then(() =>{
+      let i = this.following.indexOf(this.user.id);
+      this.following.splice(i, 1);
+      this.fs.following.next(this.following);
+    });
+
   }
   
 }

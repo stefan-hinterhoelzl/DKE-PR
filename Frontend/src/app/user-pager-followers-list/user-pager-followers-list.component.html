@@ -1,1 +1,30 @@
-<p>user-pager-followers-list works!</p>
+<div class="main-wrapper" style ="width: 100%;" fxLayout="column" fxLayoutAlign="start center">
+
+    <mat-card *ngIf ="users.length != 0"  style = "margin-top: 3%; width: 40%;">
+        <div style="width: 100%">
+            <div *ngFor = "let user of users">
+                <div fxLayout = "row" fxLayoutAlign = "center center">
+                    <div fxFlex="20">
+                        <app-image-with-loading
+                            image= "https://pokeres.bastionbot.org/images/pokemon/{{user.pokemonid}}.png"
+                            height = 100
+                            width = 100>
+                        </app-image-with-loading>
+                    </div>
+                    <div fxFlex>
+                        <button routerLink = "/user/{{user.id}}"  mat-button>{{user.firstname}} {{user.lastname}}</button>
+                        <div style = "margin-left: 5%">
+                            <h4>#{{user.id}}</h4>
+                        </div>
+                    </div>
+                    <div fxFlex = "30">
+                        <div>
+                            <button style = "width: 150px"  mat-button mat-raised-button color = "primary" (click) = "unfollowUser(user)">Entfolgen</button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </mat-card>
+</div>
