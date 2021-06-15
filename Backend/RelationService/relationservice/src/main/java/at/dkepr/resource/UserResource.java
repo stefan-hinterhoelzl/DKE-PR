@@ -1,5 +1,6 @@
 package at.dkepr.resource;
 
+import at.dkepr.model.StringResponse;
 import at.dkepr.model.User;
 import at.dkepr.repository.UserRepository;
 
@@ -39,26 +40,26 @@ public class UserResource {
 
     @DeleteMapping("/user/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        repo.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Deleted user with ID: "+id);
+        repo.deleteByIdAndDetach(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new StringResponse("Deleted user with ID: "+id));
     }
 
     @DeleteMapping("/users")
     public ResponseEntity<?> deleteUsers() {
         repo.deleteAll();
-        return ResponseEntity.status(HttpStatus.OK).body("Deleted all user");
+        return ResponseEntity.status(HttpStatus.OK).body(new StringResponse("Deleted all user"));
     }
 
     @PostMapping("/users/follows/{id1}/{id2}")
     public ResponseEntity<?> addRelationship(@PathVariable long id1, @PathVariable long id2) {
         repo.addRelationship(id1, id2);
-        return ResponseEntity.status(HttpStatus.OK).body("Relationship added");
+        return ResponseEntity.status(HttpStatus.OK).body(new StringResponse("Relationship added"));
     }
 
     @DeleteMapping("/users/follows/{id1}/{id2}")
     public ResponseEntity<?> deleteRelationship(@PathVariable long id1, @PathVariable long id2) {
         repo.deleteRelationship(id1, id2);
-        return ResponseEntity.status(HttpStatus.OK).body("Relationship delete");
+        return ResponseEntity.status(HttpStatus.OK).body(new StringResponse("Relationship deleted"));
     }
 
     @GetMapping("users/follows/{id}")

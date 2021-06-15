@@ -200,20 +200,52 @@ public class UserController {
     @DeleteMapping("user/{id}")
     public ResponseEntity<StringResponse> deleteUser(@PathVariable Long id) {
         User userToDelete = this.getUser(id);
-
-        repository.deleteById(userToDelete.getId());
-
-        //send to solr
-        Queue queue = new ActiveMQQueue("user-delete-queue");
-        UserSearchEntity deleteuser = new UserSearchEntity(String.valueOf(userToDelete.getId()), userToDelete.getEmail(), userToDelete.getFirstname(), userToDelete.getLastname(), userToDelete.getPokemonid());
+        try {
 
 
-        this.jmsTemplate.convertAndSend(queue, deleteuser);
+            //deleteFromNEO4J
+            WebClient.Builder builder = WebClient.builder();
+
+            builder.build().delete()
+            .uri("http://localhost:8081/user/"+id)
+            .retrieve()
+            .onStatus(HttpStatus::is4xxClientError, response -> {
+                return Mono.error(new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", userToDelete.getId()));
+            })
+            .onStatus(HttpStatus::is5xxServerError, response -> {
+                return Mono.error(new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", userToDelete.getId()));
+            })
+            .bodyToMono(String.class)
+            .onErrorMap(throwable -> {
+                return new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", userToDelete.getId());
+            })
+            .block(); 
+
+
+            //delete from OracleDB
+            repository.deleteById(userToDelete.getId());
+
+            //send to solr
+            Queue queue = new ActiveMQQueue("user-delete-queue");
+            UserSearchEntity deleteuser = new UserSearchEntity(String.valueOf(userToDelete.getId()), userToDelete.getEmail(), userToDelete.getFirstname(), userToDelete.getLastname(), userToDelete.getPokemonid());
+            this.jmsTemplate.convertAndSend(queue, deleteuser);
         
+            return ResponseEntity.
+                    status(HttpStatus.OK)
+                    .body(new StringResponse("Deleted"));
 
-        return ResponseEntity.
-                status(HttpStatus.OK)
-                .body(new StringResponse("Deleted"));
+        }catch(Exception e) {
+            String Message = "Löschen fehlgeschlagen";
+            //In Case of Error with the Neo4J DB
+            if(e instanceof Neo4JException) {
+                Neo4JException ex = (Neo4JException) e;
+                Message = ex.getMessage();
+            }
+
+            return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(new StringResponse(Message));
+        }
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
