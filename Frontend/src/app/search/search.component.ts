@@ -48,6 +48,7 @@ export class SearchComponent implements OnInit {
 
 
   async search() {
+    this.usersU = [];
     this.users = await this.searchService.getUsers(this.key).toPromise();
 
     this.users.forEach((element) => {
