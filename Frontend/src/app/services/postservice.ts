@@ -33,7 +33,7 @@ export class PostService
         return this.http.post<Posting>(userServicePOSTAPIURL+"post", post, httpOptions).pipe(take(1));
     }
 
-    getAllUserPosts(userid: String): Observable<Posting[]> {
+    getAllUserPosts(userid: number): Observable<Posting[]> {
        return this.http.get<Posting[]>(userServiceGETAPIURL+"posts/"+userid, httpOptions).pipe(take(1));
     }
 
@@ -58,11 +58,11 @@ export class PostService
     }
 
     //used to cache the users own posting
-    public async setPostObservable(userid: String){
+    public async setPostObservable(userid: number){
       this.posts.next(await this.getAllUserPosts(userid).toPromise())
     }
 
-    public async setFeedObservable(userid: String){
+    public async setFeedObservable(userid: number){
        let posts: Posting[] = await this.getAllPosts().toPromise();
        posts = posts.filter(curr => curr.authorid !== userid);
       

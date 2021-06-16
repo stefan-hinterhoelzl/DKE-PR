@@ -72,8 +72,8 @@ export class AuthService
       }
       this.token.next(localStorage.getItem("token"))
       this.user.next(user);
-      this.ps.setPostObservable(user.id.toString());
-      this.ps.setFeedObservable(user.id.toString())
+      this.ps.setPostObservable(user.id);
+      this.ps.setFeedObservable(user.id)
       await this.fs.setFollowersObservable(user.id);
       await this.fs.setFollowingObservable(user.id);
     }

@@ -39,7 +39,7 @@ public class jmsConsumer {
             service.deletebyId(text.substring(8, text.length()-1));
         }
         else{
-            service.deleteAllbyAuthorId(text.substring(10, text.length()-1));
+            service.deleteAllbyAuthorId(Long.valueOf(text.substring(10, text.length()-1)));
         }       
        
 		

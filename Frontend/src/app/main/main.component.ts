@@ -10,6 +10,7 @@ import { Posting } from '../model/Posting';
 import { User } from '../model/User';
 import { AlertService } from '../services/alertService';
 import { AuthService } from '../services/AuthService';
+import { FollowerService } from '../services/followerservice';
 import { PostService } from '../services/postservice';
 
 @Component({
@@ -21,17 +22,23 @@ export class MainComponent implements OnInit {
 
   posts: Posting[]
   user: User;
+  following: number[];
 
-  constructor(private ps: PostService, private auth: AuthService, private dialog: MatDialog, private alert: AlertService, public router: Router) { }
+  constructor(private ps: PostService, private auth: AuthService, private dialog: MatDialog, private alert: AlertService, public router: Router, private fs: FollowerService) { }
 
   ngOnInit(): void {
     this.getPosts();
 
     this.user = this.auth.currentUserValue;
+
+    this.fs.following.subscribe((data)=> {
+      this.following = data;
+    });
+
   }
 
   getPosts() {
-    this.ps.feed.asObservable().subscribe((data) => {
+    this.ps.feed.subscribe((data) => {
       this.posts = data;
       this.posts.sort((a,b)=> {
         return b.createdAt-a.createdAt;
@@ -100,7 +107,7 @@ export class MainComponent implements OnInit {
   }
 
   refresh() {
-  this.ps.setFeedObservable(this.user.id.toString())
+  this.ps.setFeedObservable(this.user.id)
   }
 
   navigateToAuthor(post: Posting) {

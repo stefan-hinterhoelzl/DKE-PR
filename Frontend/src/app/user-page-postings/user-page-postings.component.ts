@@ -28,18 +28,20 @@ export class UserPagePostingsComponent implements OnInit {
 
     this.subscription = this.route.parent.params.subscribe(params => {
       let id: string = params['id'];
-      this.initialize(id);
+      let id2: number = parseInt(id);
+      this.initialize(id2);
     });
 
   }
 
-  initialize(id: String) {
-    if (this.user.id.toString() === id) {
+  initialize(id: number) {
+    if (this.user.id === id) {
       this.ps.posts.asObservable().subscribe((data: Posting[]) => {
         this.posts = data;
         this.posts.sort((a,b)=> {
           return b.createdAt-a.createdAt;
         });
+        console.log("this is right")
         console.log(data);
         this.selfprofile = true;
       });

@@ -48,7 +48,7 @@ public class PostingController {
 
     //Extrem dreckige Lösung, aber hab des Max Attribut in da Query ned zum laufen bracht - geht im UI von Couchbase
     @GetMapping("post/latestpost/{author}")
-    public ResponseEntity<?> getLatestPostByAuthor(@PathVariable String author) {
+    public ResponseEntity<?> getLatestPostByAuthor(@PathVariable Long author) {
         List<Post> posts = this.service.findByAuthor(author);
 
         if(posts.size() >= 1) {
@@ -65,7 +65,7 @@ public class PostingController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("posts/{author}")
-    public ResponseEntity<?> getAllPostsbyAuthor(@PathVariable String author) {
+    public ResponseEntity<?> getAllPostsbyAuthor(@PathVariable Long author) {
         List<Post> posts = this.service.findByAuthor(author);
         return ResponseEntity.status(HttpStatus.OK).body(posts);
     }

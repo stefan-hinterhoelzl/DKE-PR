@@ -26,7 +26,7 @@ public class PostingService {
         return this.repository.findById(id);
     }
 
-    public List<Post> findByAuthor(String authorid) {
+    public List<Post> findByAuthor(Long authorid) {
         return this.repository.findByAuthorid(authorid);
     }
 
@@ -34,7 +34,7 @@ public class PostingService {
         this.repository.deleteById(id);
     }
 
-    public void deleteAllbyAuthorId(String id) {
+    public void deleteAllbyAuthorId(Long id) {
        this.repository.deleteByAuthorid(id);
     }
     

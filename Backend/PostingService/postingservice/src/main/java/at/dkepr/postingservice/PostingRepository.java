@@ -15,8 +15,8 @@ public interface PostingRepository extends CrudRepository<Post, String> {
     // public Optional<Post> getLatestPostByAuthor(String author);
 
 
-    public List<Post> findByAuthorid(String authorid);
+    public List<Post> findByAuthorid(Long authorid);
 
-    public void deleteByAuthorid(String authorid);
+    public void deleteByAuthorid(Long authorid);
     
 }

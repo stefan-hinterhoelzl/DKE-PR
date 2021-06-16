@@ -46,7 +46,7 @@ export class PostCreateComponent implements OnInit {
     const payload = <Posting> {
       id: uuidv4(),
       authorname: this.user.firstname + " " +this.user.lastname,
-      authorid: this.user.id.toString(),
+      authorid: this.user.id,
       mood: this.emoji.value,
       createdAt: Date.now(),
       content: this.content.value

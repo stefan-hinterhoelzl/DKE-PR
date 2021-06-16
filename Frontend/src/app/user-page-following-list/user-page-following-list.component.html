@@ -1,7 +1,10 @@
 <div class="main-wrapper" style ="width: 100%;" fxLayout="column" fxLayoutAlign="start center">
 
-    <mat-card *ngIf ="users.length != 0"  style = "margin-top: 3%; width: 40%;">
-        <div style="width: 100%">
+    <mat-card  style = "margin-top: 3%; width: 40%;">
+        <div>
+            <h2>Abonnierte Benutzer</h2>
+        </div>
+        <div *ngIf ="users.length != 0" style="width: 100%">
             <div *ngFor = "let user of users">
                 <div fxLayout = "row" fxLayoutAlign = "center center">
                     <div fxFlex="20">

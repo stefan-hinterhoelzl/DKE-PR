@@ -3,7 +3,7 @@ export interface Posting {
     mood: String;
     content: String;
     createdAt: number;
-    authorid: String;
+    authorid: number;
     authorname: String;
     
 }

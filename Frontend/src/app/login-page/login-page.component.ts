@@ -57,9 +57,9 @@ export class LoginPageComponent implements OnInit {
           localStorage.setItem('user', JSON.stringify(user));
 
           //cach the user postings
-          this.ps.setPostObservable(user.id.toString());
+          this.ps.setPostObservable(user.id);
 
-          this.ps.setFeedObservable(user.id.toString());
+          this.ps.setFeedObservable(user.id);
 
 
           //cache the FollowersObservable
