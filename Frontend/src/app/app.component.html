@@ -14,8 +14,21 @@
         <div *ngIf="user !== null">
             <mat-search-bar style="font-size: 10pt" [formControl] = "searchbar" (onEnter) = "search()"></mat-search-bar>
         </div>
+        <div *ngIf="user !== null" style ="margin-top: 8px; margin-left: 15px;">
+          <mat-icon matBadge="4" matBadgeOverlap="false" style = "cursor: pointer;" (click)="isOpen = !isOpen" cdkOverlayOrigin #trigger="cdkOverlayOrigin">email</mat-icon>
+          <ng-template
+            cdkConnectedOverlay
+            [cdkConnectedOverlayOrigin]="trigger"
+            [cdkConnectedOverlayOpen]="isOpen">
+            <ul class="example-list">
+              <li>Stefan Hinterhölzl folgt dir jetzt</li>
+              <li>Item 2</li>
+              <li>Item 3</li>
+            </ul>
+          </ng-template>
+        </div>
         <span *ngIf="user !== null" class="nav-tool-items">  
-          <div  style = "font-size: 17px; margin-left: 10px; cursor: pointer;" [matMenuTriggerFor] = "menu">{{user.firstname}} {{user.lastname}}</div>
+          <div  style = "font-size: 17px; margin-left: 40px; cursor: pointer;" [matMenuTriggerFor] = "menu">{{user.firstname}} {{user.lastname}}</div>
           <mat-menu #menu="matMenu">
             <a routerLink = "app" mat-menu-item>Startseite</a>
             <a routerLink = "user/{{user.id}}/posts" mat-menu-item>Profilpostings</a>
@@ -35,3 +48,7 @@
 <router-outlet> </router-outlet>
 
 </main>
+
+
+
+

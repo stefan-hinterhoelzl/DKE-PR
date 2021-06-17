@@ -16,11 +16,13 @@ export class AppComponent implements OnInit {
 
   user: User = null;
   searchbar = new FormControl();
+  isOpen: boolean;
   
 
   constructor(private auth: AuthService, public router: Router) {}
 
   ngOnInit(): void {
+    this.isOpen = false;
     this.auth.user.subscribe((data:User) => {
       this.user = data;
     });
