@@ -55,7 +55,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {}
 
 
-  signUpUser() {
+  async signUpUser() {
     let pokemonid: String = (Math.floor(Math.random() * 494)+1).toString();
 
     let tempemail: String = this.email.value;
@@ -71,14 +71,14 @@ export class RegisterComponent implements OnInit {
     }
     
     var addedUser: User;
-    this.apiservice.postUser(user).subscribe((data: User) => {
+    await this.apiservice.postUser(user).then((data: User) => {
       addedUser = {...data}
       this.alertservice.success("Benutzer "+addedUser.email+" wurde angelegt.");
       this.form.reset();
 
       Object.keys(this.form.controls).forEach(key => {
       this.form.get(key).setErrors(null);
-    });
+      });
     },
     (error) => {
       console.log(error);

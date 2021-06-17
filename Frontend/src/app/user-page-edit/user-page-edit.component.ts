@@ -64,7 +64,7 @@ export class UserPageEditComponent implements OnInit {
   }
 
 
-  updateUserData() {
+  async updateUserData() {
     let changes = <User> {
       firstname:  this.firstname.value,
       lastname:  this.lastname.value,
@@ -73,7 +73,7 @@ export class UserPageEditComponent implements OnInit {
     }   
 
     //save to database
-    this.auth.updateUser(changes, this.user.id).subscribe((data: User) => {
+    await this.auth.updateUser(changes, this.user.id).then((data: User) => {
       //on success, cache the data and change the observable
       this.user = data;
       localStorage.setItem('user', JSON.stringify(data));
@@ -95,13 +95,13 @@ export class UserPageEditComponent implements OnInit {
     
   }
 
-  updateUserPassword() {
+ async updateUserPassword() {
     let payload: PasswordChangeCredential = {
       oldpassword: this.oldpw.value,
       newpassword: this.newpw.value,
       newpasswordconfirm: this.newpwconfirm.value,
     }
-    this.auth.updateUserPassword(payload, this.user.id).subscribe((data: User) => {
+    await this.auth.updateUserPassword(payload, this.user.id).then((data: User) => {
       this.dataform.reset();
 
       Object.keys(this.dataform.controls).forEach(key => {
@@ -131,12 +131,10 @@ export class UserPageEditComponent implements OnInit {
   }
 
 
-  deleteUser() {
-    this.auth.deleteUser(this.user.id).subscribe(() => {
+  async deleteUser() {
+    await this.auth.deleteUser(this.user.id).then(async () => {
 
-      this.ps.deleteAllByAuthor(this.user.id.toString()).subscribe(
-        data => console.log(data)
-      );
+      await this.ps.deleteAllByAuthor(this.user.id);
       
       this.alertservice.success("Der User wurde erfolgreich gelöscht. Auf Wiedersehen!");
       setTimeout(() => this.auth.logout(),3000);

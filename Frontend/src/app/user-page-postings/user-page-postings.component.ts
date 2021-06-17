@@ -41,33 +41,29 @@ export class UserPagePostingsComponent implements OnInit {
         this.posts.sort((a,b)=> {
           return b.createdAt-a.createdAt;
         });
-        console.log("this is right")
-        console.log(data);
         this.selfprofile = true;
       });
     }
     else {
-      this.postservice.getAllUserPosts(id).subscribe((data: Posting[]) => {
+      this.postservice.getAllUserPosts(id).then((data: Posting[]) => {
         this.posts = data;
         this.posts.sort((a,b)=> {
           return b.createdAt-a.createdAt;
         });
-        console.log(data);
         this.selfprofile = false;
       });
     }
   }
 
   deletePosting(post: Posting) {
-    this.ps.deletePost(post).subscribe((data: any) => {
-      console.log(data);
+    console.log(post);
+    this.ps.deletePost(post.id).then((data: any) => {
       this.ps.posts.next(this.posts.filter(currpost => currpost.id !== post.id));
     });
   }
 
-  editPosting(post: Posting) {
-    this.ps.savePost(post).subscribe((data: any) => {
-      console.log(data);
+  async editPosting(post: Posting) {
+    await this.ps.savePost(post).then((data: any) => {
       this.posts = this.posts.filter(currpost => currpost.id !== post.id);
       this.posts.push(post);
       this.ps.posts.next(this.posts)

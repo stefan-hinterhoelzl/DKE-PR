@@ -53,13 +53,12 @@ public class JmsConsumer {
 			e.printStackTrace();
 		}
 		
-		if(text.contains("postid")) {
-			prepository.deleteById(text.substring(8, text.length()-1));
-		}
-		else{
-			prepository.deleteAllByAuthorid(text.substring(10,text.length()-1));
-			
-		}       
+		if(text.contains("postid:")) {
+            this.prepository.deleteById(text.substring(8, text.length()-1));
+        }
+        else{
+            this.prepository.deleteAllByAuthorid(text.substring(10, text.length()-1));
+        }       
 		
 		
 	}

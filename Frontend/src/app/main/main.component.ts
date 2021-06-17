@@ -43,20 +43,17 @@ export class MainComponent implements OnInit {
       this.posts.sort((a,b)=> {
         return b.createdAt-a.createdAt;
       });
-      console.log(data);
     });
   }
 
   deletePosting(post: Posting) {
-    this.ps.deletePost(post).subscribe((data: any) => {
-      console.log(data);
+    this.ps.deletePost(post.id).then((data: any) => {
       this.ps.feed.next(this.posts.filter(currpost => currpost.id !== post.id));
     });
   }
 
-  editPosting(post: Posting) {
-    this.ps.savePost(post).subscribe((data: any) => {
-      console.log(data);
+  async editPosting(post: Posting) {
+    await this.ps.savePost(post).then((data: any) => {
       this.posts = this.posts.filter(currpost => currpost.id !== post.id);
       this.posts.push(post);
       this.ps.feed.next(this.posts)

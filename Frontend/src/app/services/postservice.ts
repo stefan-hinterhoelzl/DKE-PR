@@ -22,31 +22,31 @@ const userServiceGETAPIURL: String = "http://localhost:8082/"
 export class PostService
  {
 
-   posts= new BehaviorSubject<Posting[]>([]);
+   posts = new BehaviorSubject<Posting[]>([]);
 
    feed = new BehaviorSubject<Posting[]>([]);
 
     constructor(private http: HttpClient) {}
 
 
-    savePost(post: Posting): Observable<Posting> {
-        return this.http.post<Posting>(userServicePOSTAPIURL+"post", post, httpOptions).pipe(take(1));
+    savePost(post: Posting): Promise<Posting> {
+        return this.http.post<Posting>(userServicePOSTAPIURL+"post", post, httpOptions).toPromise();
     }
 
-    getAllUserPosts(userid: number): Observable<Posting[]> {
-       return this.http.get<Posting[]>(userServiceGETAPIURL+"posts/"+userid, httpOptions).pipe(take(1));
+    getAllUserPosts(userid: number): Promise<Posting[]> {
+       return this.http.get<Posting[]>(userServiceGETAPIURL+"posts/"+userid).toPromise();
     }
 
-    deletePost(post: Posting): Observable<any> {
-       return this.http.post(userServicePOSTAPIURL+"deletepost", post, httpOptions).pipe(take(1));
+    deletePost(postid: string): Promise<any> {
+       return this.http.delete(userServicePOSTAPIURL+"deletepost/"+postid).toPromise();
     }
 
-    deleteAllByAuthor(authorid: String): Observable<any> {
-      return this.http.post(userServicePOSTAPIURL+"deleteAll/"+authorid, httpOptions).pipe(take(1));
+    deleteAllByAuthor(authorid: number): Promise<any> {
+      return this.http.delete(userServicePOSTAPIURL+"deleteAll/"+authorid).toPromise();
     }
 
-    getAllPosts(): Observable<Posting[]> {
-      return this.http.get<Posting[]>(userServiceGETAPIURL+"posts", httpOptions).pipe(take(1));
+    getAllPosts(): Promise<Posting[]> {
+      return this.http.get<Posting[]>(userServiceGETAPIURL+"posts").toPromise();
     }
 
     public get userPosts(): Posting[] {
@@ -59,14 +59,18 @@ export class PostService
 
     //used to cache the users own posting
     public async setPostObservable(userid: number){
-      this.posts.next(await this.getAllUserPosts(userid).toPromise())
+      let posts: Posting[] = await this.getAllUserPosts(userid);
+      if(posts != undefined) {
+         this.posts.next(posts);
+      }
     }
 
     public async setFeedObservable(userid: number){
-       let posts: Posting[] = await this.getAllPosts().toPromise();
-       posts = posts.filter(curr => curr.authorid !== userid);
-      
-      this.feed.next(posts);
+       let posts: Posting[] = await this.getAllPosts();
+       if(posts != undefined) {
+         posts = posts.filter(curr => curr.authorid !== userid);
+         this.feed.next(posts);
+       }
     }
 
  }

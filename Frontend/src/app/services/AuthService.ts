@@ -32,35 +32,35 @@ export class AuthService
     
     //UserService API
     getUser(email: String) {
-      return this.http.get<User>(userServiceAPIURL+"user/"+email).pipe(take(1));
+      return this.http.get<User>(userServiceAPIURL+"user/"+email).toPromise();
     }
 
     getUserPerID(id: number) {
-      return this.http.get<User>(userServiceAPIURL+"userPerID/"+id).pipe(take(1));
+      return this.http.get<User>(userServiceAPIURL+"userPerID/"+id).toPromise();
     }
 
     getUsersPerList(ids: number[]) {
       return this.http.get<User[]>(userServiceAPIURL+"userInList?ids="+ids.join()).toPromise()
     }
 
-    postUser(user: User): Observable<User> {
-      return this.http.post<User>(userServiceAPIURL+"users", user, httpOptions).pipe(take(1));
+    postUser(user: User): Promise<User> {
+      return this.http.post<User>(userServiceAPIURL+"users", user, httpOptions).toPromise();
     }
 
-    authenticateUser(payload: Credential): Observable<String> {
-      return this.http.post<String>(userServiceAPIURL+"authenticate", payload, httpOptions).pipe(take(1));
+    authenticateUser(payload: Credential): Promise<String> {
+      return this.http.post<String>(userServiceAPIURL+"authenticate", payload, httpOptions).toPromise();
     }
 
-    updateUser(user: User, id: number): Observable<User> {
-      return this.http.put<User>(userServiceAPIURL+"user/"+id, user, httpOptions).pipe(take(1));
+    updateUser(user: User, id: number): Promise<User> {
+      return this.http.put<User>(userServiceAPIURL+"user/"+id, user, httpOptions).toPromise();
     }
 
-    updateUserPassword(payload: any, id: number): Observable<User> {
-      return this.http.put<User>(userServiceAPIURL+"password/"+id, payload, httpOptions).pipe(take(1));
+    updateUserPassword(payload: any, id: number): Promise<User> {
+      return this.http.put<User>(userServiceAPIURL+"password/"+id, payload, httpOptions).toPromise();
     }
 
-    deleteUser(id: number): Observable<any> {
-      return this.http.delete<any>(userServiceAPIURL+"user/"+id).pipe(take(1));
+    deleteUser(id: number): Promise<any> {
+      return this.http.delete<any>(userServiceAPIURL+"user/"+id).toPromise();
     }
 
     async autoLogin() {

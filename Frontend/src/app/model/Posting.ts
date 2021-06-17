@@ -1,9 +1,9 @@
 export interface Posting {
-    id: String;
-    mood: String;
-    content: String;
+    id: string;
+    mood: string;
+    content: string;
     createdAt: number;
     authorid: number;
-    authorname: String;
+    authorname: string;
     
 }

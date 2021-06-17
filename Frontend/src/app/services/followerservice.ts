@@ -40,24 +40,31 @@ const httpOptions =  {
 
 
      async setFollowersObservable(userid: number) {
-        let ids: any[] = await this.getFollowers(userid);
-        let numbers: number[] = []
-        
-        ids.forEach((element) => {
-           numbers.push(element.id);
-        });
+       
+      let ids: any[] = await this.getFollowers(userid);
+      let numbers: number[] = []
 
-        this.followers.next(numbers);
+      if (ids != undefined) {
+        
+         ids.forEach((element) => {
+            numbers.push(element.id);
+         });
+
+         this.followers.next(numbers);
+      }
      }
 
      async setFollowingObservable(userid: number) {
         let ids: any[] = await this.getFollowing(userid);
         let numbers: number[] = []
+
+        if (ids != undefined) {
         
-        ids.forEach((element) => {
-           numbers.push(element.id);
-        });
-        this.following.next(numbers);
+         ids.forEach((element) => {
+            numbers.push(element.id);
+         });
+         this.following.next(numbers);
+      }
      }
 
 

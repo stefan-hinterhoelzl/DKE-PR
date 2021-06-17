@@ -19,9 +19,7 @@ export class UserPageFollowingListComponent implements OnInit {
 
     this.fs.following.subscribe(async (data) => {
       this.following = data;
-      console.log(data);
       this.users = await this.auth.getUsersPerList(data);
-      console.log(this.users);
     });
   }
 

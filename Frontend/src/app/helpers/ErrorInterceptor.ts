@@ -19,7 +19,6 @@ export class ErrorInterceptor implements HttpInterceptor {
     }
 
     private handleError(err: HttpErrorResponse): Observable<any> {
-        //handle 401 and rethrow the rest
         if (err.status === 401) {
                 this.authenticationService.logout();
                 this.alertservice.error("Die Sitzung ist abgelaufen. Loggen Sie sich bitte neu ein.");
@@ -28,6 +27,11 @@ export class ErrorInterceptor implements HttpInterceptor {
 
         if (err.status === 0) {
             this.alertservice.error("Die Server sind Offline. Bitte Entschuldigen Sie die Unannehmlichkeiten")
+            return of(EMPTY);
+        }
+
+        if (err.status === 500) {
+            this.alertservice.error("Interner Serverfehler. Bitte Entschudligen Sie die Unannehmlichkeiten")
             return of(EMPTY);
         }
 

@@ -15,12 +15,12 @@ export class SearchService
 
 
 
-    getUsers(searchterm: string): Observable<User[]> {
-        return this.http.get<User[]>(searchServiceAPIURL+"users/"+searchterm).pipe(take(1));
+    getUsers(searchterm: string): Promise<User[]> {
+        return this.http.get<User[]>(searchServiceAPIURL+"users/"+searchterm).toPromise();
     }
 
-    getPosts(searchterm: string): Observable<Posting[]> {
-        return this.http.get<Posting[]>(searchServiceAPIURL+"posts/"+searchterm).pipe(take(1));
+    getPosts(searchterm: string): Promise<Posting[]> {
+        return this.http.get<Posting[]>(searchServiceAPIURL+"posts/"+searchterm).toPromise();
     }
 
 

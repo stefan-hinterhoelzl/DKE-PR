@@ -12,8 +12,8 @@ export class PokemonService
     constructor (private http: HttpClient) {}
 
 
-    public getRequest(id: String) {
-        return this.http.get(pokeAPI+id).pipe(take(1));
+    public getRequest(id: String): Promise<any> {
+        return this.http.get(pokeAPI+id).toPromise();
     }
 
 

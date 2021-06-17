@@ -17,6 +17,7 @@
         <span *ngIf="user !== null" class="nav-tool-items">  
           <div  style = "font-size: 17px; margin-left: 10px; cursor: pointer;" [matMenuTriggerFor] = "menu">{{user.firstname}} {{user.lastname}}</div>
           <mat-menu #menu="matMenu">
+            <a routerLink = "app" mat-menu-item>Startseite</a>
             <a routerLink = "user/{{user.id}}/posts" mat-menu-item>Profilpostings</a>
             <a routerLink = "user/{{user.id}}/following" mat-menu-item>Abonnierte Benutzer</a>
             <a routerLink = "user/{{user.id}}/followers" mat-menu-item>Meine Abonennten</a>

@@ -42,7 +42,7 @@ export class PostCreateComponent implements OnInit {
         .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
-  savePost() {
+  async savePost() {
     const payload = <Posting> {
       id: uuidv4(),
       authorname: this.user.firstname + " " +this.user.lastname,
@@ -51,8 +51,8 @@ export class PostCreateComponent implements OnInit {
       createdAt: Date.now(),
       content: this.content.value
     }
-    
-    this.postservice.savePost(payload).subscribe((data: Posting) => {
+  
+    await this.postservice.savePost(payload).then(() => {
       this.content.reset();
       this.emoji.reset();
       let currPostings:Posting[] =this.ps.userPosts;

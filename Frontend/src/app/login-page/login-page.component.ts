@@ -31,7 +31,7 @@ export class LoginPageComponent implements OnInit {
     })
   }
   	
-  signIn() {
+  async signIn() {
     if(this.form.valid) {
 
       let email: String = this.email.value;
@@ -42,7 +42,7 @@ export class LoginPageComponent implements OnInit {
         password: this.password.value
       }
 
-      this.auth.authenticateUser(payload).subscribe((response: any) => {
+      await this.auth.authenticateUser(payload).then(async (response: any) => {
         
         //cache the response token
         localStorage.setItem("token", response.token);
@@ -50,7 +50,7 @@ export class LoginPageComponent implements OnInit {
         console.log(response.token);
 
         let user: User;
-        this.auth.getUser(payload.email).subscribe((data: User) => {
+        await this.auth.getUser(payload.email).then((data: User) => {
           //get the user data and cache it
           user = {...data};
           this.auth.user.next(user);

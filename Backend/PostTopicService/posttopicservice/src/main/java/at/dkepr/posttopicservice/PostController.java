@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,19 +35,19 @@ public class PostController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @PostMapping("/deletepost")
-    public ResponseEntity<?> deletebyPostID(@RequestBody Post post) {
+    @DeleteMapping("/deletepost/{id}")
+    public ResponseEntity<?> deletebyPostID(@PathVariable String id) {
         Queue queue1 = new ActiveMQQueue("posting-delete-solr");
         Queue queue2 = new ActiveMQQueue("posting-delete-couchbase");
         
-        jmsTemplate.convertAndSend(queue1, post);
-        jmsTemplate.convertAndSend(queue2, post);
+        jmsTemplate.convertAndSend(queue1, "postid:"+id);
+        jmsTemplate.convertAndSend(queue2, "postid:"+id);
 
         return ResponseEntity.status(HttpStatus.OK).body(new StringResponse("Deletion enqueued"));
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @PostMapping("/deleteAll/{authorid}")
+    @DeleteMapping("/deleteAll/{authorid}")
     public ResponseEntity<?> deleteAllByAuthorID(@PathVariable String authorid) {
         Queue queue1 = new ActiveMQQueue("posting-delete-solr");
         Queue queue2 = new ActiveMQQueue("posting-delete-couchbase");

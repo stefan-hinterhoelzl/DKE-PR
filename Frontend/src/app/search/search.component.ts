@@ -36,7 +36,6 @@ export class SearchComponent implements OnInit {
    })
 
    this.fs.following.subscribe((data) => {
-     console.log(data);
     this.following = data;
    });
 
@@ -49,26 +48,29 @@ export class SearchComponent implements OnInit {
 
   async search() {
     this.usersU = [];
-    this.users = await this.searchService.getUsers(this.key).toPromise();
+    this.users = await this.searchService.getUsers(this.key);
 
-    this.users.forEach((element) => {
-      const User = <User> {
-        id: parseInt(element.id),
-        email: element.email,
-        firstname: element.firstname,
-        lastname: element.lastname,
-        phonenumber: element.phonenumber,
-        pokemonid: element.pokemonid
+    if(this.users != undefined) {
+
+      this.users.forEach((element) => {
+        const User = <User> {
+          id: parseInt(element.id),
+          email: element.email,
+          firstname: element.firstname,
+          lastname: element.lastname,
+          phonenumber: element.phonenumber,
+          pokemonid: element.pokemonid
+        }
+        this.usersU.push(User);
+      });
+    }
+
+    this.posts = await this.searchService.getPosts(this.key);
+
+    if (this.usersU != undefined && this.posts != undefined) {
+      if(this.usersU.length == 0 && this.posts.length == 0) {
+        this.alert.error("Keine Ergebnisse");
       }
-      this.usersU.push(User);
-    });
-
-    console.log(this.usersU);
-
-    this.posts = await this.searchService.getPosts(this.key).toPromise();
-
-    if(this.users.length == 0 && this.posts.length == 0) {
-      this.alert.error("Keine Ergebnisse");
     }
   }
 

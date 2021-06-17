@@ -31,11 +31,12 @@ public class jmsConsumer {
         String text = "";
         try {
             text = message.getText();
+            System.out.println(text);
         } catch (JMSException e) {
             e.printStackTrace();
         }
         
-        if(text.contains("postid")) {
+        if(text.contains("postid:")) {
             service.deletebyId(text.substring(8, text.length()-1));
         }
         else{

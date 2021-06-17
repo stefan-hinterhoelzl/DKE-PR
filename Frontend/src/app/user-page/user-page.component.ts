@@ -44,11 +44,11 @@ export class UserPageComponent implements OnInit, OnDestroy {
 
   }
 
-  initialize(id) {
+  async initialize(id) {
     //reset the user to the active User
     this.user = {...JSON.parse(localStorage.getItem("user"))};
     if (id != this.user.id) {
-      this.auth.getUserPerID(id).subscribe((data: User) => {
+      await this.auth.getUserPerID(id).then((data: User) => {
         this.user = {...data};
         this.selfprofile = false;
         this.getPokemonData();
@@ -74,12 +74,12 @@ export class UserPageComponent implements OnInit, OnDestroy {
 
   }
 
-  setPokemonID(pokemonid: String) {
+  async setPokemonID(pokemonid: String) {
     let changedUser = Object.assign({}, this.user);
 
     changedUser.pokemonid = pokemonid;
     
-    this.auth.updateUser(changedUser, changedUser.id).subscribe((data: User) => {
+    await this.auth.updateUser(changedUser, changedUser.id).then((data: User) => {
         this.user = data;
         this.auth.user.next(this.user);
         localStorage.setItem('user', JSON.stringify(this.user))
@@ -87,7 +87,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  getPokemonData() {
+  async getPokemonData() {
     //Erst mal nachsehen ob es gecached ist
     if (localStorage.getItem("Pokemondata") && JSON.parse(localStorage.getItem("Pokemondata")).id == this.user.pokemonid && this.selfprofile) {
       this.pokemondata = {...JSON.parse(localStorage.getItem("Pokemondata"))};
@@ -98,20 +98,19 @@ export class UserPageComponent implements OnInit, OnDestroy {
       var data;
       var name;
       //Get Pokemon Data
-      this.poke.getRequest(this.user.pokemonid).subscribe((payload: any) => {
-        data = {...payload};
-        data.names.forEach(element => {
-          if (element.language.name == "de") {
-            name = element.name;
-          }
-        });
-        this.pokemondata = {id : this.user.pokemonid, name : name}; 
-
-        if (this.selfprofile) {
-          //save data to localstorage
-          localStorage.setItem("Pokemondata", JSON.stringify(this.pokemondata));
+      data = await this.poke.getRequest(this.user.pokemonid)
+        
+      data.names.forEach(element => {
+        if (element.language.name == "de") {
+          name = element.name;
         }
       });
+      this.pokemondata = {id : this.user.pokemonid, name : name}; 
+
+      if (this.selfprofile) {
+        //save data to localstorage
+        localStorage.setItem("Pokemondata", JSON.stringify(this.pokemondata));
+      }
     }
   }
 
