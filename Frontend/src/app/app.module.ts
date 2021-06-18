@@ -31,6 +31,7 @@ import { PostCreateComponent } from './post-create/post-create.component';
 import  {  NgxEmojiPickerModule  }  from  'ngx-emoji-picker';
 import { DeletePostDialogComponent } from './delete-post-dialog/delete-post-dialog.component';
 import { EditPostDialogComponent } from './edit-post-dialog/edit-post-dialog.component';
+import { UserPageNotificationsComponent } from './user-page-notifications/user-page-notifications.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { EditPostDialogComponent } from './edit-post-dialog/edit-post-dialog.com
     UserPageFollowingListComponent,
     UserPageEditComponent,
     UserPagePostingsComponent,
+    UserPageNotificationsComponent,
     AlertComponent,
     SearchComponent,
     UserPagerFollowersListComponent,

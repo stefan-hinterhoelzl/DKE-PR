@@ -7,6 +7,7 @@ import { SearchComponent } from './search/search.component';
 import { AuthGuard } from './services/authguard';
 import { UserPageEditComponent } from './user-page-edit/user-page-edit.component';
 import { UserPageFollowingListComponent } from './user-page-following-list/user-page-following-list.component';
+import { UserPageNotificationsComponent } from './user-page-notifications/user-page-notifications.component';
 import { UserPagePostingsComponent } from './user-page-postings/user-page-postings.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { UserPagerFollowersListComponent } from './user-pager-followers-list/user-pager-followers-list.component';
@@ -38,6 +39,7 @@ children: [
     {path: 'edit', component: UserPageEditComponent},
     {path: 'following', component: UserPageFollowingListComponent},
     {path: 'followers', component: UserPagerFollowersListComponent},
+    {path: 'notifications', component: UserPageNotificationsComponent},
   ]
 },
 
