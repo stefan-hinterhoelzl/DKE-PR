@@ -109,6 +109,4 @@ public class NotificationController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StringResponse("Wrapper Objekt für diesen User wurde nicht gefunden."));   
     }
     
-
-
 } 
