@@ -1,7 +1,15 @@
 package at.dkepr.entity;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
-@Repository
-public interface NotificationRepository extends CrudRepository<Notification, String> {}
+import org.springframework.data.repository.CrudRepository;
+
+public interface NotificationRepository extends CrudRepository {
+
+    NotificationWrapper findByUserId(String UserId);
+    List findByNotificationsId(Long id);
+
+
+
+
+}
