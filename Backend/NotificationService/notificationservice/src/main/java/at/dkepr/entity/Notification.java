@@ -1,22 +1,21 @@
 package at.dkepr.entity;
 
 import java.util.Date;
-import java.io.Serializable;
 
+import org.springframework.data.redis.core.index.Indexed;
+//import org.springframework.data.redis.core.RedisHash;
 
-import org.springframework.data.redis.core.RedisHash;
+//@RedisHash
+public class Notification {
 
-@RedisHash
-public class Notification implements Serializable {
-
-    private String id;
+    @Indexed private Long id;
     private String text;
     private Date createdAt;
     private boolean read;
 
 
     
-    public Notification(String id, String text, Date createdAt, boolean read) {
+    public Notification(Long id, String text, Date createdAt, boolean read) {
         this.id = id;
         this.text = text;
         this.createdAt = createdAt;
@@ -27,13 +26,13 @@ public class Notification implements Serializable {
 
 
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
 
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

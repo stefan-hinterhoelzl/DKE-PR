@@ -46,15 +46,15 @@ public class NotificationWrapper {
         this.name = name;
     }
 
-    public List<Notification> getAccounts() {
+    public List<Notification> getNotifications() {
         return notifications;
     }
 
-    public void setAccounts(List<Notification> notifications) {
+    public void setNotifications(List<Notification> notifications) {
         this.notifications = notifications;
     }
 
-    public void addAccount(Notification noti) {
+    public void addNotification(Notification noti) {
         this.notifications.add(noti);
     }
 
