@@ -29,11 +29,10 @@ public class RedisCustomerRepositoryTest {
     @Test
     public void testAdd() {
 
-        Date date = new Date();
         NotificationWrapper wrapper = new NotificationWrapper(1L, "234", "Tester");
-        wrapper.addNotification(new Notification(1L, "1234567890",date ,true));
-        wrapper.addNotification(new Notification(2L, "1234567891", date,false));
-        wrapper.addNotification(new Notification(3L, "1234567892", date,false));
+        wrapper.addNotification(new Notification(1L, "1234567890",10L ,true));
+        wrapper.addNotification(new Notification(2L, "1234567891", 20L,false));
+        wrapper.addNotification(new Notification(3L, "1234567892", 30L,false));
         wrapper = repository.save(wrapper);
         //Assert.assertNotNull(wrapper);
     }

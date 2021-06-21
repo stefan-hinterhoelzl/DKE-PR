@@ -1,7 +1,4 @@
 package at.dkepr.entity;
-
-import java.util.Date;
-
 import org.springframework.data.redis.core.index.Indexed;
 //import org.springframework.data.redis.core.RedisHash;
 
@@ -10,12 +7,12 @@ public class Notification {
 
     @Indexed private Long id;
     private String text;
-    private Date createdAt;
+    private long createdAt;
     private boolean read;
 
 
     
-    public Notification(Long id, String text, Date createdAt, boolean read) {
+    public Notification(Long id, String text, long createdAt, boolean read) {
         this.id = id;
         this.text = text;
         this.createdAt = createdAt;
@@ -50,13 +47,13 @@ public class Notification {
 
 
 
-    public Date getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
 
 
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
 
