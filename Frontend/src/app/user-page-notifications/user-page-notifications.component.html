@@ -13,7 +13,7 @@
         <div style="width: 100%;">
             <div *ngFor = "let not of notifications">
                 <div fxLayout = "column" fxLayoutAlign = "center start">
-                    <div (click) ="setNotificationToRead(not)" style = "width: 100%; margin-bottom: 10px;" [ngClass] ="{'border': not.read === false}">
+                    <div (click) ="setNotificationToRead(not)" style = "width: 100%;" [ngClass] ="{'border': not.read === false}">
                         <div class = "notcontent" [ngClass] ="{'bold': not.read === false}"> 
                             {{not.text}}
                         </div>
@@ -22,6 +22,7 @@
                         </div>
                     </div>
                 </div>
+                <hr>
             </div>
         </div>
     </mat-card>
