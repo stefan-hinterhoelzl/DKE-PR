@@ -1,35 +1,32 @@
 package at.dkepr.entity;
-import org.springframework.data.redis.core.index.Indexed;
-//import org.springframework.data.redis.core.RedisHash;
 
-//@RedisHash
+
 public class Notification {
 
-    @Indexed private Long id;
+    
+    private String id;
     private String text;
     private long createdAt;
     private boolean read;
 
 
     
-    public Notification(Long id, String text, long createdAt, boolean read) {
+    public Notification(String id, String text, long createdAt, boolean read) {
         this.id = id;
         this.text = text;
         this.createdAt = createdAt;
         this.read = read;
-
-        //test again
     }
+    
+    
 
-
-
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
 
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

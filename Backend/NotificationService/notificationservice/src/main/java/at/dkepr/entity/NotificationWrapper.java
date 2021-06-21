@@ -5,20 +5,16 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.index.Indexed;
 
 @RedisHash
 public class NotificationWrapper {
     
     @Id private Long id;
-    @Indexed private String UserId;
-    private String name;
-    private List<Notification> notifications = new ArrayList<>();
+    private List<Notification> notifications;
 
-    public NotificationWrapper(Long id, String UserId, String name) {
+    public NotificationWrapper(Long id) {
         this.id = id;
-        this.UserId = UserId;
-        this.name = name;
+        this.notifications = new ArrayList<Notification>();
     }
 
 
@@ -30,21 +26,6 @@ public class NotificationWrapper {
         this.id = id;
     }
 
-    public String getUserlId() {
-        return UserId;
-    }
-
-    public void setUserlId(String UserId) {
-        this.UserId = UserId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public List<Notification> getNotifications() {
         return notifications;
