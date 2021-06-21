@@ -34,6 +34,7 @@ import at.dkepr.entity.StringResponse;
 import at.dkepr.entity.User;
 import at.dkepr.entity.UserSearchEntity;
 import at.dkepr.exceptions.Neo4JException;
+import at.dkepr.exceptions.RedisException;
 import at.dkepr.exceptions.UserNotFoundException;
 import at.dkepr.exceptions.WrongPasswordException;
 import at.dkepr.security.JwtTokenResponse;
@@ -94,6 +95,22 @@ public class UserController {
             })
             .block();
 
+            builder.build().post()
+            .uri("http://localhost:8088/notifications/user/"+addedUser.getId())
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .retrieve()
+            .onStatus(HttpStatus::is4xxClientError, response -> {
+                return Mono.error(new RedisException("Verbindung zur Redis-Datenbank fehlgeschlagen.", addedUser.getId()));
+            })
+            .onStatus(HttpStatus::is5xxServerError, response -> {
+                return Mono.error(new RedisException("Verbindung zur Redis-Datenbank fehlgeschlagen.", addedUser.getId()));
+            })
+            .bodyToMono(User.class)
+            .onErrorMap(throwable -> {
+                return new RedisException("Verbindung zur Redis-Datenbank fehlgeschlagen.", addedUser.getId());
+            })
+            .block();
+
             //send to solr
             Queue queue = new ActiveMQQueue("user-add-queue");
             jmsTemplate.convertAndSend(queue, new UserSearchEntity(String.valueOf(addedUser.getId()), addedUser.getEmail(), addedUser.getFirstname(), addedUser.getLastname(), addedUser.getPokemonid()));
@@ -121,6 +138,34 @@ public class UserController {
                 //Delete User from SQL Table
                 this.repository.deleteById(ex.getId());
             }
+
+            if(e instanceof RedisException) {
+                RedisException ex = (RedisException) e;
+                Message = ex.getMessage();
+
+                //Delete User from SQL Table
+                this.repository.deleteById(ex.getId());
+
+                //Delete from Neo4J
+
+                WebClient.Builder builder = WebClient.builder();
+
+                builder.build().delete()
+                .uri("http://localhost:8081/user/"+ex.getId())
+                .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, response -> {
+                    return Mono.error(new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", ex.getId()));
+                })
+                .onStatus(HttpStatus::is5xxServerError, response -> {
+                    return Mono.error(new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", ex.getId()));
+                })
+                .bodyToMono(String.class)
+                .onErrorMap(throwable -> {
+                    return new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", ex.getId());
+                })
+                .block(); 
+                }
+                
 
             return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
@@ -223,6 +268,20 @@ public class UserController {
             })
             .block(); 
 
+            builder.build().delete()
+            .uri("http://localhost:8088/notifications/user/"+id)
+            .retrieve()
+            .onStatus(HttpStatus::is4xxClientError, response -> {
+                return Mono.error(new RedisException("Verbindung zur Graphdatenbank fehlgeschlagen.", userToDelete.getId()));
+            })
+            .onStatus(HttpStatus::is5xxServerError, response -> {
+                return Mono.error(new RedisException("Verbindung zur Graphdatenbank fehlgeschlagen.", userToDelete.getId()));
+            })
+            .bodyToMono(String.class)
+            .onErrorMap(throwable -> {
+                return new RedisException("Verbindung zur Graphdatenbank fehlgeschlagen.", userToDelete.getId());
+            })
+            .block(); 
 
             //delete from OracleDB
             repository.deleteById(userToDelete.getId());
@@ -238,11 +297,39 @@ public class UserController {
 
         }catch(Exception e) {
             String Message = "Löschen fehlgeschlagen";
+
             //In Case of Error with the Neo4J DB
             if(e instanceof Neo4JException) {
                 Neo4JException ex = (Neo4JException) e;
                 Message = ex.getMessage();
             }
+
+            if(e instanceof RedisException) {
+                RedisException ex = (RedisException) e;
+                Message = ex.getMessage();
+
+                //add back to Neo4J in case of error
+                WebClient.Builder builder = WebClient.builder();
+
+                builder.build().post()
+                .uri("http://localhost:8081/user")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .bodyValue(userToDelete)
+                .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, response -> {
+                    return Mono.error(new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", userToDelete.getId()));
+                })
+                .onStatus(HttpStatus::is5xxServerError, response -> {
+                    return Mono.error(new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", userToDelete.getId()));
+                })
+                .bodyToMono(User.class)
+                .onErrorMap(throwable -> {
+                    return new Neo4JException("Verbindung zur Graphdatenbank fehlgeschlagen.", userToDelete.getId());
+                })
+                .block();
+            }
+
+
 
             return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)

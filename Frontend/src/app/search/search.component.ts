@@ -93,9 +93,10 @@ export class SearchComponent implements OnInit, OnDestroy {
 
 
   async followUser(user: User) {
-    await this.fs.followUser(this.auth.currentUserValue.id, user.id).then(() =>{
+    await this.fs.followUser(this.currentuser, user).then(() =>{
       this.following.push(user.id);
       this.fs.following.next(this.following);
+      this.alert.success(user.firstname +" abonniert!");
     });
   }
 

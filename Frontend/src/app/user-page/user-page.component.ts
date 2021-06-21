@@ -119,10 +119,10 @@ export class UserPageComponent implements OnInit, OnDestroy {
   }
 
   async followUser() {
-    await this.fs.followUser(this.auth.currentUserValue.id, this.user.id).then(() =>{
+    await this.fs.followUser(this.user, this.user).then(() =>{
       this.following.push(this.user.id);
       this.fs.following.next(this.following);
-      console.log(this.following)
+      this.alertservice.success(this.user.firstname +" abonniert!");
     });
   }
 

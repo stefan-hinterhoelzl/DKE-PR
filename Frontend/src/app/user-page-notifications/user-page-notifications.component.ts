@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { async } from '@angular/core/testing';
 import { Notification } from '../model/Notification';
+import { User } from '../model/User';
+import { AlertService } from '../services/alertService';
+import { AuthService } from '../services/AuthService';
+import { NotificationService } from '../services/notificationService';
 
 @Component({
   selector: 'app-user-page-notifications',
@@ -8,36 +13,47 @@ import { Notification } from '../model/Notification';
 })
 export class UserPageNotificationsComponent implements OnInit {
 
-  notifications: Notification[] = [];
+  notsSubscription: any;
+  notifications: Notification[];
+  user: User;
 
 
-  constructor() { }
+  constructor(private ns: NotificationService, private auth: AuthService, private alert: AlertService) { }
 
   ngOnInit(): void {
-    const not1 = <Notification> {
-      id: "1",
-      text: "Testnotification",
-      createdAt: 1624267816,
-      read: false,
-    }
 
-    const not2 = <Notification> {
-      id: "2",
-      text: "Testnotification 2",
-      createdAt: 1624267816,
-      read: true,
-    }
+    this.notsSubscription = this.ns.nots.subscribe((data) => {
+      this.notifications = data;
+      this.notifications.sort((a,b)=> {
+        return b.createdAt-a.createdAt;
+      });
+    });
 
-    const not3 = <Notification> {
-      id: "3",
-      text: "Testnotification 3",
-      createdAt: 1624267816,
-      read: false,
-    }
+    this.user = this.auth.currentUserValue;
+  }
 
-    this.notifications.push(not1);
-    this.notifications.push(not2);
-    this.notifications.push(not3);
+  async deleteAllNotifications() {
+    await this.ns.deleteUserNotifications(this.user.id).then(() => {
+      this.alert.success("Benachrichtigungen wurden gelöscht.")
+      this.ns.nots.next([]);
+    },
+    (error) =>{
+      this.alert.error("Fehler beim Löschen der Benachrichtigungen. "+error)
+    });
+  }
+
+  async setNotificationToRead(not: Notification) {
+    if(not.read == false) {
+      await this.ns.setNotificationToRead(this.user.id, not.id).then(() => {
+        this.notifications = this.notifications.filter(currnot => currnot.id !== not.id);
+        not.read = true;
+        this.notifications.push(not);
+        this.ns.nots.next(this.notifications);
+      }, 
+      (error) => {
+        this.alert.error("Fehler beim Bearbeiten der Benachrichtigung. "+error);
+      });
+    }
   }
 
 }

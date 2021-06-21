@@ -35,7 +35,8 @@ export class UserPagePostingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.postsSubscription.unsubscribe();
+    
+    if (this.postsSubscription != undefined) this.postsSubscription.unsubscribe();
     this.subscription.unsubscribe();
   }
 

@@ -15,7 +15,7 @@
             <mat-search-bar style="font-size: 10pt" [formControl] = "searchbar" (onEnter) = "search()"></mat-search-bar>
         </div>
         <div *ngIf="user !== null" style ="margin-top: 8px; margin-left: 15px;">
-          <mat-icon matBadge="4" matBadgeOverlap="false" style = "cursor: pointer;" (click)=navigateToNots()>email</mat-icon>
+          <mat-icon  [matBadge]="unread.length"  matBadgeColor="warn" matBadgeOverlap="false" [matBadgeHidden]="unread.length == 0" style = "cursor: pointer;" (click)=navigateToNots()>email</mat-icon>
         </div>
         <span *ngIf="user !== null" class="nav-tool-items">  
           <div  style = "font-size: 17px; margin-left: 40px; cursor: pointer;" [matMenuTriggerFor] = "menu">{{user.firstname}} {{user.lastname}}</div>

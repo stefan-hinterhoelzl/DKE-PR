@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ProviderMeta } from "@angular/compiler";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import { User } from "../model/User";
+import { NotificationService } from "./notificationService";
 
 const httpOptions =  {
     headers: new HttpHeaders({
@@ -19,7 +21,7 @@ const httpOptions =  {
 
     following = new BehaviorSubject<number[]>([]);
  
-     constructor(private http: HttpClient) {}
+     constructor(private http: HttpClient, private ns: NotificationService) {}
  
 
      getFollowers(userid: number): Promise<number[]> {
@@ -30,8 +32,11 @@ const httpOptions =  {
         return this.http.get<number[]>(relationServiceAPI+"users/follows/"+userid).toPromise();
      }
 
-     followUser(curruser: number, followuser: number): Promise<void> {
-        return this.http.post<any>(relationServiceAPI+"users/follows/"+curruser+"/"+followuser, null, httpOptions).toPromise();
+     followUser(curruser: User, followuser: User): Promise<void> {
+        let res: Promise<void> = this.http.post<any>(relationServiceAPI+"users/follows/"+curruser.id+"/"+followuser.id, null, httpOptions).toPromise();
+         this.ns.saveUserNotification(curruser, followuser)
+         return res;
+
      }
 
      UnfollowUser(curruser: number, followuser: number): Promise<void> {

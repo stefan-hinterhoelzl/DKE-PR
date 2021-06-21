@@ -7,6 +7,7 @@ import {Credential} from "src/app/model/Credential";
 import { Router } from "@angular/router";
 import { PostService } from "./postservice";
 import { FollowerService } from "./followerservice";
+import { NotificationService } from "./notificationService";
 
 const httpOptions =  {
    headers: new HttpHeaders({
@@ -27,7 +28,7 @@ export class AuthService
 
 
 
-    constructor(private http: HttpClient, private router: Router, private ps: PostService, private fs: FollowerService) {}
+    constructor(private http: HttpClient, private router: Router, private ps: PostService, private fs: FollowerService, private ns: NotificationService) {}
 
     
     //UserService API
@@ -76,6 +77,7 @@ export class AuthService
       this.ps.setFeedObservable(user.id)
       await this.fs.setFollowersObservable(user.id);
       await this.fs.setFollowingObservable(user.id);
+      await this.ns.setNotsObservable(user.id);
     }
 
     logout(stateurl: string = "") {
