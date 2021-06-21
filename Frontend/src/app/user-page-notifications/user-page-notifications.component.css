@@ -1,0 +1,15 @@
+.notcontent{
+    font-family: 'Roboto', sans-serif; 
+    font-size: 11.5pt; 
+    margin-bottom: 5%;
+    word-break: break-all;   
+}
+
+.border{
+    border-right: 10px solid #3F51B5;
+    background-color: rgba(238, 238, 238, 1);
+}
+
+.bold{
+    font-weight: 900;
+}

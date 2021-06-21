@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs/operators';
@@ -14,11 +14,12 @@ import { PostService } from '../services/postservice';
   templateUrl: './user-page-postings.component.html',
   styleUrls: ['./user-page-postings.component.css']
 })
-export class UserPagePostingsComponent implements OnInit {
+export class UserPagePostingsComponent implements OnInit, OnDestroy {
 
   constructor(private postservice: PostService, private authservice: AuthService, private route: ActivatedRoute, private ps: PostService, public dialog: MatDialog) { }
   posts: Posting[];
-  subscription;
+  subscription: any;
+  postsSubscription: any;
   user: User;
   selfprofile: boolean;
 
@@ -31,12 +32,16 @@ export class UserPagePostingsComponent implements OnInit {
       let id2: number = parseInt(id);
       this.initialize(id2);
     });
+  }
 
+  ngOnDestroy(): void {
+    this.postsSubscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   initialize(id: number) {
     if (this.user.id === id) {
-      this.ps.posts.asObservable().subscribe((data: Posting[]) => {
+      this.postsSubscription = this.ps.posts.subscribe((data: Posting[]) => {
         this.posts = data;
         this.posts.sort((a,b)=> {
           return b.createdAt-a.createdAt;

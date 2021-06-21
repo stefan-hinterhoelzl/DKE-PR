@@ -12,12 +12,13 @@ export class UserPagerFollowersListComponent implements OnInit {
 
   users: User[] = [];
   followers: number[] = [];
+  followersSubscription: any;
 
   constructor(private auth: AuthService, private fs: FollowerService) { }
 
   ngOnInit() {
 
-    this.fs.followers.subscribe(async (data) => {
+    this.followersSubscription = this.fs.followers.subscribe(async (data) => {
       this.followers = data;
       console.log(data);
       this.users = await this.auth.getUsersPerList(data);

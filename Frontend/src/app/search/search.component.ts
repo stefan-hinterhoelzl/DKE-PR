@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { timeStamp } from 'node:console';
@@ -18,7 +18,7 @@ import { SearchService } from '../services/searchService';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   currentuser: User;
   key: string;
   users: any[] = [];
@@ -26,23 +26,32 @@ export class SearchComponent implements OnInit {
   posts: Posting[] = [];
   rawdata: any[] = [];
   following: number[] = [];
+  userSubscription: any;
+  followingSubscription: any;
+  routeSubscription: any;
 
   constructor(private route: ActivatedRoute, private searchService: SearchService, private ps: PostService, private auth: AuthService, private router: Router, private dialog: MatDialog, private alert: AlertService, private fs: FollowerService) { }
 
 
   ngOnInit(): void {
-   this.auth.user.subscribe(data => {
+   this.userSubscription = this.auth.user.subscribe(data => {
      this.currentuser = data;
    })
 
-   this.fs.following.subscribe((data) => {
+   this.followingSubscription = this.fs.following.subscribe((data) => {
     this.following = data;
    });
 
-    this.route.queryParams.subscribe((params) => {
+    this.routeSubscription =this.route.queryParams.subscribe((params) => {
       this.key = params['key'];
       this.search()
     });
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
+    this.followingSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
   }
 
 

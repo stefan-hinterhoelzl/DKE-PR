@@ -1,3 +1,28 @@
 <div class="main-wrapper" fxLayout="column" fxLayoutAlign="start center" >
-Benachrichtigungen hier
+    <mat-card  style = "margin-top: 3%; width: 40%;">
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+            <div>
+                <h2>Benachrichtigungen:</h2>
+            </div>
+
+            <div style = "margin-bottom: 20px;">
+                <button mat-button  color = "primary"> Benachrichtigungen löschen</button>
+            </div>
+        </div>
+
+        <div style="width: 100%;">
+            <div *ngFor = "let not of notifications">
+                <div fxLayout = "column" fxLayoutAlign = "center start">
+                    <div style = "width: 100%; margin-bottom: 10px;" [ngClass] ="{'border': not.read === false}">
+                        <div class = "notcontent" [ngClass] ="{'bold': not.read === false}"> 
+                            {{not.text}}
+                        </div>
+                        <div>
+                            {{not.createdAt | date:'dd.MM.yyyy HH:mm'}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card>
 </div>

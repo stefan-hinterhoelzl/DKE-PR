@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,7 +16,7 @@ import { PostService } from '../services/postservice';
   templateUrl: './user-page-edit.component.html',
   styleUrls: ['./user-page-edit.component.css']
 })
-export class UserPageEditComponent implements OnInit {
+export class UserPageEditComponent implements OnInit, OnDestroy {
 
   routeUserID: string; 
   dataform: FormGroup;
@@ -32,11 +32,13 @@ export class UserPageEditComponent implements OnInit {
   newpw = new FormControl('', [Validators.required]);
   newpwconfirm = new FormControl('');
 
+  subscription: any;
+
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private auth: AuthService, private alertservice: AlertService, private dialog: MatDialog, private ps: PostService) { }
 
   ngOnInit(): void {
 
-    this.route.parent.params.subscribe(params => {
+    this.subscription = this.route.parent.params.subscribe(params => {
       this.routeUserID = params['id'];
       this.user = JSON.parse(localStorage.getItem('user'))
       if (this.user.id.toString() != this.routeUserID) {
@@ -61,6 +63,10 @@ export class UserPageEditComponent implements OnInit {
       
     }   
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 

@@ -17,7 +17,9 @@ export class UserPageComponent implements OnInit, OnDestroy {
   user: User;
   pokemondata: any;
   selfprofile: boolean;
-  subscription;
+  subscription: any;
+  followingSubscription: any;
+  userSubscription: any;
   following: number[];
   
 
@@ -25,14 +27,16 @@ export class UserPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.userSubscription.unsubscribe();
+    this.followingSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.auth.user.subscribe((data: User) => {
+    this.userSubscription = this.auth.user.subscribe((data: User) => {
       this.user = data;
     });
 
-    this.fs.following.subscribe((data) => {
+    this.followingSubscription = this.fs.following.subscribe((data) => {
       this.following = data;
     });
 

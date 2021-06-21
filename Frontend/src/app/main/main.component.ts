@@ -1,5 +1,5 @@
 import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_FACTORY } from '@angular/cdk/overlay/overlay-directives';
-import { Component, OnInit, SystemJsNgModuleLoader } from '@angular/core';
+import { Component, OnDestroy, OnInit, SystemJsNgModuleLoader } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -18,11 +18,13 @@ import { PostService } from '../services/postservice';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, OnDestroy {
 
   posts: Posting[]
   user: User;
   following: number[];
+  followingSubscription: any;
+  postSubscription: any;
 
   constructor(private ps: PostService, private auth: AuthService, private dialog: MatDialog, private alert: AlertService, public router: Router, private fs: FollowerService) { }
 
@@ -31,14 +33,19 @@ export class MainComponent implements OnInit {
 
     this.user = this.auth.currentUserValue;
 
-    this.fs.following.subscribe((data)=> {
+    this.followingSubscription = this.fs.following.subscribe((data)=> {
       this.following = data;
     });
 
   }
 
+  ngOnDestroy(): void{
+    this.followingSubscription.unsubscribe();
+    this.postSubscription.unsubscribe();
+  }
+
   getPosts() {
-    this.ps.feed.subscribe((data) => {
+    this.postSubscription = this.ps.feed.subscribe((data) => {
       this.posts = data;
       this.posts.sort((a,b)=> {
         return b.createdAt-a.createdAt;
