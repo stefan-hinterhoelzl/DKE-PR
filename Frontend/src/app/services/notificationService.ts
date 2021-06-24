@@ -32,7 +32,7 @@ export class NotificationService
     saveUserNotification(userfollowing: User, userfollowed: User): Promise<any> {
         const not = <Notification> {
             id: uuid.v4(),
-            text: userfollowing.firstname + " " +userfollowing.lastname + "("+userfollowing.id+") folgt dir jetzt!",
+            text: userfollowing.firstname + " " +userfollowing.lastname + " ("+userfollowing.id+") folgt dir jetzt!",
             createdAt: Date.now(),
             read: false
         }
