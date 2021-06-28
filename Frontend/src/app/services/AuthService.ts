@@ -85,11 +85,6 @@ export class AuthService
       localStorage.removeItem('token');
       this.user.next(null);
       this.token.next("");
-      this.fs.followers.next([]);
-      this.fs.following.next([]);
-      this.ns.nots.next([]);
-      this.ps.feed.next([]);
-      this.ps.posts.next([]);
       if (stateurl != "") this.router.navigate(['login'],  {queryParams:{'redirectURL': stateurl}});
       else this.router.navigate(['login']);
     }
