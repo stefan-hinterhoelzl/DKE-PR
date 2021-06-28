@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '../services/alertService';
 import { PostService } from '../services/postservice';
 import { FollowerService } from '../services/followerservice';
+import { NotificationService } from '../services/notificationService';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class LoginPageComponent implements OnInit {
   password = new FormControl('', [Validators.required]);
   form: FormGroup
 
-  constructor(private auth: AuthService, private router: Router, private fb: FormBuilder, private route: ActivatedRoute, private alertservice: AlertService, private ps: PostService, private fs: FollowerService) { }
+  constructor(private auth: AuthService, private router: Router, private fb: FormBuilder, private route: ActivatedRoute, private alertservice: AlertService, private ps: PostService, private fs: FollowerService, private ns: NotificationService) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -67,6 +68,9 @@ export class LoginPageComponent implements OnInit {
 
           //cache the FollowingObservable
           this.fs.setFollowingObservable(user.id);
+
+          //cache the NotsObservable
+          this.ns.setNotsObservable(user.id);
 
 
           //navigate to the redirect URL if necessary
