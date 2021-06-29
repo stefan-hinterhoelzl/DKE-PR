@@ -12,6 +12,7 @@ public class NotificationserviceApplication {
 		app.setDefaultProperties(Collections.singletonMap("server.port", "8088"));
 		app.run(args);
 
+		
 	}
 }
 
